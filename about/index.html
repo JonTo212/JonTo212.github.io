@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>About — Jon To</title>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #1a1a1a;
+    --bg-panel:  #222222;
+    --bg-card:   #2a2a2a;
+    --border:    #3a3a3a;
+    --border-hi: #555;
+    --green:     #7ec87e;
+    --green-dim: #4a7a4a;
+    --yellow:    #c8b97e;
+    --text:      #d4d4d4;
+    --text-dim:  #888;
+    --text-muted:#555;
+    --mono:      'Consolas', monospace;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav-logo {
+    font-size: 14px;
+    color: var(--green);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: 12px;
+    color: var(--text-dim);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--green); }
+  .nav-links a.active { color: var(--green); }
+  .nav-icon { font-size: 11px; opacity: 0.7; }
+
+  /* BREADCRUMB */
+  .breadcrumb-bar {
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .breadcrumb-bar a { color: var(--text-dim); text-decoration: none; }
+  .breadcrumb-bar a:hover { color: var(--green); }
+  .breadcrumb-sep { color: var(--border-hi); }
+  .breadcrumb-current { color: var(--green); }
+
+  /* PAGE */
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 2rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  /* SECTION BLOCK */
+  .section-block {
+    border: 1px solid var(--border);
+    background: var(--bg-panel);
+  }
+  .section-block-header {
+    background: var(--bg-card);
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--green-dim);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-block-header .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    opacity: 0.5;
+  }
+  .section-block-body { padding: 1.5rem; }
+
+  /* ABOUT LAYOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 2rem;
+    align-items: start;
+  }
+  .about-text { display: flex; flex-direction: column; gap: 1.1rem; }
+  .about-text p {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.9;
+  }
+
+  /* PROFILE IMAGE */
+  .profile-img-wrap {
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    overflow: hidden;
+  }
+  .profile-img-wrap img {
+    width: 100%;
+    display: block;
+    filter: saturate(0.9);
+  }
+  .profile-placeholder {
+    aspect-ratio: 3/4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 11px;
+    color: var(--text-muted);
+    background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3a 100%);
+    padding: 1rem;
+    text-align: center;
+  }
+  .profile-placeholder-icon { font-size: 36px; opacity: 0.12; }
+  .profile-caption {
+    padding: 6px 10px;
+    border-top: 1px solid var(--border);
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+
+  /* SKILLS GRID */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .skill-card {
+    background: var(--bg-panel);
+    padding: 0;
+  }
+  .skill-card-header {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--green);
+  }
+  .skill-icon {
+    font-size: 14px;
+    color: var(--green-dim);
+    font-style: normal;
+  }
+  .skill-rows { padding: 8px 0; }
+  .skill-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .skill-row:last-child { border-bottom: none; }
+  .skill-name {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .skill-dots { display: flex; gap: 4px; }
+  .skill-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    opacity: 0.9;
+  }
+  .skill-dot.dim { opacity: 0.2; }
+
+  /* CONTACT / LINKS ROW */
+  .links-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .link-card {
+    background: var(--bg-panel);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    text-decoration: none;
+    color: var(--text-dim);
+    font-size: 12px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .link-card:hover { background: var(--bg-card); color: var(--green); }
+  .link-card-left { display: flex; align-items: center; gap: 10px; }
+  .link-card-icon { font-size: 13px; color: var(--green-dim); }
+  .link-card-arrow { opacity: 0.3; transition: opacity 0.15s; }
+  .link-card:hover .link-card-arrow { opacity: 1; }
+
+  /* FOOTER */
+  .footer-line {
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+    font-size: 11px;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="../">Home()</a>
+  <ul class="nav-links">
+    <li><a href="#" class="active"><span class="nav-icon">◇</span> About()</a></li>
+    <li><a href="#"><span class="nav-icon">□</span> Portfolio()</a></li>
+    <li><a href="#"><span class="nav-icon">▷</span> PersonalProjects()</a></li>
+  </ul>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb-bar">
+  <a href="../">Home()</a>
+  <span class="breadcrumb-sep">/</span>
+  <span class="breadcrumb-current">AboutMe.cs</span>
+</div>
+
+<div class="page">
+
+  <!-- ABOUT ME -->
+  <div class="section-block">
+    <div class="section-block-header">
+      <div class="dot"></div>
+      // AboutMe()
+    </div>
+    <div class="section-block-body">
+      <div class="about-grid">
+
+        <div class="about-text">
+          <!-- TODO: Update these paragraphs with your own bio -->
+          <p>Hey, I'm Jonathan! I'm a technical designer and current 4th year game design student at Sheridan College. I love tinkering with new ideas and tackling all the logic and implementation challenges that I encounter along the way. I strive to push my technical and creative boundaries every day to ultimately create things that are satisfying to interact with.</p>
+          <p>Games have been my safe space since I was a child. To this day, I remember the excitement I used to feel rushing home from school, ready to boot up my PC to grind Maplestory and Runescape. That passion stuck with me so deeply that after earning a degree in Kinesiology, I decided to pivot and pursue a career in Game Design!</p>
+          <p>As I continue my journey in game development, my goal is to create experiences that offer the same thrill that first drew me to games. Whether it's through immersive worldbuilding, unique gameplay, or satisfying movement, I just want to make something that lets players escape into something special, even if just for a little while.</p>
+        </div>
+
+        <div>
+          <div class="profile-img-wrap">
+            <!-- TODO: Replace placeholder with <img src="profile.png" alt="Jon To"> -->
+            <div class="profile-placeholder">
+              <span class="profile-placeholder-icon">◈</span>
+              <span>// profile.png</span>
+            </div>
+            <div class="profile-caption">// profile.png (TODO kb)</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SKILLS -->
+  <div>
+    <div style="font-family: var(--mono); font-size: 12px; color: var(--green-dim); display: flex; align-items: center; gap: 8px; margin-bottom: 1rem;">
+      <div style="width:6px;height:6px;border-radius:50%;background:var(--green);opacity:0.5;"></div>
+      // Skills[]
+    </div>
+    <div class="skills-grid">
+
+      <!-- ENGINES / EDITORS -->
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="skill-icon">{}</span>
+          Engines / Editors
+        </div>
+        <div class="skill-rows">
+          <!-- Dot rating: 5 dots total, fill in how many are lit -->
+          <div class="skill-row">
+            <span class="skill-name">Unity</span>
+            <div class="skill-dots">
+              <div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <span class="skill-name">Unreal Engine 5</span>
+            <div class="skill-dots">
+              <div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot dim"></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <span class="skill-name">Unreal for Fortnite</span>
+            <div class="skill-dots">
+              <div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot dim"></div><div class="skill-dot dim"></div>
+            </div>
+          </div>
+          <!-- TODO: Add or remove rows as needed -->
+        </div>
+      </div>
+
+      <!-- LANGUAGES -->
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="skill-icon">&lt;/&gt;</span>
+          Languages
+        </div>
+        <div class="skill-rows">
+          <div class="skill-row">
+            <span class="skill-name">C#</span>
+            <div class="skill-dots">
+              <div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <span class="skill-name">Blueprints</span>
+            <div class="skill-dots">
+              <div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot dim"></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <span class="skill-name">C++</span>
+            <div class="skill-dots">
+              <div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot dim"></div><div class="skill-dot dim"></div>
+            </div>
+          </div>
+          <!-- TODO: Add or remove rows as needed -->
+        </div>
+      </div>
+
+      <!-- TOOLS -->
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="skill-icon">#!</span>
+          Tools
+        </div>
+        <div class="skill-rows">
+          <div class="skill-row">
+            <span class="skill-name">Github</span>
+            <div class="skill-dots">
+              <div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <span class="skill-name">Jira</span>
+            <div class="skill-dots">
+              <div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot dim"></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <span class="skill-name">Microsoft Suite</span>
+            <div class="skill-dots">
+              <div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot"></div><div class="skill-dot dim"></div><div class="skill-dot dim"></div>
+            </div>
+          </div>
+          <!-- TODO: Add or remove rows as needed -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LINKS / CONTACT -->
+  <div>
+    <div style="font-family: var(--mono); font-size: 12px; color: var(--green-dim); display: flex; align-items: center; gap: 8px; margin-bottom: 1rem;">
+      <div style="width:6px;height:6px;border-radius:50%;background:var(--green);opacity:0.5;"></div>
+      // contact[]
+    </div>
+    <div class="links-grid">
+      <!-- TODO: Update all hrefs -->
+      <a class="link-card" href="#">
+        <div class="link-card-left">
+          <span class="link-card-icon">◇</span>
+          GitHub
+        </div>
+        <span class="link-card-arrow">→</span>
+      </a>
+      <a class="link-card" href="#">
+        <div class="link-card-left">
+          <span class="link-card-icon">▷</span>
+          itch.io
+        </div>
+        <span class="link-card-arrow">→</span>
+      </a>
+      <a class="link-card" href="#">
+        <div class="link-card-left">
+          <span class="link-card-icon">◈</span>
+          LinkedIn
+        </div>
+        <span class="link-card-arrow">→</span>
+      </a>
+      <a class="link-card" href="#">
+        <div class="link-card-left">
+          <span class="link-card-icon">□</span>
+          Resume (PDF)
+        </div>
+        <span class="link-card-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer-line">
+    <span>// Jon To · Gameplay Programmer & Game Designer</span>
+    <span>© 2024</span>
+  </footer>
+
+</div>
+</body>
+</html>
