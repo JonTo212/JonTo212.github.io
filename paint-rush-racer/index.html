@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Cosmic Ranger V — Jon To</title>
+<title>Paint Rush Racer — Jon To</title>
 
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -87,7 +87,6 @@
     color: #d4d4d4;
   }
   .code-block code { font-family: inherit; }
-  /* syntax colours — minimal, VS Dark-ish */
   .tok-comment  { color: #555; font-style: italic; }
   .tok-keyword  { color: #569cd6; }
   .tok-type     { color: #4ec9b0; }
@@ -132,9 +131,7 @@
     font-size: 16px;
     color: var(--green-dim);
   }
-  .arc-step-body {
-    padding: 1.25rem 1.5rem;
-  }
+  .arc-step-body { padding: 1.25rem 1.5rem; }
   .arc-step-title {
     font-family: var(--mono);
     font-size: 12px;
@@ -216,7 +213,6 @@
     gap: 2rem;
   }
 
-  /* SECTION COMMENT HEADERS */
   .section-comment {
     font-family: var(--mono);
     font-size: 13px;
@@ -298,9 +294,7 @@
   }
 
   /* HERO IMAGE */
-  .hero-image-section {
-    grid-column: 1 / -1;
-  }
+  .hero-image-section { grid-column: 1 / -1; }
   .hero-image-wrap {
     border: 1px solid var(--border);
     background: var(--bg-card);
@@ -308,10 +302,7 @@
     position: relative;
   }
   .hero-image-wrap img,
-  .hero-placeholder {
-    width: 100%;
-    display: block;
-  }
+  .hero-placeholder { width: 100%; display: block; }
   .hero-placeholder {
     height: 420px;
     background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 50%, #1a1a2a 100%);
@@ -324,10 +315,7 @@
     font-family: var(--mono);
     font-size: 12px;
   }
-  .hero-placeholder-icon {
-    font-size: 48px;
-    opacity: 0.2;
-  }
+  .hero-placeholder-icon { font-size: 48px; opacity: 0.2; }
   .image-caption {
     font-family: var(--mono);
     font-size: 11px;
@@ -363,9 +351,7 @@
     background: var(--green);
     opacity: 0.5;
   }
-  .section-block-body {
-    padding: 1.25rem 1.5rem;
-  }
+  .section-block-body { padding: 1.25rem 1.5rem; }
   .section-block-body p {
     font-size: 14px;
     color: var(--text);
@@ -423,7 +409,6 @@
     gap: 1.5rem;
     align-self: start;
   }
-
   .sidebar-card {
     border: 1px solid var(--border);
     background: var(--bg-panel);
@@ -438,7 +423,6 @@
   }
   .sidebar-card-body { padding: 14px; }
 
-  /* PROJECT META */
   .meta-row {
     display: flex;
     justify-content: space-between;
@@ -460,7 +444,6 @@
   }
   .meta-val.highlight { color: var(--green); }
 
-  /* TECH STACK */
   .tech-list {
     display: flex;
     flex-direction: column;
@@ -483,110 +466,45 @@
   .tech-name { color: var(--text); }
   .tech-note { color: var(--text-muted); margin-left: auto; font-size: 10px; }
 
-  /* ROLE LIST */
-  .role-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .role-list li {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--text-dim);
-    padding-left: 16px;
-    position: relative;
-  }
-  .role-list li::before {
-    content: '>';
-    position: absolute;
-    left: 0;
-    color: var(--green-dim);
-  }
-
-  /* LINKS */
+  /* LINK BTNS */
   .link-btn {
     display: flex;
     align-items: center;
-    gap: 8px;
-    width: 100%;
+    justify-content: space-between;
     padding: 9px 12px;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-    font-family: var(--mono);
-    font-size: 11px;
-    cursor: pointer;
-    text-decoration: none;
-    margin-bottom: 8px;
-    transition: border-color 0.15s, color 0.15s, background 0.15s;
-  }
-  .link-btn:last-child { margin-bottom: 0; }
-  .link-btn:hover {
-    border-color: var(--green);
-    color: var(--green);
-    background: rgba(126,200,126,0.05);
-  }
-  .link-btn-icon { opacity: 0.6; }
-  .link-btn-arrow { margin-left: auto; opacity: 0.4; }
-
-  /* FEATURE LIST */
-  .feature-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .feature-item {
-    display: flex;
-    gap: 12px;
-    padding: 10px;
     border: 1px solid var(--border);
     background: var(--bg-card);
-  }
-  .feature-num {
+    color: var(--text-dim);
+    text-decoration: none;
     font-family: var(--mono);
-    font-size: 11px;
-    color: var(--green-dim);
-    min-width: 24px;
-    padding-top: 1px;
+    font-size: 12px;
+    margin-bottom: 8px;
+    transition: border-color 0.15s, color 0.15s;
   }
-  .feature-text {
-    font-size: 13px;
-    color: var(--text);
-    line-height: 1.6;
-  }
-  .feature-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 3px;
-  }
+  .link-btn:hover { border-color: var(--green); color: var(--green); }
+  .link-btn-icon { opacity: 0.6; margin-right: 8px; }
+  .link-btn-arrow { opacity: 0.4; }
 
-  /* NAV FOOTER */
+  /* PROJECT NAV */
   .project-nav {
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
     margin-top: 1rem;
   }
   .project-nav-item {
-    border: 1px solid var(--border);
     background: var(--bg-panel);
-    padding: 1rem 1.25rem;
+    padding: 1.25rem 1.5rem;
     text-decoration: none;
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    transition: border-color 0.15s, background 0.15s;
+    gap: 6px;
+    transition: background 0.15s;
   }
-  .project-nav-item:hover {
-    border-color: var(--green-dim);
-    background: var(--bg-card);
-  }
+  .project-nav-item:hover { background: var(--bg-card); }
   .nav-dir {
     font-family: var(--mono);
     font-size: 10px;
@@ -595,7 +513,7 @@
   }
   .nav-project-name {
     font-family: var(--mono);
-    font-size: 13px;
+    font-size: 14px;
     color: var(--green);
   }
   .project-nav-item.next { align-items: flex-end; }
@@ -609,10 +527,7 @@
     border: 1px solid var(--border);
     background: var(--border);
   }
-  .rt-panel {
-    background: var(--bg-panel);
-    padding: 0;
-  }
+  .rt-panel { background: var(--bg-panel); padding: 0; }
   .rt-panel-header {
     background: var(--bg-card);
     padding: 10px 16px;
@@ -640,22 +555,10 @@
     color: var(--text-dim);
     line-height: 1.6;
   }
-  .contrib-bullet {
-    color: var(--green-dim);
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
+  .contrib-bullet { color: var(--green-dim); flex-shrink: 0; margin-top: 1px; }
 
-  .rt-takeaways {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .rt-takeaway {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-  }
+  .rt-takeaways { display: flex; flex-direction: column; gap: 10px; }
+  .rt-takeaway { display: flex; gap: 12px; align-items: flex-start; }
   .rt-takeaway-bullet {
     font-family: var(--mono);
     font-size: 12px;
@@ -663,11 +566,7 @@
     margin-top: 1px;
     flex-shrink: 0;
   }
-  .rt-takeaway-text {
-    font-size: 13px;
-    color: var(--text-dim);
-    line-height: 1.6;
-  }
+  .rt-takeaway-text { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
   .rt-takeaway-label {
     font-family: var(--mono);
     font-size: 10px;
@@ -746,16 +645,8 @@
     justify-content: center;
     gap: 12px;
   }
-  .ftab-label {
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--yellow);
-  }
-  .ftab-desc {
-    font-size: 13px;
-    color: var(--text-dim);
-    line-height: 1.8;
-  }
+  .ftab-label { font-family: var(--mono); font-size: 13px; color: var(--yellow); }
+  .ftab-desc { font-size: 13px; color: var(--text-dim); line-height: 1.8; }
 
   /* FOOTER LINE */
   .footer-line {
@@ -774,7 +665,7 @@
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#">Home()</a>
+  <a class="nav-logo" href="../">Home()</a>
   <ul class="nav-links">
     <li><a href="#"><span class="nav-icon">◇</span> About()</a></li>
     <li><a href="#"><span class="nav-icon">□</span> Portfolio()</a></li>
@@ -784,9 +675,9 @@
 
 <!-- BREADCRUMB -->
 <div class="breadcrumb-bar">
-  <a href="#">Portfolio()</a>
+  <a href="../">Portfolio()</a>
   <span class="breadcrumb-sep">/</span>
-  <span class="breadcrumb-current">CosmicRangerV.cs</span>
+  <span class="breadcrumb-current">PaintRushRacer.cs</span>
 </div>
 
 <!-- PAGE GRID -->
@@ -795,24 +686,29 @@
   <!-- PROJECT HEADER -->
   <header class="project-header">
     <span class="header-comment-top">// ============================================================</span>
-    <h1 class="project-title">Cosmic Ranger V</h1>
-    <div class="project-subtitle">// Gameplay Programmer · Designer · Sheridan College Capstone</div>
+    <h1 class="project-title">Paint Rush Racer</h1>
+    <!-- TODO: Update subtitle with your role(s) and context (e.g. school, game jam) -->
+    <div class="project-subtitle">// TODO: Role · Context</div>
     <div class="tag-row">
+      <!-- TODO: Add/remove tags to match the project. Options: tag-programming, tag-design, tag-unity, tag-unreal, tag-art -->
       <span class="tag tag-programming">Programming</span>
       <span class="tag tag-design">Design</span>
       <span class="tag tag-unity">Unity</span>
     </div>
-    <p class="project-desc">A physics-based puzzle platformer built as my final capstone project at Sheridan College, featuring custom movement mechanics, ability design, and level architecture.</p>
+    <!-- TODO: One-sentence description of the project -->
+    <p class="project-desc">TODO: Short project description — what it is, what makes it interesting.</p>
   </header>
 
   <!-- HERO IMAGE -->
   <section class="hero-image-section">
     <div class="hero-image-wrap">
+      <!-- TODO: Replace hero-placeholder with <img src="hero.png" alt="..."> when ready -->
       <div class="hero-placeholder">
         <div class="hero-placeholder-icon">◈</div>
         <span>// hero_screenshot.png</span>
       </div>
-      <div class="image-caption">// fig_01 — Main gameplay screenshot · Cosmic Ranger V</div>
+      <!-- TODO: Update caption -->
+      <div class="image-caption">// fig_01 — Main gameplay screenshot · Paint Rush Racer</div>
     </div>
   </section>
 
@@ -825,11 +721,11 @@
       </div>
       <div class="rt-panel-body">
         <ul class="contrib-list">
-          <li class="contrib-item"><span class="contrib-bullet">—</span>Built a custom Rigidbody character controller with slope handling, coyote time, and double jump</li>
-          <li class="contrib-item"><span class="contrib-bullet">—</span>Designed and implemented all three player abilities: dash, ground pound, and lasso tether</li>
-          <li class="contrib-item"><span class="contrib-bullet">—</span>Authored 12 hand-crafted levels with pacing informed by milestone playtesting sessions</li>
-          <li class="contrib-item"><span class="contrib-bullet">—</span>Created all 2D character sprites, tile sets, and UI assets in Aseprite</li>
-          <li class="contrib-item"><span class="contrib-bullet">—</span>Designed and integrated all UI screens: HUD, menus, ability cooldown feedback</li>
+          <!-- TODO: List your specific contributions to the project -->
+          <li class="contrib-item"><span class="contrib-bullet">—</span>TODO: Contribution one</li>
+          <li class="contrib-item"><span class="contrib-bullet">—</span>TODO: Contribution two</li>
+          <li class="contrib-item"><span class="contrib-bullet">—</span>TODO: Contribution three</li>
+          <li class="contrib-item"><span class="contrib-bullet">—</span>TODO: Contribution four</li>
         </ul>
       </div>
     </div>
@@ -840,25 +736,26 @@
       </div>
       <div class="rt-panel-body">
         <div class="rt-takeaways">
+          <!-- TODO: What did you learn? Use a short label + 1-2 sentence reflection -->
           <div class="rt-takeaway">
             <span class="rt-takeaway-bullet">▸</span>
             <div class="rt-takeaway-text">
-              <div class="rt-takeaway-label">Architecture</div>
-              A dedicated state machine from the start would have saved significant debugging time over a flag-based approach as complexity grew.
+              <div class="rt-takeaway-label">TODO: Category (e.g. Architecture)</div>
+              TODO: What you learned or would do differently.
             </div>
           </div>
           <div class="rt-takeaway">
             <span class="rt-takeaway-bullet">▸</span>
             <div class="rt-takeaway-text">
-              <div class="rt-takeaway-label">Physics</div>
-              Keeping all physics logic in FixedUpdate while polling input each frame is a non-negotiable lesson for feel consistency at varying frame rates.
+              <div class="rt-takeaway-label">TODO: Category</div>
+              TODO: Takeaway two.
             </div>
           </div>
           <div class="rt-takeaway">
             <span class="rt-takeaway-bullet">▸</span>
             <div class="rt-takeaway-text">
-              <div class="rt-takeaway-label">Design Process</div>
-              Early playtesting surfaces problems no amount of solo iteration can catch — scheduling it as a milestone deliverable, not an afterthought, is essential.
+              <div class="rt-takeaway-label">TODO: Category</div>
+              TODO: Takeaway three.
             </div>
           </div>
         </div>
@@ -866,42 +763,43 @@
     </div>
   </div>
 
-  <!-- KEY FEATURES + SCREENSHOTS (tabbed, full width) -->
+  <!-- KEY FEATURES TABS -->
+  <!-- TODO: Update tab names and content for each key feature -->
   <div style="grid-column: 1 / -1;">
     <span class="section-comment" style="display:block; margin-bottom: 1rem;">// key_features[]</span>
     <div class="feature-tabs" id="featureTabs">
       <div class="ftab-bar">
-        <button class="ftab-btn active" data-tab="0"><span class="ftab-num">01</span><span class="ftab-name">Movement System</span></button>
-        <button class="ftab-btn" data-tab="1"><span class="ftab-num">02</span><span class="ftab-name">Physics Puzzles</span></button>
-        <button class="ftab-btn" data-tab="2"><span class="ftab-num">03</span><span class="ftab-name">Ability Design</span></button>
-        <button class="ftab-btn" data-tab="3"><span class="ftab-num">04</span><span class="ftab-name">Level Architecture</span></button>
+        <button class="ftab-btn active" data-tab="0"><span class="ftab-num">01</span><span class="ftab-name">TODO: Feature 1</span></button>
+        <button class="ftab-btn" data-tab="1"><span class="ftab-num">02</span><span class="ftab-name">TODO: Feature 2</span></button>
+        <button class="ftab-btn" data-tab="2"><span class="ftab-num">03</span><span class="ftab-name">TODO: Feature 3</span></button>
+        <button class="ftab-btn" data-tab="3"><span class="ftab-num">04</span><span class="ftab-name">TODO: Feature 4</span></button>
       </div>
       <div class="ftab-panel active" data-panel="0">
-        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// movement_system.png</span></div></div>
+        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_01.png</span></div></div>
         <div class="ftab-content">
-          <div class="ftab-label">Custom Movement System</div>
-          <p class="ftab-desc">Rigidbody-based character controller with coyote time, variable jump height, and wall-slide mechanics implemented in C# without Unity's built-in CharacterController. All physics applied in FixedUpdate() for frame-rate consistency.</p>
+          <div class="ftab-label">TODO: Feature 1 Title</div>
+          <p class="ftab-desc">TODO: Describe the feature — what it does, how you built it, what makes it interesting from a technical or design perspective.</p>
         </div>
       </div>
       <div class="ftab-panel" data-panel="1">
-        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// physics_puzzles.png</span></div></div>
+        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_02.png</span></div></div>
         <div class="ftab-content">
-          <div class="ftab-label">Physics-Based Puzzles</div>
-          <p class="ftab-desc">Interactive environment objects respond to player momentum and ability use, creating emergent puzzle solutions beyond the designed intent. Rigidbody interactions are layered with trigger zones to keep puzzle logic readable and debuggable.</p>
+          <div class="ftab-label">TODO: Feature 2 Title</div>
+          <p class="ftab-desc">TODO: Describe the feature.</p>
         </div>
       </div>
       <div class="ftab-panel" data-panel="2">
-        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// ability_design.png</span></div></div>
+        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_03.png</span></div></div>
         <div class="ftab-content">
-          <div class="ftab-label">Ability Design</div>
-          <p class="ftab-desc">Three core abilities — dash, ground pound, and lasso tether — each with a distinct feel and interaction space. All include cooldown feedback, cancel windows, and edge-case handling for mid-air and contact scenarios.</p>
+          <div class="ftab-label">TODO: Feature 3 Title</div>
+          <p class="ftab-desc">TODO: Describe the feature.</p>
         </div>
       </div>
       <div class="ftab-panel" data-panel="3">
-        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// level_architecture.png</span></div></div>
+        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_04.png</span></div></div>
         <div class="ftab-content">
-          <div class="ftab-label">Level Architecture</div>
-          <p class="ftab-desc">12 hand-crafted levels with difficulty pacing informed by iterative playtesting. Designed using modular tile sets built in Aseprite and imported via Unity's tilemap system. Each level introduces one new mechanic and one new combination.</p>
+          <div class="ftab-label">TODO: Feature 4 Title</div>
+          <p class="ftab-desc">TODO: Describe the feature.</p>
         </div>
       </div>
     </div>
@@ -917,19 +815,21 @@
         // overview
       </div>
       <div class="section-block-body">
-        <p>Cosmic Ranger V is a physics-driven puzzle platformer developed solo over an eight-month capstone period. The player navigates increasingly complex environments using a momentum-based movement system built entirely from scratch in Unity, without relying on built-in CharacterController components.</p>
-        <p>The core design challenge was making physics feel expressive and readable — not fighting the player, but rewarding mastery. Every mechanic was iterated on extensively with playtesting feedback incorporated at each milestone.</p>
+        <!-- TODO: 1–2 paragraphs describing the project in more detail -->
+        <p>TODO: What is JellyFish? What was the goal of the project? What's the genre/platform/scope?</p>
+        <p>TODO: What was the core design or technical challenge you were trying to solve?</p>
       </div>
     </div>
 
     <!-- DEEP DIVE -->
+    <!-- TODO: Pick one interesting technical or design problem you solved and walk through it -->
     <div class="section-block" style="margin-bottom:0;">
       <div class="section-block-header">
         <div class="dot"></div>
-        // deep_dive — frame rate independent movement feel
+        // deep_dive — TODO: topic name (e.g. "fluid simulation approach")
       </div>
       <div class="section-block-body" style="padding-bottom: 0;">
-        <p>The most persistent bug in the project wasn't a crash or a logic error — it was that the game <em>felt wrong</em> on machines with different frame rates. On a 144Hz monitor, the player slid further on ice surfaces than intended. On 30fps, jumps felt floaty and imprecise. The movement system was subtly frame-rate dependent without anyone catching it during early development.</p>
+        <p>TODO: Set up the problem. What was the challenge, and why was it hard? Give enough context that someone unfamiliar with the project understands the stakes.</p>
       </div>
     </div>
     <div class="deep-dive-arc">
@@ -939,8 +839,8 @@
           <span class="arc-step-icon">◎</span>
         </div>
         <div class="arc-step-body">
-          <div class="arc-step-title">Physics running in Update(), not FixedUpdate()</div>
-          <p>Velocity was being applied each frame in Update() — meaning at 144fps the player received 144 velocity nudges per second vs. 30 at lower frame rates. Friction and drag calculations compounded the inconsistency. The game had shipped to internal testers before the root cause was identified.</p>
+          <div class="arc-step-title">TODO: Short problem statement</div>
+          <p>TODO: Describe the root cause or constraint you were dealing with.</p>
         </div>
       </div>
       <div class="arc-step">
@@ -949,39 +849,20 @@
           <span class="arc-step-icon">◈</span>
         </div>
         <div class="arc-step-body">
-          <div class="arc-step-title">Separating input polling from physics application</div>
-          <p>The fix required splitting the controller into two layers: input state is read and stored in Update() every frame (preserving responsiveness), but all Rigidbody velocity changes are applied only in FixedUpdate(). Jump buffering was added as a side benefit — storing a jump intent for up to 3 frames so inputs just before landing still register.</p>
+          <div class="arc-step-title">TODO: How you approached it</div>
+          <p>TODO: What did you try? What decisions did you make and why?</p>
         </div>
       </div>
     </div>
 
+    <!-- TODO: Optionally add a code block here. Remove this section if not applicable. -->
     <div class="code-block" style="margin-bottom: 2rem;">
       <div class="code-block-header">
-        <span class="code-block-filename">PlayerController.cs — input/physics separation</span>
+        <span class="code-block-filename">TODO: FileName.cs — brief description</span>
         <span class="code-block-lang">C#</span>
       </div>
-      <pre><code><span class="tok-keyword">private</span> <span class="tok-type">bool</span>  <span class="tok-param">jumpPressed</span>;
-<span class="tok-keyword">private</span> <span class="tok-type">float</span> <span class="tok-param">jumpBufferTimer</span>;
-<span class="tok-keyword">private const</span> <span class="tok-type">float</span> <span class="tok-param">JumpBuffer</span> = <span class="tok-num">0.1f</span>;
-
-<span class="tok-comment">// Update — poll input only, never touch Rigidbody here</span>
-<span class="tok-keyword">void</span> <span class="tok-method">Update</span>() {
-    <span class="tok-keyword">if</span> (Input.<span class="tok-method">GetButtonDown</span>(<span class="tok-string">"Jump"</span>)) {
-        <span class="tok-param">jumpPressed</span>    = <span class="tok-bool">true</span>;
-        <span class="tok-param">jumpBufferTimer</span> = <span class="tok-param">JumpBuffer</span>;
-    }
-    <span class="tok-param">jumpBufferTimer</span> -= Time.deltaTime;
-    <span class="tok-keyword">if</span> (<span class="tok-param">jumpBufferTimer</span> <= <span class="tok-num">0f</span>) <span class="tok-param">jumpPressed</span> = <span class="tok-bool">false</span>;
-}
-
-<span class="tok-comment">// FixedUpdate — all velocity & physics changes go here</span>
-<span class="tok-keyword">void</span> <span class="tok-method">FixedUpdate</span>() {
-    <span class="tok-method">ApplyMovement</span>();
-    <span class="tok-keyword">if</span> (<span class="tok-param">jumpPressed</span> && <span class="tok-method">CanJump</span>()) {
-        <span class="tok-method">ExecuteJump</span>();
-        <span class="tok-param">jumpPressed</span> = <span class="tok-bool">false</span>;
-    }
-}</code></pre>
+      <pre><code><span class="tok-comment">// TODO: Paste a relevant code snippet here</span>
+<span class="tok-comment">// Remove this entire .code-block div if you don't have one</span></code></pre>
     </div>
 
     <div class="deep-dive-arc" style="margin-bottom: 2rem;">
@@ -991,8 +872,8 @@
           <span class="arc-step-icon">▸</span>
         </div>
         <div class="arc-step-body">
-          <div class="arc-step-title">Consistent feel across all tested frame rates</div>
-          <p>After the refactor, movement behaviour was verified consistent at 30, 60, and 144fps. Jump buffering also meaningfully improved playtest scores on the "responsiveness" axis. The structural lesson — treat Update() as an input bus, FixedUpdate() as the physics executor — became the architecture standard for the rest of the project.</p>
+          <div class="arc-step-title">TODO: Outcome</div>
+          <p>TODO: What was the result? What worked, what didn't, what would you change?</p>
         </div>
       </div>
     </div>
@@ -1002,36 +883,38 @@
   <!-- SIDEBAR -->
   <aside class="sidebar">
 
-    <!-- PROJECT META + LINKS -->
+    <!-- PROJECT META -->
     <div class="sidebar-card">
       <div class="sidebar-card-header">// project_meta</div>
       <div class="sidebar-card-body">
+        <!-- TODO: Fill in project metadata -->
         <div class="meta-row">
           <span class="meta-key">status</span>
-          <span class="meta-val highlight">complete</span>
+          <span class="meta-val highlight">TODO: complete / in progress</span>
         </div>
         <div class="meta-row">
           <span class="meta-key">year</span>
-          <span class="meta-val">2024</span>
+          <span class="meta-val">TODO: 2024</span>
         </div>
         <div class="meta-row">
           <span class="meta-key">duration</span>
-          <span class="meta-val">8 months</span>
+          <span class="meta-val">TODO: X months</span>
         </div>
         <div class="meta-row">
           <span class="meta-key">team_size</span>
-          <span class="meta-val">1 (solo)</span>
+          <span class="meta-val">TODO: N (solo / team)</span>
         </div>
         <div class="meta-row">
           <span class="meta-key">platform</span>
-          <span class="meta-val">PC / WebGL</span>
+          <span class="meta-val">TODO: PC / WebGL / etc.</span>
         </div>
         <div class="meta-row" style="margin-bottom: 1rem;">
           <span class="meta-key">context</span>
-          <span class="meta-val">Capstone</span>
+          <span class="meta-val">TODO: Game Jam / Class / Personal</span>
         </div>
         <div style="border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px;">
           <div style="font-family: var(--mono); font-size: 10px; color: var(--text-muted); margin-bottom: 10px; letter-spacing: 0.05em;">// links[]</div>
+          <!-- TODO: Update hrefs. Remove any links that don't apply -->
           <a class="link-btn" href="#">
             <span class="link-btn-icon">▷</span> Play on itch.io
             <span class="link-btn-arrow">→</span>
@@ -1048,17 +931,43 @@
       </div>
     </div>
 
+    <!-- TECH STACK -->
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">// tech_stack[]</div>
+      <div class="sidebar-card-body">
+        <div class="tech-list">
+          <!-- TODO: List tools and technologies used -->
+          <div class="tech-item">
+            <div class="tech-bullet"></div>
+            <span class="tech-name">TODO: Engine / Language</span>
+            <span class="tech-note">primary</span>
+          </div>
+          <div class="tech-item">
+            <div class="tech-bullet"></div>
+            <span class="tech-name">TODO: Tool</span>
+            <span class="tech-note">art</span>
+          </div>
+          <div class="tech-item">
+            <div class="tech-bullet"></div>
+            <span class="tech-name">TODO: Tool</span>
+            <span class="tech-note">audio</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </aside>
 
   <!-- PREV / NEXT NAV -->
+  <!-- TODO: Update project names and hrefs to adjacent projects -->
   <nav class="project-nav">
-    <a class="project-nav-item" href="#">
+    <a class="project-nav-item" href="../jellyfish/">
       <span class="nav-dir">// ← prev_project</span>
       <span class="nav-project-name">JellyFish</span>
     </a>
-    <a class="project-nav-item next" href="#">
+    <a class="project-nav-item next" href="../paint-rush-racer/">
       <span class="nav-dir">next_project → //</span>
-      <span class="nav-project-name">Paint Rush Racer</span>
+      <span class="nav-project-name">TODO: Next Project</span>
     </a>
   </nav>
 
