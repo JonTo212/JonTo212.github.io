@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jon To — Gameplay Programmer & Game Designer</title>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #1a1a1a;
+    --bg-panel:  #222222;
+    --bg-card:   #2a2a2a;
+    --border:    #3a3a3a;
+    --border-hi: #555;
+    --green:     #7ec87e;
+    --green-dim: #4a7a4a;
+    --yellow:    #c8b97e;
+    --text:      #d4d4d4;
+    --text-dim:  #888;
+    --text-muted:#555;
+    --mono:      'Consolas', monospace;
+    --tag-prog:  #6b4f9e;
+    --tag-design:#3a6b5a;
+    --tag-unity: #3a5a7a;
+    --tag-unreal:#7a3a3a;
+    --tag-art:   #6b5a3a;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--green);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--green); }
+  .nav-icon { font-size: 11px; opacity: 0.7; }
+
+  /* PAGE WRAPPER */
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 2rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  /* HERO BLOCK */
+  .hero {
+    border: 1px solid var(--border);
+    background: var(--bg-panel);
+    padding: 3rem 2.5rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--green);
+    opacity: 0.6;
+  }
+  .hero-comment {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green-dim);
+    display: block;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.05em;
+    line-height: 1.9;
+  }
+  .hero-name {
+    font-family: var(--mono);
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin-bottom: 0.4rem;
+  }
+  .hero-title {
+    font-family: var(--mono);
+    font-size: 15px;
+    color: var(--yellow);
+    margin-bottom: 2rem;
+  }
+  .hero-bio {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.85;
+    max-width: 620px;
+    margin-bottom: 2rem;
+  }
+  .hero-bio::before {
+    content: '// ';
+    color: var(--green-dim);
+  }
+  .hero-links {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .hero-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-dim);
+    text-decoration: none;
+    font-family: var(--mono);
+    font-size: 12px;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .hero-link:hover { border-color: var(--green); color: var(--green); }
+  .hero-link-icon { opacity: 0.6; }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green-dim);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+  .section-label .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    opacity: 0.5;
+  }
+
+  /* PROJECT GRID */
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .project-card {
+    background: var(--bg-panel);
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .project-card:hover { background: #272727; }
+  .project-card:hover .card-arrow { opacity: 1; color: var(--green); }
+
+  .card-thumb {
+    aspect-ratio: 16/9;
+    background: var(--bg-card);
+    overflow: hidden;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.85);
+    transition: filter 0.2s;
+  }
+  .project-card:hover .card-thumb img { filter: saturate(1); }
+
+  .card-thumb-placeholder {
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 50%, #1a1a2a 100%);
+  }
+  .card-thumb-icon { font-size: 28px; opacity: 0.15; }
+
+  .card-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  .card-title {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--green);
+    line-height: 1.2;
+  }
+  .card-arrow {
+    font-size: 12px;
+    color: var(--text-muted);
+    opacity: 0;
+    transition: opacity 0.15s, color 0.15s;
+    flex-shrink: 0;
+    margin-left: 8px;
+    margin-top: 2px;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+  .tag-programming { background: var(--tag-prog); color: #c8b8f0; }
+  .tag-design      { background: var(--tag-design); color: #a8d8c0; }
+  .tag-unity       { background: var(--tag-unity); color: #a8c8e8; }
+  .tag-unreal      { background: var(--tag-unreal); color: #e8b8b8; }
+  .tag-art         { background: var(--tag-art); color: #e0cfaa; }
+
+  .card-desc {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.75;
+    flex: 1;
+  }
+  .card-desc::before { content: '// '; color: var(--green-dim); }
+
+  .card-meta {
+    display: flex;
+    gap: 12px;
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+    margin-top: auto;
+  }
+  .card-meta-item {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+  .card-meta-item span { color: var(--text-dim); }
+
+  /* BOTTOM PANELS */
+  .bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .bottom-panel {
+    background: var(--bg-panel);
+    text-decoration: none;
+    display: block;
+    transition: background 0.15s;
+  }
+  .bottom-panel:hover { background: #272727; }
+  .bottom-panel-header {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green-dim);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .bottom-panel-header .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    opacity: 0.5;
+    display: inline-block;
+    margin-right: 8px;
+  }
+  .bottom-panel-arrow {
+    font-size: 11px;
+    color: var(--text-muted);
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .bottom-panel:hover .bottom-panel-arrow { opacity: 1; color: var(--green); }
+  .bottom-panel-body { padding: 1.25rem 1.5rem; }
+  .bottom-panel-desc {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.75;
+  }
+  .bottom-panel-desc::before { content: '// '; color: var(--green-dim); }
+
+  /* FOOTER */
+  .footer-line {
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="/">Home()</a>
+  <ul class="nav-links">
+    <li><a href="#"><span class="nav-icon">◇</span> About()</a></li>
+    <li><a href="#"><span class="nav-icon">□</span> Portfolio()</a></li>
+    <li><a href="#"><span class="nav-icon">▷</span> PersonalProjects()</a></li>
+  </ul>
+</nav>
+
+<div class="page">
+
+  <!-- HERO -->
+  <header class="hero">
+    <span class="hero-comment">// ============================================================<br>
+// &nbsp;&nbsp;portfolio.exe — Jon To<br>
+// ============================================================</span>
+    <h1 class="hero-name">Jon To</h1>
+    <div class="hero-title">// Gameplay Programmer &amp; Game Designer</div>
+    <p class="hero-bio">
+      <!-- TODO: Update bio -->
+      Graduate of Sheridan College's Game Design program. I build games that feel good to play — custom movement systems, ability design, and level architecture. Currently looking for opportunities in gameplay programming.
+    </p>
+    <div class="hero-links">
+      <!-- TODO: Update hrefs -->
+      <a class="hero-link" href="#"><span class="hero-link-icon">◇</span> GitHub</a>
+      <a class="hero-link" href="#"><span class="hero-link-icon">▷</span> itch.io</a>
+      <a class="hero-link" href="#"><span class="hero-link-icon">□</span> Resume (PDF)</a>
+      <a class="hero-link" href="#"><span class="hero-link-icon">◈</span> LinkedIn</a>
+    </div>
+  </header>
+
+  <!-- FEATURED PROJECTS -->
+  <section>
+    <div class="section-label">
+      <div class="dot"></div>
+      // featured_projects[]
+    </div>
+    <div class="project-grid">
+
+      <!-- COSMIC RANGER V -->
+      <a class="project-card" href="./cosmic-ranger-v/">
+        <div class="card-thumb">
+          <!-- TODO: Replace with <img src="cosmic-ranger-v/hero.png" alt="Cosmic Ranger V"> -->
+          <div class="card-thumb-placeholder">
+            <span class="card-thumb-icon">◈</span>
+            <span>// hero.png</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-title">Cosmic Ranger V</div>
+            <span class="card-arrow">→</span>
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-programming">Programming</span>
+            <span class="tag tag-design">Design</span>
+            <span class="tag tag-unity">Unity</span>
+          </div>
+          <p class="card-desc">A physics-based puzzle platformer built as my final capstone project at Sheridan College, featuring custom movement mechanics and level architecture.</p>
+          <div class="card-meta">
+            <div class="card-meta-item">year <span>2024</span></div>
+            <div class="card-meta-item">duration <span>8 months</span></div>
+            <div class="card-meta-item">team <span>solo</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- JELLYFISH -->
+      <a class="project-card" href="./jellyfish/">
+        <div class="card-thumb">
+          <!-- TODO: Replace with <img src="jellyfish/hero.png" alt="JellyFish"> -->
+          <div class="card-thumb-placeholder">
+            <span class="card-thumb-icon">◈</span>
+            <span>// hero.png</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-title">JellyFish</div>
+            <span class="card-arrow">→</span>
+          </div>
+          <div class="card-tags">
+            <!-- TODO: Update tags to match the project -->
+            <span class="tag tag-programming">Programming</span>
+            <span class="tag tag-unity">Unity</span>
+          </div>
+          <!-- TODO: Update description -->
+          <p class="card-desc">TODO: Short description of JellyFish — what it is and what makes it interesting.</p>
+          <div class="card-meta">
+            <!-- TODO: Update metadata -->
+            <div class="card-meta-item">year <span>TODO</span></div>
+            <div class="card-meta-item">duration <span>TODO</span></div>
+            <div class="card-meta-item">team <span>TODO</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- PAINT RUSH RACER -->
+      <a class="project-card" href="./paint-rush-racer/">
+        <div class="card-thumb">
+          <!-- TODO: Replace with <img src="paint-rush-racer/hero.png" alt="Paint Rush Racer"> -->
+          <div class="card-thumb-placeholder">
+            <span class="card-thumb-icon">◈</span>
+            <span>// hero.png</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-title">Paint Rush Racer</div>
+            <span class="card-arrow">→</span>
+          </div>
+          <div class="card-tags">
+            <!-- TODO: Update tags -->
+            <span class="tag tag-programming">Programming</span>
+            <span class="tag tag-unreal">Unreal Engine</span>
+          </div>
+          <!-- TODO: Update description -->
+          <p class="card-desc">TODO: Short description of Paint Rush Racer — what it is and what makes it interesting.</p>
+          <div class="card-meta">
+            <!-- TODO: Update metadata -->
+            <div class="card-meta-item">year <span>TODO</span></div>
+            <div class="card-meta-item">duration <span>TODO</span></div>
+            <div class="card-meta-item">team <span>TODO</span></div>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- BOTTOM PANELS -->
+  <div class="bottom-grid">
+    <a class="bottom-panel" href="#">
+      <div class="bottom-panel-header">
+        <span><span class="dot"></span>Portfolio()</span>
+        <span class="bottom-panel-arrow">→</span>
+      </div>
+      <div class="bottom-panel-body">
+        <p class="bottom-panel-desc">A collection of completed academic + professional projects</p>
+      </div>
+    </a>
+    <a class="bottom-panel" href="#">
+      <div class="bottom-panel-header">
+        <span><span class="dot"></span>PersonalProjects()</span>
+        <span class="bottom-panel-arrow">→</span>
+      </div>
+      <div class="bottom-panel-body">
+        <p class="bottom-panel-desc">A collection of personal projects, including WIP and non-game-specific pieces</p>
+      </div>
+    </a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer-line">
+    <span>// Jon To · Gameplay Programmer & Game Designer</span>
+    <span>© 2024</span>
+  </footer>
+
+</div>
+</body>
+</html>
