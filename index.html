@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cosmic Ranger V — Jon To</title>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #1a1a1a;
+    --bg-panel:  #222222;
+    --bg-card:   #2a2a2a;
+    --bg-tag:    #333;
+    --border:    #3a3a3a;
+    --border-hi: #555;
+    --green:     #7ec87e;
+    --green-dim: #4a7a4a;
+    --yellow:    #c8b97e;
+    --text:      #d4d4d4;
+    --text-dim:  #888;
+    --text-muted:#555;
+    --mono:      'Consolas', monospace;
+    --sans:      'Consolas', monospace;
+    --tag-prog:  #6b4f9e;
+    --tag-design:#3a6b5a;
+    --tag-unity: #3a5a7a;
+    --tag-unreal:#7a3a3a;
+    --tag-art:   #6b5a3a;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* CODE BLOCK */
+  .code-block {
+    background: #141414;
+    border: 1px solid var(--border);
+    margin: 1.25rem 0;
+    overflow: hidden;
+  }
+  .code-block-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 14px;
+    background: #1e1e1e;
+    border-bottom: 1px solid var(--border);
+  }
+  .code-block-filename {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .code-block-filename::before {
+    content: '';
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #3a7a3a;
+    opacity: 0.7;
+  }
+  .code-block-lang {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    opacity: 0.5;
+    letter-spacing: 0.05em;
+  }
+  .code-block pre {
+    margin: 0;
+    padding: 1.25rem 1.5rem;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.8;
+    color: #d4d4d4;
+  }
+  .code-block code { font-family: inherit; }
+  /* syntax colours — minimal, VS Dark-ish */
+  .tok-comment  { color: #555; font-style: italic; }
+  .tok-keyword  { color: #569cd6; }
+  .tok-type     { color: #4ec9b0; }
+  .tok-string   { color: #ce9178; }
+  .tok-num      { color: #b5cea8; }
+  .tok-method   { color: #dcdcaa; }
+  .tok-param    { color: #9cdcfe; }
+  .tok-bool     { color: #569cd6; }
+
+  /* DEEP DIVE */
+  .deep-dive-arc {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 2rem;
+  }
+  .arc-step {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    background: var(--bg-panel);
+  }
+  .arc-step:last-child { border-bottom: 1px solid var(--border); }
+  .arc-step-label {
+    padding: 1.25rem 1rem;
+    border-right: 1px solid var(--border);
+    background: var(--bg-card);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .arc-step-tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .arc-step-icon {
+    font-size: 16px;
+    color: var(--green-dim);
+  }
+  .arc-step-body {
+    padding: 1.25rem 1.5rem;
+  }
+  .arc-step-title {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--yellow);
+    margin-bottom: 0.5rem;
+  }
+  .arc-step-body p {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--green);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--green); }
+  .nav-icon { font-size: 11px; opacity: 0.7; }
+
+  /* BREADCRUMB BAR */
+  .breadcrumb-bar {
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .breadcrumb-bar a {
+    color: var(--text-dim);
+    text-decoration: none;
+  }
+  .breadcrumb-bar a:hover { color: var(--green); }
+  .breadcrumb-sep { color: var(--border-hi); }
+  .breadcrumb-current { color: var(--green); }
+
+  /* LAYOUT */
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 2rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 2rem;
+  }
+
+  /* SECTION COMMENT HEADERS */
+  .section-comment {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--green-dim);
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  /* PROJECT HEADER */
+  .project-header {
+    grid-column: 1 / -1;
+    border: 1px solid var(--border);
+    background: var(--bg-panel);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--green);
+    opacity: 0.6;
+  }
+  .header-comment-top {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green-dim);
+    margin-bottom: 1.5rem;
+    display: block;
+    letter-spacing: 0.05em;
+  }
+  .project-title {
+    font-family: var(--mono);
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+  }
+  .project-subtitle {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--yellow);
+    margin-bottom: 1.5rem;
+  }
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+  }
+  .tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+  .tag-programming { background: var(--tag-prog); color: #c8b8f0; }
+  .tag-design      { background: var(--tag-design); color: #a8d8c0; }
+  .tag-unity       { background: var(--tag-unity); color: #a8c8e8; }
+  .tag-unreal      { background: var(--tag-unreal); color: #e8b8b8; }
+  .tag-art         { background: var(--tag-art); color: #e0cfaa; }
+
+  .project-desc {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.8;
+    max-width: 700px;
+  }
+  .project-desc::before {
+    content: '// ';
+    color: var(--green-dim);
+  }
+
+  /* HERO IMAGE */
+  .hero-image-section {
+    grid-column: 1 / -1;
+  }
+  .hero-image-wrap {
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    overflow: hidden;
+    position: relative;
+  }
+  .hero-image-wrap img,
+  .hero-placeholder {
+    width: 100%;
+    display: block;
+  }
+  .hero-placeholder {
+    height: 420px;
+    background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 50%, #1a1a2a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    color: var(--text-muted);
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .hero-placeholder-icon {
+    font-size: 48px;
+    opacity: 0.2;
+  }
+  .image-caption {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    padding: 8px 12px;
+    border-top: 1px solid var(--border);
+    background: var(--bg-panel);
+  }
+
+  /* MAIN COLUMN */
+  .main-col { min-width: 0; }
+
+  /* SECTION BLOCK */
+  .section-block {
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+    background: var(--bg-panel);
+  }
+  .section-block-header {
+    background: var(--bg-card);
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green-dim);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-block-header .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    opacity: 0.5;
+  }
+  .section-block-body {
+    padding: 1.25rem 1.5rem;
+  }
+  .section-block-body p {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+  .section-block-body p:last-child { margin-bottom: 0; }
+
+  /* SCREENSHOT GRID */
+  .screenshot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+  .screenshot-cell {
+    background: var(--bg-card);
+    aspect-ratio: 16/9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .screenshot-cell:hover { background: #303030; }
+  .screenshot-cell img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    position: absolute;
+    inset: 0;
+  }
+  .screenshot-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.7);
+    padding: 4px 8px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-self: start;
+  }
+
+  .sidebar-card {
+    border: 1px solid var(--border);
+    background: var(--bg-panel);
+  }
+  .sidebar-card-header {
+    padding: 8px 14px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green-dim);
+  }
+  .sidebar-card-body { padding: 14px; }
+
+  /* PROJECT META */
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .meta-row:last-child { border-bottom: none; }
+  .meta-key {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .meta-val {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text);
+    text-align: right;
+  }
+  .meta-val.highlight { color: var(--green); }
+
+  /* TECH STACK */
+  .tech-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .tech-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .tech-bullet {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--green);
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+  .tech-name { color: var(--text); }
+  .tech-note { color: var(--text-muted); margin-left: auto; font-size: 10px; }
+
+  /* ROLE LIST */
+  .role-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .role-list li {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    padding-left: 16px;
+    position: relative;
+  }
+  .role-list li::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--green-dim);
+  }
+
+  /* LINKS */
+  .link-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 9px 12px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: var(--mono);
+    font-size: 11px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-bottom: 8px;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+  }
+  .link-btn:last-child { margin-bottom: 0; }
+  .link-btn:hover {
+    border-color: var(--green);
+    color: var(--green);
+    background: rgba(126,200,126,0.05);
+  }
+  .link-btn-icon { opacity: 0.6; }
+  .link-btn-arrow { margin-left: auto; opacity: 0.4; }
+
+  /* FEATURE LIST */
+  .feature-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .feature-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+  }
+  .feature-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green-dim);
+    min-width: 24px;
+    padding-top: 1px;
+  }
+  .feature-text {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .feature-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 3px;
+  }
+
+  /* NAV FOOTER */
+  .project-nav {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .project-nav-item {
+    border: 1px solid var(--border);
+    background: var(--bg-panel);
+    padding: 1rem 1.25rem;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .project-nav-item:hover {
+    border-color: var(--green-dim);
+    background: var(--bg-card);
+  }
+  .nav-dir {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+  .nav-project-name {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--green);
+  }
+  .project-nav-item.next { align-items: flex-end; }
+
+  /* ROLES & TAKEAWAYS */
+  .rt-grid {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+    background: var(--border);
+  }
+  .rt-panel {
+    background: var(--bg-panel);
+    padding: 0;
+  }
+  .rt-panel-header {
+    background: var(--bg-card);
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green-dim);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .rt-panel-body { padding: 1.25rem 1.5rem; }
+
+  .contrib-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .contrib-item {
+    display: flex;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .contrib-bullet {
+    color: var(--green-dim);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .rt-takeaways {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .rt-takeaway {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .rt-takeaway-bullet {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--yellow);
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+  .rt-takeaway-text {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .rt-takeaway-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 2px;
+  }
+
+  /* FEATURE TABS */
+  .feature-tabs {
+    border: 1px solid var(--border);
+    background: var(--bg-panel);
+    margin-bottom: 2rem;
+  }
+  .ftab-bar {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-card);
+  }
+  .ftab-btn {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--border);
+    border-bottom: 2px solid transparent;
+    color: var(--text-muted);
+    font-family: var(--mono);
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.15s, background 0.15s, border-color 0.15s;
+    margin-bottom: -1px;
+  }
+  .ftab-btn:hover { color: var(--text-dim); background: rgba(255,255,255,0.03); }
+  .ftab-btn.active {
+    color: var(--green);
+    background: var(--bg-panel);
+    border-bottom-color: var(--green);
+  }
+  .ftab-num { opacity: 0.4; font-size: 10px; }
+  .ftab-btn.active .ftab-num { opacity: 0.7; }
+
+  .ftab-panel { display: none; }
+  .ftab-panel.active {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+  }
+  .ftab-image {
+    border-right: 1px solid var(--border);
+    aspect-ratio: 16/9;
+    overflow: hidden;
+  }
+  .ftab-img-placeholder {
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 50%, #1a1a2a 100%);
+  }
+  .ftab-img-icon { font-size: 32px; opacity: 0.15; }
+  .ftab-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+  }
+  .ftab-label {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--yellow);
+  }
+  .ftab-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+
+  /* FOOTER LINE */
+  .footer-line {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Home()</a>
+  <ul class="nav-links">
+    <li><a href="#"><span class="nav-icon">◇</span> About()</a></li>
+    <li><a href="#"><span class="nav-icon">□</span> Portfolio()</a></li>
+    <li><a href="#"><span class="nav-icon">▷</span> PersonalProjects()</a></li>
+  </ul>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb-bar">
+  <a href="#">Portfolio()</a>
+  <span class="breadcrumb-sep">/</span>
+  <span class="breadcrumb-current">CosmicRangerV.cs</span>
+</div>
+
+<!-- PAGE GRID -->
+<div class="page">
+
+  <!-- PROJECT HEADER -->
+  <header class="project-header">
+    <span class="header-comment-top">// ============================================================</span>
+    <h1 class="project-title">Cosmic Ranger V</h1>
+    <div class="project-subtitle">// Gameplay Programmer · Designer · Sheridan College Capstone</div>
+    <div class="tag-row">
+      <span class="tag tag-programming">Programming</span>
+      <span class="tag tag-design">Design</span>
+      <span class="tag tag-unity">Unity</span>
+    </div>
+    <p class="project-desc">A physics-based puzzle platformer built as my final capstone project at Sheridan College, featuring custom movement mechanics, ability design, and level architecture.</p>
+  </header>
+
+  <!-- HERO IMAGE -->
+  <section class="hero-image-section">
+    <div class="hero-image-wrap">
+      <div class="hero-placeholder">
+        <div class="hero-placeholder-icon">◈</div>
+        <span>// hero_screenshot.png</span>
+      </div>
+      <div class="image-caption">// fig_01 — Main gameplay screenshot · Cosmic Ranger V</div>
+    </div>
+  </section>
+
+  <!-- ROLES & TAKEAWAYS -->
+  <div class="rt-grid">
+    <div class="rt-panel">
+      <div class="rt-panel-header">
+        <div class="dot"></div>
+        // my_contributions[]
+      </div>
+      <div class="rt-panel-body">
+        <ul class="contrib-list">
+          <li class="contrib-item"><span class="contrib-bullet">—</span>Built a custom Rigidbody character controller with slope handling, coyote time, and double jump</li>
+          <li class="contrib-item"><span class="contrib-bullet">—</span>Designed and implemented all three player abilities: dash, ground pound, and lasso tether</li>
+          <li class="contrib-item"><span class="contrib-bullet">—</span>Authored 12 hand-crafted levels with pacing informed by milestone playtesting sessions</li>
+          <li class="contrib-item"><span class="contrib-bullet">—</span>Created all 2D character sprites, tile sets, and UI assets in Aseprite</li>
+          <li class="contrib-item"><span class="contrib-bullet">—</span>Designed and integrated all UI screens: HUD, menus, ability cooldown feedback</li>
+        </ul>
+      </div>
+    </div>
+    <div class="rt-panel" style="border-left: 1px solid var(--border);">
+      <div class="rt-panel-header">
+        <div class="dot"></div>
+        // takeaways[]
+      </div>
+      <div class="rt-panel-body">
+        <div class="rt-takeaways">
+          <div class="rt-takeaway">
+            <span class="rt-takeaway-bullet">▸</span>
+            <div class="rt-takeaway-text">
+              <div class="rt-takeaway-label">Architecture</div>
+              A dedicated state machine from the start would have saved significant debugging time over a flag-based approach as complexity grew.
+            </div>
+          </div>
+          <div class="rt-takeaway">
+            <span class="rt-takeaway-bullet">▸</span>
+            <div class="rt-takeaway-text">
+              <div class="rt-takeaway-label">Physics</div>
+              Keeping all physics logic in FixedUpdate while polling input each frame is a non-negotiable lesson for feel consistency at varying frame rates.
+            </div>
+          </div>
+          <div class="rt-takeaway">
+            <span class="rt-takeaway-bullet">▸</span>
+            <div class="rt-takeaway-text">
+              <div class="rt-takeaway-label">Design Process</div>
+              Early playtesting surfaces problems no amount of solo iteration can catch — scheduling it as a milestone deliverable, not an afterthought, is essential.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KEY FEATURES + SCREENSHOTS (tabbed, full width) -->
+  <div style="grid-column: 1 / -1;">
+    <span class="section-comment" style="display:block; margin-bottom: 1rem;">// key_features[]</span>
+    <div class="feature-tabs" id="featureTabs">
+      <div class="ftab-bar">
+        <button class="ftab-btn active" data-tab="0"><span class="ftab-num">01</span><span class="ftab-name">Movement System</span></button>
+        <button class="ftab-btn" data-tab="1"><span class="ftab-num">02</span><span class="ftab-name">Physics Puzzles</span></button>
+        <button class="ftab-btn" data-tab="2"><span class="ftab-num">03</span><span class="ftab-name">Ability Design</span></button>
+        <button class="ftab-btn" data-tab="3"><span class="ftab-num">04</span><span class="ftab-name">Level Architecture</span></button>
+      </div>
+      <div class="ftab-panel active" data-panel="0">
+        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// movement_system.png</span></div></div>
+        <div class="ftab-content">
+          <div class="ftab-label">Custom Movement System</div>
+          <p class="ftab-desc">Rigidbody-based character controller with coyote time, variable jump height, and wall-slide mechanics implemented in C# without Unity's built-in CharacterController. All physics applied in FixedUpdate() for frame-rate consistency.</p>
+        </div>
+      </div>
+      <div class="ftab-panel" data-panel="1">
+        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// physics_puzzles.png</span></div></div>
+        <div class="ftab-content">
+          <div class="ftab-label">Physics-Based Puzzles</div>
+          <p class="ftab-desc">Interactive environment objects respond to player momentum and ability use, creating emergent puzzle solutions beyond the designed intent. Rigidbody interactions are layered with trigger zones to keep puzzle logic readable and debuggable.</p>
+        </div>
+      </div>
+      <div class="ftab-panel" data-panel="2">
+        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// ability_design.png</span></div></div>
+        <div class="ftab-content">
+          <div class="ftab-label">Ability Design</div>
+          <p class="ftab-desc">Three core abilities — dash, ground pound, and lasso tether — each with a distinct feel and interaction space. All include cooldown feedback, cancel windows, and edge-case handling for mid-air and contact scenarios.</p>
+        </div>
+      </div>
+      <div class="ftab-panel" data-panel="3">
+        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// level_architecture.png</span></div></div>
+        <div class="ftab-content">
+          <div class="ftab-label">Level Architecture</div>
+          <p class="ftab-desc">12 hand-crafted levels with difficulty pacing informed by iterative playtesting. Designed using modular tile sets built in Aseprite and imported via Unity's tilemap system. Each level introduces one new mechanic and one new combination.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-col">
+
+    <!-- OVERVIEW -->
+    <div class="section-block">
+      <div class="section-block-header">
+        <div class="dot"></div>
+        // overview
+      </div>
+      <div class="section-block-body">
+        <p>Cosmic Ranger V is a physics-driven puzzle platformer developed solo over an eight-month capstone period. The player navigates increasingly complex environments using a momentum-based movement system built entirely from scratch in Unity, without relying on built-in CharacterController components.</p>
+        <p>The core design challenge was making physics feel expressive and readable — not fighting the player, but rewarding mastery. Every mechanic was iterated on extensively with playtesting feedback incorporated at each milestone.</p>
+      </div>
+    </div>
+
+    <!-- DEEP DIVE -->
+    <div class="section-block" style="margin-bottom:0;">
+      <div class="section-block-header">
+        <div class="dot"></div>
+        // deep_dive — frame rate independent movement feel
+      </div>
+      <div class="section-block-body" style="padding-bottom: 0;">
+        <p>The most persistent bug in the project wasn't a crash or a logic error — it was that the game <em>felt wrong</em> on machines with different frame rates. On a 144Hz monitor, the player slid further on ice surfaces than intended. On 30fps, jumps felt floaty and imprecise. The movement system was subtly frame-rate dependent without anyone catching it during early development.</p>
+      </div>
+    </div>
+    <div class="deep-dive-arc">
+      <div class="arc-step">
+        <div class="arc-step-label">
+          <span class="arc-step-tag">problem</span>
+          <span class="arc-step-icon">◎</span>
+        </div>
+        <div class="arc-step-body">
+          <div class="arc-step-title">Physics running in Update(), not FixedUpdate()</div>
+          <p>Velocity was being applied each frame in Update() — meaning at 144fps the player received 144 velocity nudges per second vs. 30 at lower frame rates. Friction and drag calculations compounded the inconsistency. The game had shipped to internal testers before the root cause was identified.</p>
+        </div>
+      </div>
+      <div class="arc-step">
+        <div class="arc-step-label">
+          <span class="arc-step-tag">approach</span>
+          <span class="arc-step-icon">◈</span>
+        </div>
+        <div class="arc-step-body">
+          <div class="arc-step-title">Separating input polling from physics application</div>
+          <p>The fix required splitting the controller into two layers: input state is read and stored in Update() every frame (preserving responsiveness), but all Rigidbody velocity changes are applied only in FixedUpdate(). Jump buffering was added as a side benefit — storing a jump intent for up to 3 frames so inputs just before landing still register.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="code-block" style="margin-bottom: 2rem;">
+      <div class="code-block-header">
+        <span class="code-block-filename">PlayerController.cs — input/physics separation</span>
+        <span class="code-block-lang">C#</span>
+      </div>
+      <pre><code><span class="tok-keyword">private</span> <span class="tok-type">bool</span>  <span class="tok-param">jumpPressed</span>;
+<span class="tok-keyword">private</span> <span class="tok-type">float</span> <span class="tok-param">jumpBufferTimer</span>;
+<span class="tok-keyword">private const</span> <span class="tok-type">float</span> <span class="tok-param">JumpBuffer</span> = <span class="tok-num">0.1f</span>;
+
+<span class="tok-comment">// Update — poll input only, never touch Rigidbody here</span>
+<span class="tok-keyword">void</span> <span class="tok-method">Update</span>() {
+    <span class="tok-keyword">if</span> (Input.<span class="tok-method">GetButtonDown</span>(<span class="tok-string">"Jump"</span>)) {
+        <span class="tok-param">jumpPressed</span>    = <span class="tok-bool">true</span>;
+        <span class="tok-param">jumpBufferTimer</span> = <span class="tok-param">JumpBuffer</span>;
+    }
+    <span class="tok-param">jumpBufferTimer</span> -= Time.deltaTime;
+    <span class="tok-keyword">if</span> (<span class="tok-param">jumpBufferTimer</span> <= <span class="tok-num">0f</span>) <span class="tok-param">jumpPressed</span> = <span class="tok-bool">false</span>;
+}
+
+<span class="tok-comment">// FixedUpdate — all velocity & physics changes go here</span>
+<span class="tok-keyword">void</span> <span class="tok-method">FixedUpdate</span>() {
+    <span class="tok-method">ApplyMovement</span>();
+    <span class="tok-keyword">if</span> (<span class="tok-param">jumpPressed</span> && <span class="tok-method">CanJump</span>()) {
+        <span class="tok-method">ExecuteJump</span>();
+        <span class="tok-param">jumpPressed</span> = <span class="tok-bool">false</span>;
+    }
+}</code></pre>
+    </div>
+
+    <div class="deep-dive-arc" style="margin-bottom: 2rem;">
+      <div class="arc-step">
+        <div class="arc-step-label">
+          <span class="arc-step-tag">result</span>
+          <span class="arc-step-icon">▸</span>
+        </div>
+        <div class="arc-step-body">
+          <div class="arc-step-title">Consistent feel across all tested frame rates</div>
+          <p>After the refactor, movement behaviour was verified consistent at 30, 60, and 144fps. Jump buffering also meaningfully improved playtest scores on the "responsiveness" axis. The structural lesson — treat Update() as an input bus, FixedUpdate() as the physics executor — became the architecture standard for the rest of the project.</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <!-- PROJECT META + LINKS -->
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">// project_meta</div>
+      <div class="sidebar-card-body">
+        <div class="meta-row">
+          <span class="meta-key">status</span>
+          <span class="meta-val highlight">complete</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-key">year</span>
+          <span class="meta-val">2024</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-key">duration</span>
+          <span class="meta-val">8 months</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-key">team_size</span>
+          <span class="meta-val">1 (solo)</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-key">platform</span>
+          <span class="meta-val">PC / WebGL</span>
+        </div>
+        <div class="meta-row" style="margin-bottom: 1rem;">
+          <span class="meta-key">context</span>
+          <span class="meta-val">Capstone</span>
+        </div>
+        <div style="border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px;">
+          <div style="font-family: var(--mono); font-size: 10px; color: var(--text-muted); margin-bottom: 10px; letter-spacing: 0.05em;">// links[]</div>
+          <a class="link-btn" href="#">
+            <span class="link-btn-icon">▷</span> Play on itch.io
+            <span class="link-btn-arrow">→</span>
+          </a>
+          <a class="link-btn" href="#">
+            <span class="link-btn-icon">◇</span> View on GitHub
+            <span class="link-btn-arrow">→</span>
+          </a>
+          <a class="link-btn" href="#" style="margin-bottom: 0;">
+            <span class="link-btn-icon">□</span> Design Doc (PDF)
+            <span class="link-btn-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- PREV / NEXT NAV -->
+  <nav class="project-nav">
+    <a class="project-nav-item" href="#">
+      <span class="nav-dir">// ← prev_project</span>
+      <span class="nav-project-name">JellyFish</span>
+    </a>
+    <a class="project-nav-item next" href="#">
+      <span class="nav-dir">next_project → //</span>
+      <span class="nav-project-name">Paint Rush Racer</span>
+    </a>
+  </nav>
+
+  <!-- FOOTER -->
+  <footer class="footer-line">
+    <span>// Jon To · Gameplay Programmer & Game Designer</span>
+    <span>© 2024</span>
+  </footer>
+
+</div>
+<script>
+  document.querySelectorAll('.ftab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = btn.dataset.tab;
+      document.querySelectorAll('.ftab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.ftab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelector(`.ftab-panel[data-panel="${idx}"]`).classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
