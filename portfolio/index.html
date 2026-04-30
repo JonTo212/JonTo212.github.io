@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Jonathan To — Gameplay Programmer & Game Designer</title>
+<title>Portfolio — Jonathan To</title>
 
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,7 +25,7 @@
     --tag-design:#3a6b5a;
     --tag-unity: #3a5a7a;
     --tag-unreal:#7a3a3a;
-    --tag-art:   #6b5a3a;
+
   }
 
   body {
@@ -73,6 +73,7 @@
     transition: color 0.15s;
   }
   .nav-links a:hover { color: var(--green); }
+  .nav-links a.active { color: var(--green); }
   .nav-icon { font-size: 11px; opacity: 0.7; }
 
   /* PAGE WRAPPER */
@@ -85,15 +86,15 @@
     gap: 2rem;
   }
 
-  /* HERO BLOCK */
-  .hero {
+  /* PAGE HEADER */
+  .page-header {
     border: 1px solid var(--border);
     background: var(--bg-panel);
-    padding: 3rem 2.5rem 2.5rem;
+    padding: 2rem 2.5rem;
     position: relative;
     overflow: hidden;
   }
-  .hero::before {
+  .page-header::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
@@ -101,61 +102,59 @@
     background: var(--green);
     opacity: 0.6;
   }
-  .hero-comment {
-    font-family: var(--mono);
+  .page-header-comment {
     font-size: 12px;
     color: var(--green-dim);
     display: block;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     letter-spacing: 0.05em;
     line-height: 1.9;
   }
-  .hero-name {
-    font-family: var(--mono);
-    font-size: 3rem;
+  .page-header-title {
+    font-size: 2rem;
     font-weight: 700;
     color: var(--green);
     letter-spacing: -0.02em;
-    line-height: 1.05;
-    margin-bottom: 0.4rem;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
   }
-  .hero-title {
-    font-family: var(--mono);
-    font-size: 15px;
-    color: var(--yellow);
-    margin-bottom: 2rem;
-  }
-  .hero-bio {
-    font-size: 13px;
+  .page-header-sub {
+    font-size: 12px;
     color: var(--text-dim);
-    line-height: 1.85;
-    max-width: 620px;
-    margin-bottom: 2rem;
+    line-height: 1.75;
+    max-width: 560px;
   }
-  .hero-bio::before {
-    content: '// ';
-    color: var(--green-dim);
-  }
-  .hero-links {
+  .page-header-sub::before { content: '// '; color: var(--green-dim); }
+
+  /* FILTER BAR */
+  .filter-bar {
     display: flex;
+    align-items: center;
     gap: 10px;
     flex-wrap: wrap;
   }
-  .hero-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 8px 16px;
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-    color: var(--text-dim);
-    text-decoration: none;
-    font-family: var(--mono);
-    font-size: 12px;
-    transition: border-color 0.15s, color 0.15s;
+  .filter-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-right: 4px;
   }
-  .hero-link:hover { border-color: var(--green); color: var(--green); }
-  .hero-link-icon { opacity: 0.6; }
+  .filter-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-panel);
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    border-radius: 3px;
+  }
+  .filter-btn:hover,
+  .filter-btn.active {
+    border-color: var(--green);
+    color: var(--green);
+    background: #1e2b1e;
+  }
 
   /* SECTION LABEL */
   .section-label {
@@ -172,6 +171,11 @@
     border-radius: 50%;
     background: var(--green);
     opacity: 0.5;
+  }
+  .section-label .count {
+    color: var(--text-muted);
+    margin-left: auto;
+    font-size: 11px;
   }
 
   /* PROJECT GRID */
@@ -265,7 +269,7 @@
   .tag-design      { background: var(--tag-design); color: #a8d8c0; }
   .tag-unity       { background: var(--tag-unity); color: #a8c8e8; }
   .tag-unreal      { background: var(--tag-unreal); color: #e8b8b8; }
-  .tag-art         { background: var(--tag-art); color: #e0cfaa; }
+
 
   .card-desc {
     font-family: var(--mono);
@@ -290,56 +294,6 @@
   }
   .card-meta-item span { color: var(--text-dim); }
 
-  /* BOTTOM PANELS */
-  .bottom-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-  }
-  .bottom-panel {
-    background: var(--bg-panel);
-    text-decoration: none;
-    display: block;
-    transition: background 0.15s;
-  }
-  .bottom-panel:hover { background: #272727; }
-  .bottom-panel-header {
-    background: var(--bg-card);
-    border-bottom: 1px solid var(--border);
-    padding: 10px 16px;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--green-dim);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .bottom-panel-header .dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--green);
-    opacity: 0.5;
-    display: inline-block;
-    margin-right: 8px;
-  }
-  .bottom-panel-arrow {
-    font-size: 11px;
-    color: var(--text-muted);
-    opacity: 0;
-    transition: opacity 0.15s;
-  }
-  .bottom-panel:hover .bottom-panel-arrow { opacity: 1; color: var(--green); }
-  .bottom-panel-body { padding: 1.25rem 1.5rem; }
-  .bottom-panel-desc {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--text-dim);
-    line-height: 1.75;
-  }
-  .bottom-panel-desc::before { content: '// '; color: var(--green-dim); }
-
   /* FOOTER */
   .footer-line {
     border-top: 1px solid var(--border);
@@ -356,48 +310,48 @@
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="/">Home()</a>
+  <a class="nav-logo" href="../index.html">Home()</a>
   <ul class="nav-links">
-    <li><a href="about/index.html"><span class="nav-icon">◇</span> About()</a></li>
-    <li><a href="portfolio/index.html"><span class="nav-icon">□</span> Portfolio()</a></li>
-    <li><a href="personal-projects/index.html"><span class="nav-icon">▷</span> PersonalProjects()</a></li>
+    <li><a href="#"><span class="nav-icon">◇</span> About()</a></li>
+    <li><a href="./portfolio.html" class="active"><span class="nav-icon">□</span> Portfolio()</a></li>
+    <li><a href="./personal-projects.html"><span class="nav-icon">▷</span> PersonalProjects()</a></li>
   </ul>
 </nav>
 
 <div class="page">
 
-  <!-- HERO -->
-  <header class="hero">
-    <span class="hero-comment">// ============================================================<br>
-// &nbsp;&nbsp;portfolio.exe — Jonathan To<br>
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <span class="page-header-comment">// ============================================================<br>
+// &nbsp;&nbsp;portfolio[] — academic + professional work<br>
 // ============================================================</span>
-    <h1 class="hero-name">Jonathan To</h1>
-    <div class="hero-title">// Gameplay Programmer &amp; Game Designer</div>
-    <p class="hero-bio">
-      <!-- TODO: Update bio -->
-      Hey, I'm Jonathan! I'm a designer-programmer who loves to tinker, using code as my creative outlet to bring ideas to life.
-    </p>
-    <div class="hero-links">
-      <!-- TODO: Update hrefs -->
-      <a class="hero-link" href="https://github.com/JonTo212"><span class="hero-link-icon">◇</span> GitHub</a>
-      <a class="hero-link" href="https://jonathanto.itch.io/"><span class="hero-link-icon">▷</span> itch.io</a>
-      <a class="hero-link" href="#"><span class="hero-link-icon">□</span> Resume (PDF)</a>
-      <a class="hero-link" href="https://www.linkedin.com/in/jonathan-to398/"><span class="hero-link-icon">◈</span> LinkedIn</a>
-    </div>
+    <h1 class="page-header-title">Portfolio()</h1>
+    <p class="page-header-sub">A collection of completed academic and professional projects — from capstone builds to team collaborations.</p>
   </header>
 
-  <!-- FEATURED PROJECTS -->
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <span class="filter-label">// filter:</span>
+    <button class="filter-btn active">All</button>
+    <button class="filter-btn">Programming</button>
+    <button class="filter-btn">Design</button>
+    <button class="filter-btn">Unity</button>
+    <button class="filter-btn">Unreal</button>
+  </div>
+
+  <!-- PROJECT GRID -->
   <section>
     <div class="section-label">
       <div class="dot"></div>
-      // featured_projects[]
+      // projects[]
+      <span class="count">// 6 entries</span>
     </div>
     <div class="project-grid">
 
-      <!-- COSMIC RANGER V -->
-      <a class="project-card" href="cosmic-ranger-v/index.html">
+      <!-- PROJECT 1 -->
+      <a class="project-card" href="#">
         <div class="card-thumb">
-          <!-- TODO: Replace with <img src="cosmic-ranger-v/hero.png" alt="Cosmic Ranger V"> -->
+          <!-- TODO: Replace with <img src="project-name/hero.png" alt="Project Name"> -->
           <div class="card-thumb-placeholder">
             <span class="card-thumb-icon">◈</span>
             <span>// hero.png</span>
@@ -405,7 +359,7 @@
         </div>
         <div class="card-body">
           <div class="card-header">
-            <div class="card-title">Cosmic Ranger V</div>
+            <div class="card-title">Project Title</div>
             <span class="card-arrow">→</span>
           </div>
           <div class="card-tags">
@@ -413,38 +367,8 @@
             <span class="tag tag-design">Design</span>
             <span class="tag tag-unity">Unity</span>
           </div>
-          <p class="card-desc">A physics-based puzzle platformer built as my final capstone project at Sheridan College, featuring custom movement mechanics and level architecture.</p>
+          <p class="card-desc">TODO: Short description of this project — what it is, what role you played, and what makes it interesting.</p>
           <div class="card-meta">
-            <div class="card-meta-item">year <span>2024</span></div>
-            <div class="card-meta-item">duration <span>8 months</span></div>
-            <div class="card-meta-item">team <span>solo</span></div>
-          </div>
-        </div>
-      </a>
-
-      <!-- JELLYFISH -->
-      <a class="project-card" href="jellyfish/index.html">
-        <div class="card-thumb">
-          <!-- TODO: Replace with <img src="jellyfish/hero.png" alt="JellyFish"> -->
-          <div class="card-thumb-placeholder">
-            <span class="card-thumb-icon">◈</span>
-            <span>// hero.png</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="card-header">
-            <div class="card-title">JellyFish</div>
-            <span class="card-arrow">→</span>
-          </div>
-          <div class="card-tags">
-            <!-- TODO: Update tags to match the project -->
-            <span class="tag tag-programming">Programming</span>
-            <span class="tag tag-unity">Unity</span>
-          </div>
-          <!-- TODO: Update description -->
-          <p class="card-desc">TODO: Short description of JellyFish — what it is and what makes it interesting.</p>
-          <div class="card-meta">
-            <!-- TODO: Update metadata -->
             <div class="card-meta-item">year <span>TODO</span></div>
             <div class="card-meta-item">duration <span>TODO</span></div>
             <div class="card-meta-item">team <span>TODO</span></div>
@@ -452,10 +376,9 @@
         </div>
       </a>
 
-      <!-- PAINT RUSH RACER -->
-      <a class="project-card" href="paint-rush-racer/index.html">
+      <!-- PROJECT 2 -->
+      <a class="project-card" href="#">
         <div class="card-thumb">
-          <!-- TODO: Replace with <img src="paint-rush-racer/hero.png" alt="Paint Rush Racer"> -->
           <div class="card-thumb-placeholder">
             <span class="card-thumb-icon">◈</span>
             <span>// hero.png</span>
@@ -463,18 +386,118 @@
         </div>
         <div class="card-body">
           <div class="card-header">
-            <div class="card-title">Paint Rush Racer</div>
+            <div class="card-title">Project Title</div>
             <span class="card-arrow">→</span>
           </div>
           <div class="card-tags">
-            <!-- TODO: Update tags -->
             <span class="tag tag-programming">Programming</span>
             <span class="tag tag-unreal">Unreal Engine</span>
           </div>
-          <!-- TODO: Update description -->
-          <p class="card-desc">TODO: Short description of Paint Rush Racer — what it is and what makes it interesting.</p>
+          <p class="card-desc">TODO: Short description of this project — what it is, what role you played, and what makes it interesting.</p>
           <div class="card-meta">
-            <!-- TODO: Update metadata -->
+            <div class="card-meta-item">year <span>TODO</span></div>
+            <div class="card-meta-item">duration <span>TODO</span></div>
+            <div class="card-meta-item">team <span>TODO</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- PROJECT 3 -->
+      <a class="project-card" href="#">
+        <div class="card-thumb">
+          <div class="card-thumb-placeholder">
+            <span class="card-thumb-icon">◈</span>
+            <span>// hero.png</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-title">Project Title</div>
+            <span class="card-arrow">→</span>
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-design">Design</span>
+          </div>
+          <p class="card-desc">TODO: Short description of this project — what it is, what role you played, and what makes it interesting.</p>
+          <div class="card-meta">
+            <div class="card-meta-item">year <span>TODO</span></div>
+            <div class="card-meta-item">duration <span>TODO</span></div>
+            <div class="card-meta-item">team <span>TODO</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- PROJECT 4 -->
+      <a class="project-card" href="#">
+        <div class="card-thumb">
+          <div class="card-thumb-placeholder">
+            <span class="card-thumb-icon">◈</span>
+            <span>// hero.png</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-title">Project Title</div>
+            <span class="card-arrow">→</span>
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-programming">Programming</span>
+            <span class="tag tag-unity">Unity</span>
+          </div>
+          <p class="card-desc">TODO: Short description of this project — what it is, what role you played, and what makes it interesting.</p>
+          <div class="card-meta">
+            <div class="card-meta-item">year <span>TODO</span></div>
+            <div class="card-meta-item">duration <span>TODO</span></div>
+            <div class="card-meta-item">team <span>TODO</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- PROJECT 5 -->
+      <a class="project-card" href="#">
+        <div class="card-thumb">
+          <div class="card-thumb-placeholder">
+            <span class="card-thumb-icon">◈</span>
+            <span>// hero.png</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-title">Project Title</div>
+            <span class="card-arrow">→</span>
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-programming">Programming</span>
+            <span class="tag tag-design">Design</span>
+          </div>
+          <p class="card-desc">TODO: Short description of this project — what it is, what role you played, and what makes it interesting.</p>
+          <div class="card-meta">
+            <div class="card-meta-item">year <span>TODO</span></div>
+            <div class="card-meta-item">duration <span>TODO</span></div>
+            <div class="card-meta-item">team <span>TODO</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- PROJECT 6 -->
+      <a class="project-card" href="#">
+        <div class="card-thumb">
+          <div class="card-thumb-placeholder">
+            <span class="card-thumb-icon">◈</span>
+            <span>// hero.png</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-title">Project Title</div>
+            <span class="card-arrow">→</span>
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-unreal">Unreal Engine</span>
+            <span class="tag tag-design">Design</span>
+          </div>
+          <p class="card-desc">TODO: Short description of this project — what it is, what role you played, and what makes it interesting.</p>
+          <div class="card-meta">
             <div class="card-meta-item">year <span>TODO</span></div>
             <div class="card-meta-item">duration <span>TODO</span></div>
             <div class="card-meta-item">team <span>TODO</span></div>
@@ -485,28 +508,6 @@
     </div>
   </section>
 
-  <!-- BOTTOM PANELS -->
-  <div class="bottom-grid">
-    <a class="bottom-panel" href="#">
-      <div class="bottom-panel-header">
-        <span><span class="dot"></span>Portfolio()</span>
-        <span class="bottom-panel-arrow">→</span>
-      </div>
-      <div class="bottom-panel-body">
-        <p class="bottom-panel-desc">A collection of completed academic + professional projects</p>
-      </div>
-    </a>
-    <a class="bottom-panel" href="#">
-      <div class="bottom-panel-header">
-        <span><span class="dot"></span>PersonalProjects()</span>
-        <span class="bottom-panel-arrow">→</span>
-      </div>
-      <div class="bottom-panel-body">
-        <p class="bottom-panel-desc">A collection of personal projects, including WIP and non-game-specific pieces</p>
-      </div>
-    </a>
-  </div>
-
   <!-- FOOTER -->
   <footer class="footer-line">
     <span>// Jonathan To · Gameplay Programmer & Game Designer</span>
@@ -514,5 +515,36 @@
   </footer>
 
 </div>
+
+<script>
+  // Simple tag filter
+  const btns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.project-card');
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.textContent.trim().toLowerCase();
+
+      cards.forEach(card => {
+        if (filter === 'all') {
+          card.style.display = 'flex';
+        } else {
+          const tags = [...card.querySelectorAll('.tag')]
+            .map(t => t.textContent.toLowerCase());
+          card.style.display = tags.some(t => t.includes(filter)) ? 'flex' : 'none';
+        }
+      });
+
+      // Update count
+      const visible = [...cards].filter(c => c.style.display !== 'none').length;
+      document.querySelector('.count').textContent = `// ${visible} entries`;
+
+      // Fix grid gaps for hidden cards by wrapping visible ones
+    });
+  });
+</script>
 </body>
 </html>

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Personal Projects — Jonathan To</title>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #1a1a1a;
+    --bg-panel:  #222222;
+    --bg-card:   #2a2a2a;
+    --border:    #3a3a3a;
+    --border-hi: #555;
+    --green:     #7ec87e;
+    --green-dim: #4a7a4a;
+    --yellow:    #c8b97e;
+    --text:      #d4d4d4;
+    --text-dim:  #888;
+    --text-muted:#555;
+    --mono:      'Consolas', monospace;
+    --tag-prog:  #6b4f9e;
+    --tag-design:#3a6b5a;
+    --tag-unity: #3a5a7a;
+    --tag-unreal:#7a3a3a;
+    --tag-wip:   #5a4a20;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--green);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover { color: var(--green); }
+  .nav-links a.active { color: var(--green); }
+  .nav-icon { font-size: 11px; opacity: 0.7; }
+
+  /* PAGE WRAPPER */
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 2rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  /* PAGE HEADER */
+  .page-header {
+    border: 1px solid var(--border);
+    background: var(--bg-panel);
+    padding: 2rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--yellow);
+    opacity: 0.5;
+  }
+  .page-header-comment {
+    font-size: 12px;
+    color: var(--green-dim);
+    display: block;
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+    line-height: 1.9;
+  }
+  .page-header-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--yellow);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+  }
+  .page-header-sub {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.75;
+    max-width: 560px;
+  }
+  .page-header-sub::before { content: '// '; color: var(--green-dim); }
+
+  /* FILTER BAR */
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .filter-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-right: 4px;
+  }
+  .filter-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-panel);
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    border-radius: 3px;
+  }
+  .filter-btn:hover,
+  .filter-btn.active {
+    border-color: var(--yellow);
+    color: var(--yellow);
+    background: #2a2515;
+  }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green-dim);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+  .section-label .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--yellow);
+    opacity: 0.5;
+  }
+  .section-label .count {
+    color: var(--text-muted);
+    margin-left: auto;
+    font-size: 11px;
+  }
+
+  /* PROJECT GRID */
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .project-card {
+    background: var(--bg-panel);
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .project-card:hover { background: #272727; }
+  .project-card:hover .card-arrow { opacity: 1; color: var(--green); }
+
+  /* WIP badge */
+  .card-wip-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-family: var(--mono);
+    font-size: 9px;
+    padding: 2px 7px;
+    background: #3a2e10;
+    border: 1px solid #6b5220;
+    color: var(--yellow);
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+    z-index: 1;
+  }
+
+  .card-thumb {
+    aspect-ratio: 16/9;
+    background: var(--bg-card);
+    overflow: hidden;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.85);
+    transition: filter 0.2s;
+  }
+  .project-card:hover .card-thumb img { filter: saturate(1); }
+
+  .card-thumb-placeholder {
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 50%, #1a1a2a 100%);
+  }
+  .card-thumb-icon { font-size: 28px; opacity: 0.15; }
+
+  .card-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  .card-title {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--green);
+    line-height: 1.2;
+  }
+  .card-arrow {
+    font-size: 12px;
+    color: var(--text-muted);
+    opacity: 0;
+    transition: opacity 0.15s, color 0.15s;
+    flex-shrink: 0;
+    margin-left: 8px;
+    margin-top: 2px;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+  .tag-programming { background: var(--tag-prog); color: #c8b8f0; }
+  .tag-design      { background: var(--tag-design); color: #a8d8c0; }
+  .tag-unity       { background: var(--tag-unity); color: #a8c8e8; }
+  .tag-unreal      { background: var(--tag-unreal); color: #e8b8b8; }
+  .tag-wip         { background: var(--tag-wip); color: #e0c878; }
+
+  .card-desc {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.75;
+    flex: 1;
+  }
+  .card-desc::before { content: '// '; color: var(--green-dim); }
+
+  .card-meta {
+    display: flex;
+    gap: 12px;
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+    margin-top: auto;
+  }
+  .card-meta-item {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+  .card-meta-item span { color: var(--text-dim); }
+
+  /* FOOTER */
+  .footer-line {
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="../index.html">Home()</a>
+  <ul class="nav-links">
+    <li><a href="#"><span class="nav-icon">◇</span> About()</a></li>
+    <li><a href="./portfolio.html"><span class="nav-icon">□</span> Portfolio()</a></li>
+    <li><a href="./personal-projects.html" class="active"><span class="nav-icon">▷</span> PersonalProjects()</a></li>
+  </ul>
+</nav>
+
+<div class="page">
+
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <span class="page-header-comment">// ============================================================<br>
+// &nbsp;&nbsp;personal_projects[] — tinkering, experiments, WIPs<br>
+// ============================================================</span>
+    <h1 class="page-header-title">PersonalProjects()</h1>
+    <p class="page-header-sub">Personal experiments, works-in-progress, and non-game pieces — things built for curiosity rather than class.</p>
+  </header>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <span class="filter-label">// filter:</span>
+    <button class="filter-btn active">All</button>
+    <button class="filter-btn">Programming</button>
+    <button class="filter-btn">Design</button>
+    <button class="filter-btn">WIP</button>
+  </div>
+
+  <!-- PROJECT GRID -->
+  <section>
+    <div class="section-label">
+      <div class="dot"></div>
+      // projects[]
+      <span class="count">// 6 entries</span>
+    </div>
+    <div class="project-grid">
+
+      <!-- PROJECT 1 — WIP example -->
+      <a class="project-card" href="#">
+        <div class="card-thumb">
+          <span class="card-wip-badge">WIP</span>
+          <!-- TODO: Replace with <img src="project-name/hero.png" alt="Project Name"> -->
+          <div class="card-thumb-placeholder">
+            <span class="card-thumb-icon">◈</span>
+            <span>// hero.png</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-title">Project Title</div>
+            <span class="card-arrow">→</span>
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-programming">Programming</span>
+            <span class="tag tag-wip">WIP</span>
+          </div>
+          <p class="card-desc">TODO: Short description — what sparked it, what you're exploring, current status.</p>
+          <div class="card-meta">
+            <div class="card-meta-item">started <span>TODO</span></div>
+            <div class="card-meta-item">status <span>ongoing</span></div>
+            <div class="card-meta-item">team <span>solo</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- PROJECT 2 -->
+      <a class="project-card" href="#">
+        <div class="card-thumb">
+          <div class="card-thumb-placeholder">
+            <span class="card-thumb-icon">◈</span>
+            <span>// hero.png</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-title">Project Title</div>
+            <span class="card-arrow">→</span>
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-design">Design</span>
+          </div>
+          <p class="card-desc">TODO: Short description — what sparked it, what you're exploring, current status.</p>
+          <div class="card-meta">
+            <div class="card-meta-item">started <span>TODO</span></div>
+            <div class="card-meta-item">status <span>complete</span></div>
+            <div class="card-meta-item">team <span>solo</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- PROJECT 3 -->
+      <a class="project-card" href="#">
+        <div class="card-thumb">
+          <div class="card-thumb-placeholder">
+            <span class="card-thumb-icon">◈</span>
+            <span>// hero.png</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-title">Project Title</div>
+            <span class="card-arrow">→</span>
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-programming">Programming</span>
+          </div>
+          <p class="card-desc">TODO: Short description — what sparked it, what you're exploring, current status.</p>
+          <div class="card-meta">
+            <div class="card-meta-item">started <span>TODO</span></div>
+            <div class="card-meta-item">status <span>complete</span></div>
+            <div class="card-meta-item">team <span>solo</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- PROJECT 4 -->
+      <a class="project-card" href="#">
+        <div class="card-thumb">
+          <div class="card-thumb-placeholder">
+            <span class="card-thumb-icon">◈</span>
+            <span>// hero.png</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-title">Project Title</div>
+            <span class="card-arrow">→</span>
+          </div>
+          <div class="card-tags">
+          </div>
+          <p class="card-desc">TODO: Short description — what sparked it, what you're exploring, current status.</p>
+          <div class="card-meta">
+            <div class="card-meta-item">started <span>TODO</span></div>
+            <div class="card-meta-item">status <span>complete</span></div>
+            <div class="card-meta-item">team <span>solo</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- PROJECT 5 — WIP example -->
+      <a class="project-card" href="#">
+        <div class="card-thumb">
+          <span class="card-wip-badge">WIP</span>
+          <div class="card-thumb-placeholder">
+            <span class="card-thumb-icon">◈</span>
+            <span>// hero.png</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-title">Project Title</div>
+            <span class="card-arrow">→</span>
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-design">Design</span>
+            <span class="tag tag-wip">WIP</span>
+          </div>
+          <p class="card-desc">TODO: Short description — what sparked it, what you're exploring, current status.</p>
+          <div class="card-meta">
+            <div class="card-meta-item">started <span>TODO</span></div>
+            <div class="card-meta-item">status <span>ongoing</span></div>
+            <div class="card-meta-item">team <span>solo</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- PROJECT 6 -->
+      <a class="project-card" href="#">
+        <div class="card-thumb">
+          <div class="card-thumb-placeholder">
+            <span class="card-thumb-icon">◈</span>
+            <span>// hero.png</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-title">Project Title</div>
+            <span class="card-arrow">→</span>
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-programming">Programming</span>
+          </div>
+          <p class="card-desc">TODO: Short description — what sparked it, what you're exploring, current status.</p>
+          <div class="card-meta">
+            <div class="card-meta-item">started <span>TODO</span></div>
+            <div class="card-meta-item">status <span>complete</span></div>
+            <div class="card-meta-item">team <span>solo</span></div>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer-line">
+    <span>// Jonathan To · Gameplay Programmer & Game Designer</span>
+    <span>© 2026</span>
+  </footer>
+
+</div>
+
+<script>
+  // Simple tag filter
+  const btns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.project-card');
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.textContent.trim().toLowerCase();
+
+      cards.forEach(card => {
+        if (filter === 'all') {
+          card.style.display = 'flex';
+        } else {
+          const tags = [...card.querySelectorAll('.tag')]
+            .map(t => t.textContent.toLowerCase());
+          card.style.display = tags.some(t => t.includes(filter)) ? 'flex' : 'none';
+        }
+      });
+
+      // Update count
+      const visible = [...cards].filter(c => c.style.display !== 'none').length;
+      document.querySelector('.count').textContent = `// ${visible} entries`;
+    });
+  });
+</script>
+</body>
+</html>
