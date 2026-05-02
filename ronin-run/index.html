@@ -205,11 +205,11 @@
 
   /* LAYOUT */
   .page {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 2rem 2rem 4rem;
     display: grid;
-    grid-template-columns: 1fr 260px;
+    grid-template-columns: 1fr;
     gap: 2rem;
   }
 
@@ -326,7 +326,7 @@
   }
 
   /* MAIN COLUMN */
-  .main-col { min-width: 0; }
+  .main-col { min-width: 0; grid-column: 1 / -1; }
 
   /* SECTION BLOCK */
   .section-block {
@@ -359,112 +359,6 @@
     margin-bottom: 1rem;
   }
   .section-block-body p:last-child { margin-bottom: 0; }
-
-  /* SCREENSHOT GRID */
-  .screenshot-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    margin-bottom: 2rem;
-  }
-  .screenshot-cell {
-    background: var(--bg-card);
-    aspect-ratio: 16/9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-muted);
-    flex-direction: column;
-    gap: 8px;
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .screenshot-cell:hover { background: #303030; }
-  .screenshot-cell img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    position: absolute;
-    inset: 0;
-  }
-  .screenshot-label {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    background: rgba(0,0,0,0.7);
-    padding: 4px 8px;
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-dim);
-  }
-
-  /* SIDEBAR */
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    align-self: start;
-  }
-  .sidebar-card {
-    border: 1px solid var(--border);
-    background: var(--bg-panel);
-  }
-  .sidebar-card-header {
-    padding: 8px 14px;
-    background: var(--bg-card);
-    border-bottom: 1px solid var(--border);
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--green-dim);
-  }
-  .sidebar-card-body { padding: 14px; }
-
-  .meta-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 7px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-  }
-  .meta-row:last-child { border-bottom: none; }
-  .meta-key {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-muted);
-  }
-  .meta-val {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text);
-    text-align: right;
-  }
-  .meta-val.highlight { color: var(--green); }
-
-  .tech-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .tech-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: var(--mono);
-    font-size: 12px;
-  }
-  .tech-bullet {
-    width: 4px; height: 4px;
-    border-radius: 50%;
-    background: var(--green);
-    opacity: 0.6;
-    flex-shrink: 0;
-  }
-  .tech-name { color: var(--text); }
-  .tech-note { color: var(--text-muted); margin-left: auto; font-size: 10px; }
 
   /* LINK BTNS */
   .link-btn {
@@ -518,16 +412,32 @@
   }
   .project-nav-item.next { align-items: flex-end; }
 
-  /* ROLES & TAKEAWAYS */
+  /* ROLES & TAKEAWAYS (ADJUSTED FOR NEW LAYOUT) */
   .rt-grid {
     grid-column: 1 / -1;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    border: 1px solid var(--border);
-    background: var(--border);
+    grid-template-columns: 1fr 260px;
+    column-gap: 1.5rem;
+    row-gap: 0;
   }
   .rt-panel { background: var(--bg-panel); padding: 0; }
+  .rt-panel-full {
+    grid-column: 1 / -1;
+    background: var(--bg-panel);
+    padding: 0;
+    border-top: 1px solid var(--border);
+  }
+  .rt-takeaways-cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+  .rt-takeaways-cols .rt-takeaway {
+    padding: 0 1.5rem;
+    border-right: 1px solid var(--border);
+  }
+  .rt-takeaways-cols .rt-takeaway:first-child { padding-left: 0; }
+  .rt-takeaways-cols .rt-takeaway:last-child { border-right: none; }
   .rt-panel-header {
     background: var(--bg-card);
     padding: 10px 16px;
@@ -575,6 +485,28 @@
     letter-spacing: 0.08em;
     margin-bottom: 2px;
   }
+  
+  /* METADATA (IMPORTED FROM SIDEBAR) */
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .meta-row:last-child { border-bottom: none; }
+  .meta-key {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .meta-val {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text);
+    text-align: right;
+  }
+  .meta-val.highlight { color: var(--green); }
 
   /* FEATURE TABS */
   .feature-tabs {
@@ -622,8 +554,17 @@
   }
   .ftab-image {
     border-right: 1px solid var(--border);
-    aspect-ratio: 16/9;
+    aspect-ratio: 4/3;
     overflow: hidden;
+    position: relative;
+    background: #141414;
+  }
+  .ftab-image img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
   .ftab-img-placeholder {
     width: 100%; height: 100%;
@@ -675,7 +616,7 @@
 
 <!-- BREADCRUMB -->
 <div class="breadcrumb-bar">
-  <a href="../personal-projects/">PersonalProjects)</a>
+  <a href="../portfolio/index.html">PersonalProjects()</a>
   <span class="breadcrumb-sep">/</span>
   <span class="breadcrumb-current">RoninRun.cs</span>
 </div>
@@ -687,41 +628,36 @@
   <header class="project-header">
     <span class="header-comment-top">// ============================================================</span>
     <h1 class="project-title">Ronin Run</h1>
-    <!-- TODO: Update subtitle with your role(s) and context (e.g. school, game jam) -->
     <div class="project-subtitle">// TODO: Role · Context</div>
     <div class="tag-row">
-      <!-- TODO: Add/remove tags to match the project. Options: tag-programming, tag-design, tag-unity, tag-unreal, tag-art -->
       <span class="tag tag-programming">Programming</span>
       <span class="tag tag-design">Design</span>
       <span class="tag tag-unity">Unity</span>
     </div>
-    <!-- TODO: One-sentence description of the project -->
     <p class="project-desc">TODO: Short project description — what it is, what makes it interesting.</p>
   </header>
 
   <!-- HERO IMAGE -->
   <section class="hero-image-section">
     <div class="hero-image-wrap">
-      <!-- TODO: Replace hero-placeholder with <img src="hero.png" alt="..."> when ready -->
       <div class="hero-placeholder">
         <div class="hero-placeholder-icon">◈</div>
         <span>// hero_screenshot.png</span>
       </div>
-      <!-- TODO: Update caption -->
       <div class="image-caption">// fig_01 — Main gameplay screenshot · Ronin Run</div>
     </div>
   </section>
 
-  <!-- ROLES & TAKEAWAYS -->
+  <!-- ROLES & METADATA -->
   <div class="rt-grid">
-    <div class="rt-panel">
+    <!-- LEFT: Contributions -->
+    <div class="rt-panel" style="border: 1px solid var(--border);">
       <div class="rt-panel-header">
         <div class="dot"></div>
         // my_contributions[]
       </div>
       <div class="rt-panel-body">
         <ul class="contrib-list">
-          <!-- TODO: List your specific contributions to the project -->
           <li class="contrib-item"><span class="contrib-bullet">—</span>TODO: Contribution one</li>
           <li class="contrib-item"><span class="contrib-bullet">—</span>TODO: Contribution two</li>
           <li class="contrib-item"><span class="contrib-bullet">—</span>TODO: Contribution three</li>
@@ -729,42 +665,57 @@
         </ul>
       </div>
     </div>
-    <div class="rt-panel" style="border-left: 1px solid var(--border);">
+    <!-- RIGHT: Project Details + Links -->
+    <div class="rt-panel" style="border: 1px solid var(--border);">
       <div class="rt-panel-header">
         <div class="dot"></div>
-        // takeaways[]
+        // project_meta
       </div>
       <div class="rt-panel-body">
-        <div class="rt-takeaways">
-          <!-- TODO: What did you learn? Use a short label + 1-2 sentence reflection -->
-          <div class="rt-takeaway">
-            <span class="rt-takeaway-bullet">▸</span>
-            <div class="rt-takeaway-text">
-              <div class="rt-takeaway-label">TODO: Category (e.g. Architecture)</div>
-              TODO: What you learned or would do differently.
-            </div>
-          </div>
-          <div class="rt-takeaway">
-            <span class="rt-takeaway-bullet">▸</span>
-            <div class="rt-takeaway-text">
-              <div class="rt-takeaway-label">TODO: Category</div>
-              TODO: Takeaway two.
-            </div>
-          </div>
-          <div class="rt-takeaway">
-            <span class="rt-takeaway-bullet">▸</span>
-            <div class="rt-takeaway-text">
-              <div class="rt-takeaway-label">TODO: Category</div>
-              TODO: Takeaway three.
-            </div>
-          </div>
+        <div class="meta-row">
+          <span class="meta-key">status</span>
+          <span class="meta-val highlight">TODO: complete / in progress</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-key">year</span>
+          <span class="meta-val">TODO: 2026</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-key">duration</span>
+          <span class="meta-val">TODO: X months</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-key">team_size</span>
+          <span class="meta-val">TODO: N (solo / team)</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-key">platform</span>
+          <span class="meta-val">TODO: PC / WebGL / etc.</span>
+        </div>
+        <div class="meta-row" style="margin-bottom: 1rem;">
+          <span class="meta-key">context</span>
+          <span class="meta-val">TODO: Game Jam / Class / Personal</span>
+        </div>
+        <div style="border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px;">
+          <div style="font-family: var(--mono); font-size: 10px; color: var(--text-muted); margin-bottom: 10px; letter-spacing: 0.05em;">// links[]</div>
+          <a class="link-btn" href="#">
+            <span class="link-btn-icon">▷</span> Play on itch.io
+            <span class="link-btn-arrow">→</span>
+          </a>
+          <a class="link-btn" href="#">
+            <span class="link-btn-icon">◇</span> View on GitHub
+            <span class="link-btn-arrow">→</span>
+          </a>
+          <a class="link-btn" href="#" style="margin-bottom: 0;">
+            <span class="link-btn-icon">□</span> Design Doc (PDF)
+            <span class="link-btn-arrow">→</span>
+          </a>
         </div>
       </div>
     </div>
   </div>
 
   <!-- KEY FEATURES TABS -->
-  <!-- TODO: Update tab names and content for each key feature -->
   <div style="grid-column: 1 / -1;">
     <span class="section-comment" style="display:block; margin-bottom: 1rem;">// key_features[]</span>
     <div class="feature-tabs" id="featureTabs">
@@ -808,28 +759,11 @@
   <!-- MAIN CONTENT -->
   <main class="main-col">
 
-    <!-- OVERVIEW -->
-    <div class="section-block">
-      <div class="section-block-header">
-        <div class="dot"></div>
-        // overview
-      </div>
-      <div class="section-block-body">
-        <!-- TODO: 1–2 paragraphs describing the project in more detail -->
-        <p>TODO: What is JellyFish? What was the goal of the project? What's the genre/platform/scope?</p>
-        <p>TODO: What was the core design or technical challenge you were trying to solve?</p>
-      </div>
-    </div>
-
     <!-- DEEP DIVE -->
-    <!-- TODO: Pick one interesting technical or design problem you solved and walk through it -->
     <div class="section-block" style="margin-bottom:0;">
       <div class="section-block-header">
         <div class="dot"></div>
         // deep_dive — TODO: topic name (e.g. "fluid simulation approach")
-      </div>
-      <div class="section-block-body" style="padding-bottom: 0;">
-        <p>TODO: Set up the problem. What was the challenge, and why was it hard? Give enough context that someone unfamiliar with the project understands the stakes.</p>
       </div>
     </div>
     <div class="deep-dive-arc">
@@ -855,7 +789,6 @@
       </div>
     </div>
 
-    <!-- TODO: Optionally add a code block here. Remove this section if not applicable. -->
     <div class="code-block" style="margin-bottom: 2rem;">
       <div class="code-block-header">
         <span class="code-block-filename">TODO: FileName.cs — brief description</span>
@@ -880,92 +813,46 @@
 
   </main>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-
-    <!-- PROJECT META -->
-    <div class="sidebar-card">
-      <div class="sidebar-card-header">// project_meta</div>
-      <div class="sidebar-card-body">
-        <!-- TODO: Fill in project metadata -->
-        <div class="meta-row">
-          <span class="meta-key">status</span>
-          <span class="meta-val highlight">TODO: complete / in progress</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-key">year</span>
-          <span class="meta-val">TODO: 2026</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-key">duration</span>
-          <span class="meta-val">TODO: X months</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-key">team_size</span>
-          <span class="meta-val">TODO: N (solo / team)</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-key">platform</span>
-          <span class="meta-val">TODO: PC / WebGL / etc.</span>
-        </div>
-        <div class="meta-row" style="margin-bottom: 1rem;">
-          <span class="meta-key">context</span>
-          <span class="meta-val">TODO: Game Jam / Class / Personal</span>
-        </div>
-        <div style="border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px;">
-          <div style="font-family: var(--mono); font-size: 10px; color: var(--text-muted); margin-bottom: 10px; letter-spacing: 0.05em;">// links[]</div>
-          <!-- TODO: Update hrefs. Remove any links that don't apply -->
-          <a class="link-btn" href="#">
-            <span class="link-btn-icon">▷</span> Play on itch.io
-            <span class="link-btn-arrow">→</span>
-          </a>
-          <a class="link-btn" href="#">
-            <span class="link-btn-icon">◇</span> View on GitHub
-            <span class="link-btn-arrow">→</span>
-          </a>
-          <a class="link-btn" href="#" style="margin-bottom: 0;">
-            <span class="link-btn-icon">□</span> Design Doc (PDF)
-            <span class="link-btn-arrow">→</span>
-          </a>
-        </div>
-      </div>
+  <!-- TAKEAWAYS -->
+  <div class="rt-panel-full" style="grid-column: 1 / -1; border: 1px solid var(--border);">
+    <div class="rt-panel-header">
+      <div class="dot"></div>
+      // takeaways[]
     </div>
-
-    <!-- TECH STACK -->
-    <div class="sidebar-card">
-      <div class="sidebar-card-header">// tech_stack[]</div>
-      <div class="sidebar-card-body">
-        <div class="tech-list">
-          <!-- TODO: List tools and technologies used -->
-          <div class="tech-item">
-            <div class="tech-bullet"></div>
-            <span class="tech-name">TODO: Engine / Language</span>
-            <span class="tech-note">primary</span>
+    <div class="rt-panel-body">
+      <div class="rt-takeaways-cols">
+        <div class="rt-takeaway">
+          <span class="rt-takeaway-bullet">▸</span>
+          <div class="rt-takeaway-text">
+            <div class="rt-takeaway-label">TODO: Category (e.g. Architecture)</div>
+            TODO: What you learned or would do differently.
           </div>
-          <div class="tech-item">
-            <div class="tech-bullet"></div>
-            <span class="tech-name">TODO: Tool</span>
-            <span class="tech-note">art</span>
+        </div>
+        <div class="rt-takeaway">
+          <span class="rt-takeaway-bullet">▸</span>
+          <div class="rt-takeaway-text">
+            <div class="rt-takeaway-label">TODO: Category</div>
+            TODO: Takeaway two.
           </div>
-          <div class="tech-item">
-            <div class="tech-bullet"></div>
-            <span class="tech-name">TODO: Tool</span>
-            <span class="tech-note">audio</span>
+        </div>
+        <div class="rt-takeaway">
+          <span class="rt-takeaway-bullet">▸</span>
+          <div class="rt-takeaway-text">
+            <div class="rt-takeaway-label">TODO: Category</div>
+            TODO: Takeaway three.
           </div>
         </div>
       </div>
     </div>
-
-  </aside>
+  </div>
 
   <!-- PREV / NEXT NAV -->
-  <!-- TODO: Update project names and hrefs to adjacent projects -->
   <nav class="project-nav">
-    <a class="project-nav-item" href="../cosmic-ranger-v/">
+    <a class="project-nav-item" href="#">
       <span class="nav-dir">// ← prev_project</span>
       <span class="nav-project-name">TODO: Prev Project</span>
     </a>
-    <a class="project-nav-item next" href="../paint-rush-racer/">
+    <a class="project-nav-item next" href="#">
       <span class="nav-dir">next_project → //</span>
       <span class="nav-project-name">TODO: Next Project</span>
     </a>

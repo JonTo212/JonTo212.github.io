@@ -96,6 +96,126 @@
   .tok-param    { color: #9cdcfe; }
   .tok-bool     { color: #569cd6; }
 
+  /* BEFORE / AFTER SLIDER */
+  .ba-wrap {
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+  }
+  .ba-header {
+    background: #1e1e1e;
+    border-bottom: 1px solid var(--border);
+    padding: 7px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .ba-header-labels {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .ba-label-before { color: #c0625a; }
+  .ba-label-after  { color: var(--green); }
+  .ba-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    cursor: ew-resize;
+    user-select: none;
+    background: var(--bg-card);
+  }
+  .ba-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .ba-img-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ba-after {
+    clip-path: inset(0 50% 0 0);
+    transition: clip-path 0s;
+  }
+  .ba-divider {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 50%;
+    width: 2px;
+    background: var(--green);
+    transform: translateX(-50%);
+    pointer-events: none;
+    opacity: 0.85;
+  }
+  .ba-handle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--bg-panel);
+    border: 2px solid var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--green);
+    pointer-events: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+  .ba-tag {
+    position: absolute;
+    top: 10px;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 8px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+  .ba-tag-before {
+    left: 12px;
+    background: rgba(192,98,90,0.2);
+    color: #c0625a;
+    border: 1px solid rgba(192,98,90,0.4);
+  }
+  .ba-tag-after {
+    right: 12px;
+    background: rgba(126,200,126,0.15);
+    color: var(--green);
+    border: 1px solid rgba(126,200,126,0.3);
+  }
+  .ba-caption {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    padding: 8px 12px;
+    border-top: 1px solid var(--border);
+    background: var(--bg-panel);
+  }
+
   /* DEEP DIVE */
   .deep-dive-arc {
     display: flex;
@@ -205,11 +325,11 @@
 
   /* LAYOUT */
   .page {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 2rem 2rem 4rem;
     display: grid;
-    grid-template-columns: 1fr 260px;
+    grid-template-columns: 1fr;
     gap: 2rem;
   }
 
@@ -294,7 +414,7 @@
   }
 
   /* HERO IMAGE */
-  .hero-image-section { grid-column: 1 / -1; }
+  .hero-image-section { grid-column: 1; }
   .hero-image-wrap {
     border: 1px solid var(--border);
     background: var(--bg-card);
@@ -326,7 +446,7 @@
   }
 
   /* MAIN COLUMN */
-  .main-col { min-width: 0; }
+  .main-col { min-width: 0; grid-column: 1 / -1; }
 
   /* SECTION BLOCK */
   .section-block {
@@ -400,6 +520,29 @@
     font-family: var(--mono);
     font-size: 10px;
     color: var(--text-dim);
+  }
+
+  /* DEEP DIVE GRID */
+  .deep-dive-grid {
+    display: grid;
+    grid-template-columns: 1fr 260px; /* Matches the width of the details sidebar */
+    column-gap: 1.5rem;
+  }
+  .deep-dive-left {
+    display: flex;
+    flex-direction: column;
+  }
+  .deep-dive-right {
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .deep-dive-right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   /* SIDEBAR */
@@ -522,12 +665,28 @@
   .rt-grid {
     grid-column: 1 / -1;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    border: 1px solid var(--border);
-    background: var(--border);
+    grid-template-columns: 1fr 260px;
+    column-gap: 1.5rem;
+    row-gap: 0;
   }
   .rt-panel { background: var(--bg-panel); padding: 0; }
+  .rt-panel-full {
+    grid-column: 1 / -1;
+    background: var(--bg-panel);
+    padding: 0;
+    border-top: 1px solid var(--border);
+  }
+  .rt-takeaways-cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+  .rt-takeaways-cols .rt-takeaway {
+    padding: 0 1.5rem;
+    border-right: 1px solid var(--border);
+  }
+  .rt-takeaways-cols .rt-takeaway:first-child { padding-left: 0; }
+  .rt-takeaways-cols .rt-takeaway:last-child { border-right: none; }
   .rt-panel-header {
     background: var(--bg-card);
     padding: 10px 16px;
@@ -622,8 +781,17 @@
   }
   .ftab-image {
     border-right: 1px solid var(--border);
-    aspect-ratio: 16/9;
+    aspect-ratio: 4/3;
     overflow: hidden;
+    position: relative;
+    background: #141414;
+  }
+  .ftab-image img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
   .ftab-img-placeholder {
     width: 100%; height: 100%;
@@ -688,33 +856,30 @@
     <span class="header-comment-top">// ============================================================</span>
     <h1 class="project-title">WFC Generator</h1>
     <!-- TODO: Update subtitle with your role(s) and context (e.g. school, game jam) -->
-    <div class="project-subtitle">// TODO: Role · Context</div>
+    <div class="project-subtitle">// Procedural Generation · Pathfinding (BFS + DFS) </div>
     <div class="tag-row">
       <!-- TODO: Add/remove tags to match the project. Options: tag-programming, tag-design, tag-unity, tag-unreal, tag-art -->
       <span class="tag tag-programming">Programming</span>
-      <span class="tag tag-design">Design</span>
-      <span class="tag tag-unity">Unity</span>
+      <span class="tag tag-unity">Unity (C#)</span>
     </div>
     <!-- TODO: One-sentence description of the project -->
-    <p class="project-desc">TODO: Short project description — what it is, what makes it interesting.</p>
+    <p class="project-desc">A procedural 2D map generator using Wave Function Collapse, with optional pathfinding support.</p>
   </header>
 
   <!-- HERO IMAGE -->
-  <section class="hero-image-section">
+  <section class="hero-image-section" style="grid-column: 1 / -1;">
     <div class="hero-image-wrap">
       <!-- TODO: Replace hero-placeholder with <img src="hero.png" alt="..."> when ready -->
-      <div class="hero-placeholder">
-        <div class="hero-placeholder-icon">◈</div>
-        <span>// hero_screenshot.png</span>
-      </div>
+      <img src="images/hero_screenshot.png" alt="2D map generator using WFC, BFS and DFS with randomization to create multiple paths" class="hero-image">
       <!-- TODO: Update caption -->
-      <div class="image-caption">// fig_01 — Main gameplay screenshot · WFC Generator</div>
+      <div class="image-caption">// fig_01 — 2D map generator using WFC, BFS and DFS with randomization to create multiple paths</div>
     </div>
   </section>
 
   <!-- ROLES & TAKEAWAYS -->
   <div class="rt-grid">
-    <div class="rt-panel">
+    <!-- LEFT: Contributions -->
+    <div class="rt-panel" style="border: 1px solid var(--border);">
       <div class="rt-panel-header">
         <div class="dot"></div>
         // my_contributions[]
@@ -722,114 +887,104 @@
       <div class="rt-panel-body">
         <ul class="contrib-list">
           <!-- TODO: List your specific contributions to the project -->
-          <li class="contrib-item"><span class="contrib-bullet">—</span>TODO: Contribution one</li>
-          <li class="contrib-item"><span class="contrib-bullet">—</span>TODO: Contribution two</li>
-          <li class="contrib-item"><span class="contrib-bullet">—</span>TODO: Contribution three</li>
-          <li class="contrib-item"><span class="contrib-bullet">—</span>TODO: Contribution four</li>
+          <li class="contrib-item"><span class="contrib-bullet">—</span>Wave Function Collapse system — Tile system built on ScriptableObjects and enum-defined faces — each placement reduces what's possible around it until a complete, valid map emerges.</li>
+          <li class="contrib-item"><span class="contrib-bullet">—</span>Developed a flexible pathfinding layer — Integrated both BFS and DFS algorithms for path generation, with added randomization to produce natural-feeling, varied paths.</li>
+          <li class="contrib-item"><span class="contrib-bullet">—</span>Added multi-path support — Extended pathfinding system to handle multiple overlapping paths across a single generated map, enabling more complex and interconnected layouts.</li>
         </ul>
       </div>
     </div>
-    <div class="rt-panel" style="border-left: 1px solid var(--border);">
+    <!-- RIGHT: Project Details + Links -->
+    <div class="rt-panel" style="border: 1px solid var(--border);">
       <div class="rt-panel-header">
         <div class="dot"></div>
-        // takeaways[]
+        // project_meta
       </div>
       <div class="rt-panel-body">
-        <div class="rt-takeaways">
-          <!-- TODO: What did you learn? Use a short label + 1-2 sentence reflection -->
-          <div class="rt-takeaway">
-            <span class="rt-takeaway-bullet">▸</span>
-            <div class="rt-takeaway-text">
-              <div class="rt-takeaway-label">TODO: Category (e.g. Architecture)</div>
-              TODO: What you learned or would do differently.
-            </div>
-          </div>
-          <div class="rt-takeaway">
-            <span class="rt-takeaway-bullet">▸</span>
-            <div class="rt-takeaway-text">
-              <div class="rt-takeaway-label">TODO: Category</div>
-              TODO: Takeaway two.
-            </div>
-          </div>
-          <div class="rt-takeaway">
-            <span class="rt-takeaway-bullet">▸</span>
-            <div class="rt-takeaway-text">
-              <div class="rt-takeaway-label">TODO: Category</div>
-              TODO: Takeaway three.
-            </div>
-          </div>
+        <div class="meta-row">
+          <span class="meta-key">status</span>
+          <span class="meta-val highlight">complete</span>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- KEY FEATURES TABS -->
-  <!-- TODO: Update tab names and content for each key feature -->
-  <div style="grid-column: 1 / -1;">
-    <span class="section-comment" style="display:block; margin-bottom: 1rem;">// key_features[]</span>
-    <div class="feature-tabs" id="featureTabs">
-      <div class="ftab-bar">
-        <button class="ftab-btn active" data-tab="0"><span class="ftab-num">01</span><span class="ftab-name">TODO: Feature 1</span></button>
-        <button class="ftab-btn" data-tab="1"><span class="ftab-num">02</span><span class="ftab-name">TODO: Feature 2</span></button>
-        <button class="ftab-btn" data-tab="2"><span class="ftab-num">03</span><span class="ftab-name">TODO: Feature 3</span></button>
-        <button class="ftab-btn" data-tab="3"><span class="ftab-num">04</span><span class="ftab-name">TODO: Feature 4</span></button>
-      </div>
-      <div class="ftab-panel active" data-panel="0">
-        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_01.png</span></div></div>
-        <div class="ftab-content">
-          <div class="ftab-label">TODO: Feature 1 Title</div>
-          <p class="ftab-desc">TODO: Describe the feature — what it does, how you built it, what makes it interesting from a technical or design perspective.</p>
+        <div class="meta-row">
+          <span class="meta-key">year</span>
+          <span class="meta-val">2024</span>
         </div>
-      </div>
-      <div class="ftab-panel" data-panel="1">
-        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_02.png</span></div></div>
-        <div class="ftab-content">
-          <div class="ftab-label">TODO: Feature 2 Title</div>
-          <p class="ftab-desc">TODO: Describe the feature.</p>
+        <div class="meta-row">
+          <span class="meta-key">duration</span>
+          <span class="meta-val">3 months</span>
         </div>
-      </div>
-      <div class="ftab-panel" data-panel="2">
-        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_03.png</span></div></div>
-        <div class="ftab-content">
-          <div class="ftab-label">TODO: Feature 3 Title</div>
-          <p class="ftab-desc">TODO: Describe the feature.</p>
+        <div class="meta-row">
+          <span class="meta-key">team_size</span>
+          <span class="meta-val">1 (solo)</span>
         </div>
-      </div>
-      <div class="ftab-panel" data-panel="3">
-        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_04.png</span></div></div>
-        <div class="ftab-content">
-          <div class="ftab-label">TODO: Feature 4 Title</div>
-          <p class="ftab-desc">TODO: Describe the feature.</p>
+        <div class="meta-row">
+          <span class="meta-key">platform</span>
+          <span class="meta-val">PC</span>
+        </div>
+        <div class="meta-row" style="margin-bottom: 1rem;">
+          <span class="meta-key">context</span>
+          <span class="meta-val">Personal / Educational</span>
+        </div>
+        <div style="border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px;">
+          <div style="font-family: var(--mono); font-size: 10px; color: var(--text-muted); margin-bottom: 10px; letter-spacing: 0.05em;">// links[]</div>
+          <a class="link-btn" href="https://github.com/JonTo212/Wave-Function-Collapse-Generator">
+            <span class="link-btn-icon">◇</span> View on GitHub
+            <span class="link-btn-arrow">→</span>
+          </a>
         </div>
       </div>
     </div>
   </div>
 
   <!-- MAIN CONTENT -->
-  <main class="main-col">
-
-    <!-- OVERVIEW -->
-    <div class="section-block">
-      <div class="section-block-header">
-        <div class="dot"></div>
-        // overview
+  <!-- KEY FEATURES TABS -->
+  <div style="grid-column: 1 / -1;">
+    <span class="section-comment" style="display:block; margin-bottom: 1rem;">// key_features[]</span>
+    <div class="feature-tabs" id="featureTabs">
+      <div class="ftab-bar">
+        <button class="ftab-btn active" data-tab="0"><span class="ftab-num">01</span><span class="ftab-name">Wave Function Collapse</span></button>
+        <button class="ftab-btn" data-tab="1"><span class="ftab-num">02</span><span class="ftab-name">Breadth-First Search</span></button>
+        <button class="ftab-btn" data-tab="2"><span class="ftab-num">03</span><span class="ftab-name">Depth-First Search</span></button>
       </div>
-      <div class="section-block-body">
-        <!-- TODO: 1–2 paragraphs describing the project in more detail -->
-        <p>TODO: What is JellyFish? What was the goal of the project? What's the genre/platform/scope?</p>
-        <p>TODO: What was the core design or technical challenge you were trying to solve?</p>
+      <div class="ftab-panel active" data-panel="0">
+        <div class="ftab-image"><img src="images/feature_01.png" alt="Wave Function Collapse feature image"></div>
+        <div class="ftab-content">
+          <div class="ftab-label">Wave Function Collapse</div>
+          <p class="ftab-desc">A constraint-based Wave Function Collapse system that builds patterns by progressively reducing possibilities across a grid. 
+            The grid starts fully “uncollapsed,” with every cell holding a full set of possible tiles. The generator then selects the cell with the lowest entropy (fewest valid options) and collapses it. 
+            That choice then triggers a propagation step, where neighbouring cells have their valid options reduced based on adjacency rules, continuing through a queue until the entire grid is resolved.
+            I built the system using ScriptableObjects to define tile data and adjacency rules, using directional enums for face checks to keep it scalable and easy to expand. 
+            Tile selection also supports weighted randomness, allowing certain tiles to appear more frequently while still preserving the procedural nature of the output.</p>
+        </div>
+      </div>
+      <div class="ftab-panel" data-panel="1">
+        <div class="ftab-image"><img src="images/feature_02.png" alt="BFS feature image"></div>
+        <div class="ftab-content">
+          <div class="ftab-label">Breadth-First Search</div>
+          <p class="ftab-desc">Grid-based BFS pathfinding that guarantees the shortest path in an unweighted space. 
+            It uses a FIFO queue to explore tiles level-by-level, ensuring all possible routes are checked in increasing distance from the start.
+            To ensure the absolute shortest path possible, I added a sort for each set of neighbours by their squared magnitude distance to the target before queuing them, 
+            so the closest direction always gets explored first.</p>
+        </div>
+      </div>
+      <div class="ftab-panel" data-panel="2">
+        <div class="ftab-image"><img src="images/feature_03.png" alt="DFS feature image"></div>
+        <div class="ftab-content">
+          <div class="ftab-label">Depth-First Search</div>
+          <p class="ftab-desc">Depth-first search (DFS) pathfinding with randomization, using a LIFO stack where each node pushes its neighbours so the most recently discovered direction is always explored next. 
+            Each node pushes its neighbours onto the stack, meaning the most recently discovered direction is always explored next, resulting in long, continuous paths before the algorithm branches elsewhere.
+            To avoid rigid or repetitive routes, I randomized the neighbour order before pushing them onto the stack. 
+            This ensures the search direction varies each run, producing more natural, organic-looking pathing instead of predictable "snaking" patterns caused by fixed directional bias.</p>
+        </div>
       </div>
     </div>
+  </div>
 
-    <!-- DEEP DIVE -->
-    <!-- TODO: Pick one interesting technical or design problem you solved and walk through it -->
+  <!-- DEEP DIVE -->
+  <main class="main-col">
     <div class="section-block" style="margin-bottom:0;">
       <div class="section-block-header">
         <div class="dot"></div>
-        // deep_dive — TODO: topic name (e.g. "fluid simulation approach")
-      </div>
-      <div class="section-block-body" style="padding-bottom: 0;">
-        <p>TODO: Set up the problem. What was the challenge, and why was it hard? Give enough context that someone unfamiliar with the project understands the stakes.</p>
+        // deep_dive — Adding pathfinding with multiple path support
       </div>
     </div>
     <div class="deep-dive-arc">
@@ -839,8 +994,9 @@
           <span class="arc-step-icon">◎</span>
         </div>
         <div class="arc-step-body">
-          <div class="arc-step-title">TODO: Short problem statement</div>
-          <p>TODO: Describe the root cause or constraint you were dealing with.</p>
+          <div class="arc-step-title">Path lists don't cleanly connect</div>
+          <p>The end of one path and the start of the next were often more than 1 unit apart. 
+            The collapse function expects every neighbour to be exactly 1 unit away, so any larger gap left a tile with no valid solution - resulting in a broken, uncollapsable tile at the junction.</p>
         </div>
       </div>
       <div class="arc-step">
@@ -849,20 +1005,62 @@
           <span class="arc-step-icon">◈</span>
         </div>
         <div class="arc-step-body">
-          <div class="arc-step-title">TODO: How you approached it</div>
-          <p>TODO: What did you try? What decisions did you make and why?</p>
+          <div class="arc-step-title">Adding an additional validation layer</div>
+          <p>The solution was adding an additional constraint; instead of collapsing the lists directly, I first build a dictionary of every gridpoint and its valid connections. 
+            'IsFaceNeighbour' validates that each tile is exactly 1 unit from its neighbours before it gets added. 
+            'AddConnections' then loops through all paths to populate the dictionary, using a hashset per entry to avoid duplicate connections. 
+            Only then does the collapse run, using each tile's connection count to pick the right tile type.</p>
         </div>
       </div>
     </div>
 
-    <!-- TODO: Optionally add a code block here. Remove this section if not applicable. -->
-    <div class="code-block" style="margin-bottom: 2rem;">
-      <div class="code-block-header">
-        <span class="code-block-filename">TODO: FileName.cs — brief description</span>
-        <span class="code-block-lang">C#</span>
+    <!-- SLIDER (70%) + CODE (30%) -->
+    <div style="display: grid; grid-template-columns: 7fr 3fr; gap: 1.5rem; margin-bottom: 2rem;">
+
+      <!-- LEFT: Before / After slider -->
+      <div class="ba-wrap" style="margin: 0;">
+        <div class="ba-header">
+          <span>// deep_dive_visual</span>
+          <span class="ba-header-labels">
+            <span class="ba-label-before">◎ before</span>
+            <span class="ba-label-after">◎ after</span>
+          </span>
+        </div>
+        <div class="ba-container" id="baSlider">
+          <!-- BEFORE image (bottom layer) -->
+          <!-- swap the placeholder below with: <img class="ba-img" src="images/deep_dive_before.png" alt="Before fix"> -->
+          <div class="ba-img-placeholder" style="background: #1e1a1a;">
+            <span style="font-size:32px; opacity:0.15;">◎</span>
+            <span>before — broken junctions</span>
+            <span style="font-size:10px; opacity:0.5;">replace with: images/deep_dive_before.png</span>
+          </div>
+          <!-- AFTER image (clipped top layer) -->
+          <!-- swap the placeholder below with: <img class="ba-img ba-after" id="baAfter" src="images/deep_dive_after.png" alt="After fix"> -->
+          <div class="ba-after ba-img-placeholder" id="baAfter" style="background: #1a1e1a;">
+            <span style="font-size:32px; opacity:0.15;">◈</span>
+            <span>after — valid connections</span>
+            <span style="font-size:10px; opacity:0.5;">replace with: images/deep_dive_after.png</span>
+          </div>
+          <!-- Labels -->
+          <span class="ba-tag ba-tag-before">before</span>
+          <span class="ba-tag ba-tag-after">after</span>
+          <!-- Divider + handle -->
+          <div class="ba-divider" id="baDivider"></div>
+          <div class="ba-handle" id="baHandle">⇔</div>
+        </div>
+        <div class="ba-caption">// drag to compare — path junction fix</div>
       </div>
-      <pre><code><span class="tok-comment">// TODO: Paste a relevant code snippet here</span>
+
+      <!-- RIGHT: Code block -->
+      <div class="code-block" style="margin: 0; display: flex; flex-direction: column;">
+        <div class="code-block-header">
+          <span class="code-block-filename">TODO: FileName.cs — brief description</span>
+          <span class="code-block-lang">C#</span>
+        </div>
+        <pre style="flex: 1; overflow-y: auto; overflow-x: hidden; white-space: pre-wrap; word-break: break-word;"><code><span class="tok-comment">// TODO: Paste a relevant code snippet here</span>
 <span class="tok-comment">// Remove this entire .code-block div if you don't have one</span></code></pre>
+      </div>
+
     </div>
 
     <div class="deep-dive-arc" style="margin-bottom: 2rem;">
@@ -872,100 +1070,56 @@
           <span class="arc-step-icon">▸</span>
         </div>
         <div class="arc-step-body">
-          <div class="arc-step-title">TODO: Outcome</div>
-          <p>TODO: What was the result? What worked, what didn't, what would you change?</p>
+          <div class="arc-step-title">Validated Junction Resolution</div>
+          <p>Paths of any count can now be combined and collapsed without broken junctions. 
+            Each tile resolves based on its connection count—tiles with one connection become ends, two form straight paths,  and three or more create junctions.
+            Overlapping paths can now emerge naturally without any hardcoded rules.</p>
         </div>
       </div>
     </div>
-
   </main>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-
-    <!-- PROJECT META -->
-    <div class="sidebar-card">
-      <div class="sidebar-card-header">// project_meta</div>
-      <div class="sidebar-card-body">
-        <!-- TODO: Fill in project metadata -->
-        <div class="meta-row">
-          <span class="meta-key">status</span>
-          <span class="meta-val highlight">TODO: complete / in progress</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-key">year</span>
-          <span class="meta-val">TODO: 2026</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-key">duration</span>
-          <span class="meta-val">TODO: X months</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-key">team_size</span>
-          <span class="meta-val">TODO: N (solo / team)</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-key">platform</span>
-          <span class="meta-val">TODO: PC / WebGL / etc.</span>
-        </div>
-        <div class="meta-row" style="margin-bottom: 1rem;">
-          <span class="meta-key">context</span>
-          <span class="meta-val">TODO: Game Jam / Class / Personal</span>
-        </div>
-        <div style="border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px;">
-          <div style="font-family: var(--mono); font-size: 10px; color: var(--text-muted); margin-bottom: 10px; letter-spacing: 0.05em;">// links[]</div>
-          <!-- TODO: Update hrefs. Remove any links that don't apply -->
-          <a class="link-btn" href="#">
-            <span class="link-btn-icon">▷</span> Play on itch.io
-            <span class="link-btn-arrow">→</span>
-          </a>
-          <a class="link-btn" href="#">
-            <span class="link-btn-icon">◇</span> View on GitHub
-            <span class="link-btn-arrow">→</span>
-          </a>
-          <a class="link-btn" href="#" style="margin-bottom: 0;">
-            <span class="link-btn-icon">□</span> Design Doc (PDF)
-            <span class="link-btn-arrow">→</span>
-          </a>
-        </div>
-      </div>
+  <!-- TAKEAWAYS -->
+  <div class="rt-panel-full" style="grid-column: 1 / -1; border: 1px solid var(--border);">
+    <div class="rt-panel-header">
+      <div class="dot"></div>
+      // takeaways[]
     </div>
-
-    <!-- TECH STACK -->
-    <div class="sidebar-card">
-      <div class="sidebar-card-header">// tech_stack[]</div>
-      <div class="sidebar-card-body">
-        <div class="tech-list">
-          <!-- TODO: List tools and technologies used -->
-          <div class="tech-item">
-            <div class="tech-bullet"></div>
-            <span class="tech-name">TODO: Engine / Language</span>
-            <span class="tech-note">primary</span>
+    <div class="rt-panel-body">
+      <div class="rt-takeaways-cols">
+        <div class="rt-takeaway">
+          <span class="rt-takeaway-bullet">▸</span>
+          <div class="rt-takeaway-text">
+            <div class="rt-takeaway-label">Deeper learning through integration</div>
+            Working with multiple algorithms together, rather than studying each in isolation, forced a deeper understanding of how each works because of the modifications required for them to work in tandem.
           </div>
-          <div class="tech-item">
-            <div class="tech-bullet"></div>
-            <span class="tech-name">TODO: Tool</span>
-            <span class="tech-note">art</span>
+        </div>
+        <div class="rt-takeaway">
+          <span class="rt-takeaway-bullet">▸</span>
+          <div class="rt-takeaway-text">
+            <div class="rt-takeaway-label">The power of constraints</div>
+            Just like in game design, a small set of constraints can go a long way. Procedural generation takes that idea and runs with it, turning simple rules into a huge range of outcomes.
           </div>
-          <div class="tech-item">
-            <div class="tech-bullet"></div>
-            <span class="tech-name">TODO: Tool</span>
-            <span class="tech-note">audio</span>
+        </div>
+        <div class="rt-takeaway">
+          <span class="rt-takeaway-bullet">▸</span>
+          <div class="rt-takeaway-text">
+            <div class="rt-takeaway-label">A worthwhile investment</div>
+            There's a steep learning curve getting into algorithmic thinking, but the payoff is 100% worth it. This project showed me that algorithms aren't just a single solution - they have the potential to produce a wide variety of results.
           </div>
         </div>
       </div>
     </div>
-
-  </aside>
+  </div>
 
   <!-- PREV / NEXT NAV -->
   <!-- TODO: Update project names and hrefs to adjacent projects -->
   <nav class="project-nav">
-    <a class="project-nav-item" href="../cosmic-ranger-v/">
+    <a class="project-nav-item" href="#">
       <span class="nav-dir">// ← prev_project</span>
       <span class="nav-project-name">TODO: Prev Project</span>
     </a>
-    <a class="project-nav-item next" href="../paint-rush-racer/">
+    <a class="project-nav-item next" href="#">
       <span class="nav-dir">next_project → //</span>
       <span class="nav-project-name">TODO: Next Project</span>
     </a>
@@ -979,6 +1133,33 @@
 
 </div>
 <script>
+  // Before / After Slider
+  (function() {
+    const container = document.getElementById('baSlider');
+    const after     = document.getElementById('baAfter');
+    const divider   = document.getElementById('baDivider');
+    const handle    = document.getElementById('baHandle');
+    if (!container) return;
+
+    let dragging = false;
+
+    function setPos(x) {
+      const rect = container.getBoundingClientRect();
+      let pct = Math.max(0, Math.min(1, (x - rect.left) / rect.width));
+      const p = (pct * 100).toFixed(2) + '%';
+      after.style.clipPath   = `inset(0 ${(100 - pct * 100).toFixed(2)}% 0 0)`;
+      divider.style.left     = p;
+      handle.style.left      = p;
+    }
+
+    container.addEventListener('mousedown',  e => { dragging = true; setPos(e.clientX); });
+    window.addEventListener  ('mousemove',   e => { if (dragging) setPos(e.clientX); });
+    window.addEventListener  ('mouseup',     ()  => { dragging = false; });
+    container.addEventListener('touchstart', e => { dragging = true; setPos(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener  ('touchmove',   e => { if (dragging) setPos(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener  ('touchend',    ()  => { dragging = false; });
+  })();
+
   document.querySelectorAll('.ftab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const idx = btn.dataset.tab;
