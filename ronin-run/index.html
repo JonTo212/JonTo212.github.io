@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Ronin Run — Jonathan To</title>
+<title>Ronin Run - Jonathan To</title>
 
 <style>
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
@@ -95,6 +96,126 @@
   .tok-method   { color: #dcdcaa; }
   .tok-param    { color: #9cdcfe; }
   .tok-bool     { color: #569cd6; }
+
+  /* BEFORE / AFTER SLIDER */
+  .ba-wrap {
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+  }
+  .ba-header {
+    background: #1e1e1e;
+    border-bottom: 1px solid var(--border);
+    padding: 7px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .ba-header-labels {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .ba-label-before { color: #c0625a; }
+  .ba-label-after  { color: var(--green); }
+  .ba-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    cursor: ew-resize;
+    user-select: none;
+    background: var(--bg-card);
+  }
+  .ba-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .ba-img-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ba-after {
+    clip-path: inset(0 50% 0 0);
+    transition: clip-path 0s;
+  }
+  .ba-divider {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 50%;
+    width: 2px;
+    background: var(--green);
+    transform: translateX(-50%);
+    pointer-events: none;
+    opacity: 0.85;
+  }
+  .ba-handle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--bg-panel);
+    border: 2px solid var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--green);
+    pointer-events: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+  .ba-tag {
+    position: absolute;
+    top: 10px;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 8px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+  .ba-tag-before {
+    left: 12px;
+    background: rgba(192,98,90,0.2);
+    color: #c0625a;
+    border: 1px solid rgba(192,98,90,0.4);
+  }
+  .ba-tag-after {
+    right: 12px;
+    background: rgba(126,200,126,0.15);
+    color: var(--green);
+    border: 1px solid rgba(126,200,126,0.3);
+  }
+  .ba-caption {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    padding: 8px 12px;
+    border-top: 1px solid var(--border);
+    background: var(--bg-panel);
+  }
 
   /* DEEP DIVE */
   .deep-dive-arc {
@@ -294,7 +415,7 @@
   }
 
   /* HERO IMAGE */
-  .hero-image-section { grid-column: 1 / -1; }
+  .hero-image-section { grid-column: 1; }
   .hero-image-wrap {
     border: 1px solid var(--border);
     background: var(--bg-card);
@@ -360,6 +481,135 @@
   }
   .section-block-body p:last-child { margin-bottom: 0; }
 
+  /* SCREENSHOT GRID */
+  .screenshot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+  .screenshot-cell {
+    background: var(--bg-card);
+    aspect-ratio: 16/9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .screenshot-cell:hover { background: #303030; }
+  .screenshot-cell img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    position: absolute;
+    inset: 0;
+  }
+  .screenshot-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.7);
+    padding: 4px 8px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+
+  /* DEEP DIVE GRID */
+  .deep-dive-grid {
+    display: grid;
+    grid-template-columns: 1fr 260px; /* Matches the width of the details sidebar */
+    column-gap: 1.5rem;
+  }
+  .deep-dive-left {
+    display: flex;
+    flex-direction: column;
+  }
+  .deep-dive-right {
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .deep-dive-right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-self: start;
+  }
+  .sidebar-card {
+    border: 1px solid var(--border);
+    background: var(--bg-panel);
+  }
+  .sidebar-card-header {
+    padding: 8px 14px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green-dim);
+  }
+  .sidebar-card-body { padding: 14px; }
+
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .meta-row:last-child { border-bottom: none; }
+  .meta-key {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .meta-val {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text);
+    text-align: right;
+  }
+  .meta-val.highlight { color: var(--green); }
+
+  .tech-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .tech-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .tech-bullet {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--green);
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+  .tech-name { color: var(--text); }
+  .tech-note { color: var(--text-muted); margin-left: auto; font-size: 10px; }
+
   /* LINK BTNS */
   .link-btn {
     display: flex;
@@ -412,7 +662,7 @@
   }
   .project-nav-item.next { align-items: flex-end; }
 
-  /* ROLES & TAKEAWAYS (ADJUSTED FOR NEW LAYOUT) */
+  /* ROLES & TAKEAWAYS */
   .rt-grid {
     grid-column: 1 / -1;
     display: grid;
@@ -485,28 +735,6 @@
     letter-spacing: 0.08em;
     margin-bottom: 2px;
   }
-  
-  /* METADATA (IMPORTED FROM SIDEBAR) */
-  .meta-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 7px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-  }
-  .meta-row:last-child { border-bottom: none; }
-  .meta-key {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-muted);
-  }
-  .meta-val {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text);
-    text-align: right;
-  }
-  .meta-val.highlight { color: var(--green); }
 
   /* FEATURE TABS */
   .feature-tabs {
@@ -554,20 +782,14 @@
   }
   .ftab-image {
     border-right: 1px solid var(--border);
-    aspect-ratio: 4/3;
     overflow: hidden;
     position: relative;
     background: #141414;
-  }
-  .ftab-image img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+    min-height: 280px;
   }
   .ftab-img-placeholder {
-    width: 100%; height: 100%;
+    position: absolute;
+    inset: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -577,6 +799,13 @@
     font-size: 11px;
     color: var(--text-muted);
     background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 50%, #1a1a2a 100%);
+  }
+  .ftab-image img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
   .ftab-img-icon { font-size: 32px; opacity: 0.15; }
   .ftab-content {
@@ -600,13 +829,14 @@
     display: flex;
     justify-content: space-between;
   }
+
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="../">Home()</a>
+  <a class="nav-logo" href="../index.html">Home()</a>
   <ul class="nav-links">
     <li><a href="../about/index.html"><span class="nav-icon">◇</span> About()</a></li>
     <li><a href="../portfolio/index.html"><span class="nav-icon">□</span> Portfolio()</a></li>
@@ -634,7 +864,7 @@
       <span class="tag tag-design">Design</span>
       <span class="tag tag-unity">Unity</span>
     </div>
-    <p class="project-desc">TODO: Short project description — what it is, what makes it interesting.</p>
+    <p class="project-desc">TODO: Short project description - what it is, what makes it interesting.</p>
   </header>
 
   <!-- HERO IMAGE -->
@@ -644,7 +874,7 @@
         <div class="hero-placeholder-icon">◈</div>
         <span>// hero_screenshot.png</span>
       </div>
-      <div class="image-caption">// fig_01 — Main gameplay screenshot · Ronin Run</div>
+      <div class="image-caption">// fig_01 - Main gameplay screenshot · Ronin Run</div>
     </div>
   </section>
 
@@ -658,10 +888,10 @@
       </div>
       <div class="rt-panel-body">
         <ul class="contrib-list">
-          <li class="contrib-item"><span class="contrib-bullet">—</span>TODO: Contribution one</li>
-          <li class="contrib-item"><span class="contrib-bullet">—</span>TODO: Contribution two</li>
-          <li class="contrib-item"><span class="contrib-bullet">—</span>TODO: Contribution three</li>
-          <li class="contrib-item"><span class="contrib-bullet">—</span>TODO: Contribution four</li>
+          <li class="contrib-item"><span class="contrib-bullet">-</span>TODO: Contribution one</li>
+          <li class="contrib-item"><span class="contrib-bullet">-</span>TODO: Contribution two</li>
+          <li class="contrib-item"><span class="contrib-bullet">-</span>TODO: Contribution three</li>
+          <li class="contrib-item"><span class="contrib-bullet">-</span>TODO: Contribution four</li>
         </ul>
       </div>
     </div>
@@ -729,7 +959,7 @@
         <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_01.png</span></div></div>
         <div class="ftab-content">
           <div class="ftab-label">TODO: Feature 1 Title</div>
-          <p class="ftab-desc">TODO: Describe the feature — what it does, how you built it, what makes it interesting from a technical or design perspective.</p>
+          <p class="ftab-desc">TODO: Describe the feature - what it does, how you built it, what makes it interesting from a technical or design perspective.</p>
         </div>
       </div>
       <div class="ftab-panel" data-panel="1">
@@ -756,14 +986,12 @@
     </div>
   </div>
 
-  <!-- MAIN CONTENT -->
+    <!-- MAIN CONTENT -->
   <main class="main-col">
-
-    <!-- DEEP DIVE -->
     <div class="section-block" style="margin-bottom:0;">
       <div class="section-block-header">
         <div class="dot"></div>
-        // deep_dive — TODO: topic name (e.g. "fluid simulation approach")
+        // deep_dive - TODO: topic name (e.g. "fluid simulation approach")
       </div>
     </div>
     <div class="deep-dive-arc">
@@ -789,13 +1017,49 @@
       </div>
     </div>
 
-    <div class="code-block" style="margin-bottom: 2rem;">
-      <div class="code-block-header">
-        <span class="code-block-filename">TODO: FileName.cs — brief description</span>
-        <span class="code-block-lang">C#</span>
+    <!-- SLIDER (70%) + CODE (30%) -->
+    <div style="display: grid; grid-template-columns: 7fr 3fr; gap: 1.5rem; margin-bottom: 2rem;">
+
+      <!-- LEFT: Before / After slider -->
+      <div class="ba-wrap" style="margin: 0;">
+        <div class="ba-header">
+          <span>// deep_dive_visual</span>
+          <span class="ba-header-labels">
+            <span class="ba-label-before">◎ before</span>
+            <span class="ba-label-after">◎ after</span>
+          </span>
+        </div>
+        <div class="ba-container" id="baSlider">
+          <!-- swap with: <img class="ba-img" src="images/deep_dive_before.png" alt="Before fix"> -->
+          <div class="ba-img-placeholder" style="background: #1e1a1a;">
+            <span style="font-size:32px; opacity:0.15;">◎</span>
+            <span>before</span>
+            <span style="font-size:10px; opacity:0.5;">replace with: images/deep_dive_before.png</span>
+          </div>
+          <!-- swap with: <img class="ba-img ba-after" id="baAfter" src="images/deep_dive_after.png" alt="After fix"> -->
+          <div class="ba-after ba-img-placeholder" id="baAfter" style="background: #1a1e1a;">
+            <span style="font-size:32px; opacity:0.15;">◈</span>
+            <span>after</span>
+            <span style="font-size:10px; opacity:0.5;">replace with: images/deep_dive_after.png</span>
+          </div>
+          <span class="ba-tag ba-tag-before">before</span>
+          <span class="ba-tag ba-tag-after">after</span>
+          <div class="ba-divider" id="baDivider"></div>
+          <div class="ba-handle" id="baHandle">⇔</div>
+        </div>
+        <div class="ba-caption">// drag to compare</div>
       </div>
-      <pre><code><span class="tok-comment">// TODO: Paste a relevant code snippet here</span>
+
+      <!-- RIGHT: Code block -->
+      <div class="code-block" style="margin: 0; display: flex; flex-direction: column;">
+        <div class="code-block-header">
+          <span class="code-block-filename">TODO: FileName.cs - brief description</span>
+          <span class="code-block-lang">C#</span>
+        </div>
+        <pre style="flex: 1; overflow-y: auto; overflow-x: hidden; white-space: pre-wrap; word-break: break-word;"><code><span class="tok-comment">// TODO: Paste a relevant code snippet here</span>
 <span class="tok-comment">// Remove this entire .code-block div if you don't have one</span></code></pre>
+      </div>
+
     </div>
 
     <div class="deep-dive-arc" style="margin-bottom: 2rem;">
@@ -810,10 +1074,9 @@
         </div>
       </div>
     </div>
-
   </main>
 
-  <!-- TAKEAWAYS -->
+    <!-- TAKEAWAYS -->
   <div class="rt-panel-full" style="grid-column: 1 / -1; border: 1px solid var(--border);">
     <div class="rt-panel-header">
       <div class="dot"></div>
@@ -866,6 +1129,34 @@
 
 </div>
 <script>
+
+  // Before / After Slider
+  (function() {
+    const container = document.getElementById('baSlider');
+    const after     = document.getElementById('baAfter');
+    const divider   = document.getElementById('baDivider');
+    const handle    = document.getElementById('baHandle');
+    if (!container) return;
+
+    let dragging = false;
+
+    function setPos(x) {
+      const rect = container.getBoundingClientRect();
+      let pct = Math.max(0, Math.min(1, (x - rect.left) / rect.width));
+      const p = (pct * 100).toFixed(2) + '%';
+      after.style.clipPath   = `inset(0 ${(100 - pct * 100).toFixed(2)}% 0 0)`;
+      divider.style.left     = p;
+      handle.style.left      = p;
+    }
+
+    container.addEventListener('mousedown',  e => { dragging = true; setPos(e.clientX); });
+    window.addEventListener  ('mousemove',   e => { if (dragging) setPos(e.clientX); });
+    window.addEventListener  ('mouseup',     ()  => { dragging = false; });
+    container.addEventListener('touchstart', e => { dragging = true; setPos(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener  ('touchmove',   e => { if (dragging) setPos(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener  ('touchend',    ()  => { dragging = false; });
+  })();
+
   document.querySelectorAll('.ftab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const idx = btn.dataset.tab;
@@ -875,6 +1166,7 @@
       document.querySelector(`.ftab-panel[data-panel="${idx}"]`).classList.add('active');
     });
   });
+
 </script>
 </body>
 </html>

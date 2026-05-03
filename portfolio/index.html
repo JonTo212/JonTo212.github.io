@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Portfolio — Jonathan To</title>
+<title>Portfolio - Jonathan To</title>
 
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -182,13 +182,12 @@
   .project-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
+    gap: 1rem;
   }
 
   .project-card {
     background: var(--bg-panel);
+    border: 1px solid var(--border);
     display: flex;
     flex-direction: column;
     text-decoration: none;
@@ -207,7 +206,7 @@
   }
   .card-thumb img {
     width: 100%; height: 100%;
-    object-fit: cover;
+    object-fit: fill;
     display: block;
     filter: saturate(0.85);
     transition: filter 0.2s;
@@ -323,10 +322,10 @@
   <!-- PAGE HEADER -->
   <header class="page-header">
     <span class="page-header-comment">// ============================================================<br>
-// &nbsp;&nbsp;portfolio[] — academic + professional work<br>
+// &nbsp;&nbsp;portfolio[] - academic + professional work<br>
 // ============================================================</span>
     <h1 class="page-header-title">Portfolio()</h1>
-    <p class="page-header-sub">A collection of completed academic and professional projects — from capstone builds to team collaborations.</p>
+    <p class="page-header-sub">A collection of completed academic and professional projects - from capstone builds to team collaborations.</p>
   </header>
 
   <!-- FILTER BAR -->
@@ -344,22 +343,18 @@
     <div class="section-label">
       <div class="dot"></div>
       // projects[]
-      <span class="count">// 6 entries</span>
+      <span class="count">// 5 entries</span>
     </div>
     <div class="project-grid">
 
       <!-- PROJECT 1 -->
-      <a class="project-card" href="#">
+      <a class="project-card" href="../cosmic-ranger-v/index.html">
         <div class="card-thumb">
-          <!-- TODO: Replace with <img src="project-name/hero.png" alt="Project Name"> -->
-          <div class="card-thumb-placeholder">
-            <span class="card-thumb-icon">◈</span>
-            <span>// hero.png</span>
-          </div>
+          <img src="../cover-images/crv_hero.png" alt="Cosmic Ranger V" class="card-thumb-img">
         </div>
         <div class="card-body">
           <div class="card-header">
-            <div class="card-title">Project Title</div>
+            <div class="card-title">Cosmic Ranger V</div>
             <span class="card-arrow">→</span>
           </div>
           <div class="card-tags">
@@ -367,140 +362,109 @@
             <span class="tag tag-design">Design</span>
             <span class="tag tag-unity">Unity</span>
           </div>
-          <p class="card-desc">TODO: Short description of this project — what it is, what role you played, and what makes it interesting.</p>
+          <p class="card-desc">A physics-based 3D puzzle platformer built around manipulating objects in the environment. 
+            Worked as programmer and designer on the player controller, the fishing rod hold mechanic, and prototyped a range of physics-driven features throughout development.</p>
           <div class="card-meta">
-            <div class="card-meta-item">year <span>TODO</span></div>
-            <div class="card-meta-item">duration <span>TODO</span></div>
-            <div class="card-meta-item">team <span>TODO</span></div>
+            <div class="card-meta-item">year <span>2025-2026</span></div>
+            <div class="card-meta-item">duration <span>8 months</span></div>
+            <div class="card-meta-item">team <span>6</span></div>
           </div>
         </div>
       </a>
 
       <!-- PROJECT 2 -->
-      <a class="project-card" href="#">
+      <a class="project-card" href="../jellyfish/index.html">
         <div class="card-thumb">
-          <div class="card-thumb-placeholder">
-            <span class="card-thumb-icon">◈</span>
-            <span>// hero.png</span>
-          </div>
+          <img src="../cover-images/jellyfish_hero.png" alt="JellyFish" class="card-thumb-img">
         </div>
         <div class="card-body">
           <div class="card-header">
-            <div class="card-title">Project Title</div>
-            <span class="card-arrow">→</span>
-          </div>
-          <div class="card-tags">
-            <span class="tag tag-programming">Programming</span>
-            <span class="tag tag-unreal">Unreal Engine</span>
-          </div>
-          <p class="card-desc">TODO: Short description of this project — what it is, what role you played, and what makes it interesting.</p>
-          <div class="card-meta">
-            <div class="card-meta-item">year <span>TODO</span></div>
-            <div class="card-meta-item">duration <span>TODO</span></div>
-            <div class="card-meta-item">team <span>TODO</span></div>
-          </div>
-        </div>
-      </a>
-
-      <!-- PROJECT 3 -->
-      <a class="project-card" href="#">
-        <div class="card-thumb">
-          <div class="card-thumb-placeholder">
-            <span class="card-thumb-icon">◈</span>
-            <span>// hero.png</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="card-header">
-            <div class="card-title">Project Title</div>
-            <span class="card-arrow">→</span>
-          </div>
-          <div class="card-tags">
-            <span class="tag tag-design">Design</span>
-          </div>
-          <p class="card-desc">TODO: Short description of this project — what it is, what role you played, and what makes it interesting.</p>
-          <div class="card-meta">
-            <div class="card-meta-item">year <span>TODO</span></div>
-            <div class="card-meta-item">duration <span>TODO</span></div>
-            <div class="card-meta-item">team <span>TODO</span></div>
-          </div>
-        </div>
-      </a>
-
-      <!-- PROJECT 4 -->
-      <a class="project-card" href="#">
-        <div class="card-thumb">
-          <div class="card-thumb-placeholder">
-            <span class="card-thumb-icon">◈</span>
-            <span>// hero.png</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="card-header">
-            <div class="card-title">Project Title</div>
+            <div class="card-title">JellyFish</div>
             <span class="card-arrow">→</span>
           </div>
           <div class="card-tags">
             <span class="tag tag-programming">Programming</span>
             <span class="tag tag-unity">Unity</span>
           </div>
-          <p class="card-desc">TODO: Short description of this project — what it is, what role you played, and what makes it interesting.</p>
+          <p class="card-desc">An online party game built for Steam with a custom lobby system. 
+            Took on the network programmer role, learning multiplayer systems from scratch in under two months and implementing all player-related gameplay and networking systems.</p>
           <div class="card-meta">
-            <div class="card-meta-item">year <span>TODO</span></div>
-            <div class="card-meta-item">duration <span>TODO</span></div>
-            <div class="card-meta-item">team <span>TODO</span></div>
+            <div class="card-meta-item">year <span>2025</span></div>
+            <div class="card-meta-item">duration <span>1.5 months</span></div>
+            <div class="card-meta-item">team <span>4</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- PROJECT 3 -->
+      <a class="project-card" href="../paint-rush-racer/index.html">
+        <div class="card-thumb">
+          <img src="../cover-images/paintrush_hero.png" alt="Paint Rush Racer" class="card-thumb-img">
+        </div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-title">Paint Rush Racer</div>
+            <span class="card-arrow">→</span>
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-programming">Programming</span>
+            <span class="tag tag-unreal">Unreal Engine</span>
+          </div>
+          <p class="card-desc">A local multiplayer kart racer built in Unreal Engine. 
+            Programmed an arcade-style suspension, drift system, and paint mechanics, along with templates to make art integration fast and consistent for the team.</p>
+          <div class="card-meta">
+            <div class="card-meta-item">year <span>2025</span></div>
+            <div class="card-meta-item">duration <span>1.5 months</span></div>
+            <div class="card-meta-item">team <span>4</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- PROJECT 4 -->
+      <a class="project-card" href="../bunker-down-demo/index.html">
+        <div class="card-thumb">
+          <img src="../cover-images/bunkerdown_hero.png" alt="Bunker Down! Demo" class="card-thumb-img">
+        </div>
+        <div class="card-body">
+          <div class="card-header">
+            <div class="card-title">Bunker Down! Demo</div>
+            <span class="card-arrow">→</span>
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-programming">Programming</span>
+            <span class="tag tag-unity">Unity</span>
+          </div>
+          <p class="card-desc">A virtual demo of a physical board game, created as a marketing tool for a client's Kickstarter campaign. 
+            Built the core game systems, a tween-based UI animation system, and a full card and deck system. 
+            Assisted with NPC programming and UI/art implementation.</p>
+          <div class="card-meta">
+            <div class="card-meta-item">year <span>2023</span></div>
+            <div class="card-meta-item">duration <span>4 months</span></div>
+            <div class="card-meta-item">team <span>2</span></div>
           </div>
         </div>
       </a>
 
       <!-- PROJECT 5 -->
-      <a class="project-card" href="#">
+      <a class="project-card" href="../jungle-gym/index.html">
         <div class="card-thumb">
-          <div class="card-thumb-placeholder">
-            <span class="card-thumb-icon">◈</span>
-            <span>// hero.png</span>
-          </div>
+          <img src="../cover-images/junglegym_hero.png" alt="Jungle Gym" class="card-thumb-img">
         </div>
         <div class="card-body">
           <div class="card-header">
-            <div class="card-title">Project Title</div>
+            <div class="card-title">Jungle Gym</div>
             <span class="card-arrow">→</span>
           </div>
           <div class="card-tags">
             <span class="tag tag-programming">Programming</span>
             <span class="tag tag-design">Design</span>
           </div>
-          <p class="card-desc">TODO: Short description of this project — what it is, what role you played, and what makes it interesting.</p>
+          <p class="card-desc">A 3D platformer built around childlike whimsy and shenanigans. 
+            Designed and programmed the player controller from scratch, including roll, hover, and rope mechanics that define how the game feels to play.</p>
           <div class="card-meta">
-            <div class="card-meta-item">year <span>TODO</span></div>
-            <div class="card-meta-item">duration <span>TODO</span></div>
-            <div class="card-meta-item">team <span>TODO</span></div>
-          </div>
-        </div>
-      </a>
-
-      <!-- PROJECT 6 -->
-      <a class="project-card" href="#">
-        <div class="card-thumb">
-          <div class="card-thumb-placeholder">
-            <span class="card-thumb-icon">◈</span>
-            <span>// hero.png</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="card-header">
-            <div class="card-title">Project Title</div>
-            <span class="card-arrow">→</span>
-          </div>
-          <div class="card-tags">
-            <span class="tag tag-unreal">Unreal Engine</span>
-            <span class="tag tag-design">Design</span>
-          </div>
-          <p class="card-desc">TODO: Short description of this project — what it is, what role you played, and what makes it interesting.</p>
-          <div class="card-meta">
-            <div class="card-meta-item">year <span>TODO</span></div>
-            <div class="card-meta-item">duration <span>TODO</span></div>
-            <div class="card-meta-item">team <span>TODO</span></div>
+            <div class="card-meta-item">year <span>2023</span></div>
+            <div class="card-meta-item">duration <span>4 months</span></div>
+            <div class="card-meta-item">team <span>4</span></div>
           </div>
         </div>
       </a>

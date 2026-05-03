@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>WFC Generator — Jonathan To</title>
+<title>WFC Generator - Jonathan To</title>
 
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -833,7 +833,7 @@
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="../">Home()</a>
+  <a class="nav-logo" href="../index.html">Home()</a>
   <ul class="nav-links">
     <li><a href="../about/index.html"><span class="nav-icon">◇</span> About()</a></li>
     <li><a href="../portfolio/index.html"><span class="nav-icon">□</span> Portfolio()</a></li>
@@ -872,7 +872,7 @@
       <!-- TODO: Replace hero-placeholder with <img src="hero.png" alt="..."> when ready -->
       <img src="images/hero_screenshot.png" alt="2D map generator using WFC, BFS and DFS with randomization to create multiple paths" class="hero-image">
       <!-- TODO: Update caption -->
-      <div class="image-caption">// fig_01 — 2D map generator using WFC, BFS and DFS with randomization to create multiple paths</div>
+      <div class="image-caption">// fig_01 - 2D map generator using WFC, BFS and DFS with randomization to create multiple paths</div>
     </div>
   </section>
 
@@ -887,9 +887,9 @@
       <div class="rt-panel-body">
         <ul class="contrib-list">
           <!-- TODO: List your specific contributions to the project -->
-          <li class="contrib-item"><span class="contrib-bullet">—</span>Wave Function Collapse system — Tile system built on ScriptableObjects and enum-defined faces — each placement reduces what's possible around it until a complete, valid map emerges.</li>
-          <li class="contrib-item"><span class="contrib-bullet">—</span>Developed a flexible pathfinding layer — Integrated both BFS and DFS algorithms for path generation, with added randomization to produce natural-feeling, varied paths.</li>
-          <li class="contrib-item"><span class="contrib-bullet">—</span>Added multi-path support — Extended pathfinding system to handle multiple overlapping paths across a single generated map, enabling more complex and interconnected layouts.</li>
+          <li class="contrib-item"><span class="contrib-bullet">-</span>Wave Function Collapse system - Tile system built on ScriptableObjects and enum-defined faces - each placement reduces what's possible around it until a complete, valid map emerges.</li>
+          <li class="contrib-item"><span class="contrib-bullet">-</span>Developed a flexible pathfinding layer - Integrated both BFS and DFS algorithms for path generation, with added randomization to produce natural-feeling, varied paths.</li>
+          <li class="contrib-item"><span class="contrib-bullet">-</span>Added multi-path support - Extended pathfinding system to handle multiple overlapping paths across a single generated map, enabling more complex and interconnected layouts.</li>
         </ul>
       </div>
     </div>
@@ -984,7 +984,7 @@
     <div class="section-block" style="margin-bottom:0;">
       <div class="section-block-header">
         <div class="dot"></div>
-        // deep_dive — Adding pathfinding with multiple path support
+        // deep_dive - Adding pathfinding with multiple path support
       </div>
     </div>
     <div class="deep-dive-arc">
@@ -1031,14 +1031,14 @@
           <!-- swap the placeholder below with: <img class="ba-img" src="images/deep_dive_before.png" alt="Before fix"> -->
           <div class="ba-img-placeholder" style="background: #1e1a1a;">
             <span style="font-size:32px; opacity:0.15;">◎</span>
-            <span>before — broken junctions</span>
+            <span>before - broken junctions</span>
             <span style="font-size:10px; opacity:0.5;">replace with: images/deep_dive_before.png</span>
           </div>
           <!-- AFTER image (clipped top layer) -->
           <!-- swap the placeholder below with: <img class="ba-img ba-after" id="baAfter" src="images/deep_dive_after.png" alt="After fix"> -->
           <div class="ba-after ba-img-placeholder" id="baAfter" style="background: #1a1e1a;">
             <span style="font-size:32px; opacity:0.15;">◈</span>
-            <span>after — valid connections</span>
+            <span>after - valid connections</span>
             <span style="font-size:10px; opacity:0.5;">replace with: images/deep_dive_after.png</span>
           </div>
           <!-- Labels -->
@@ -1048,13 +1048,13 @@
           <div class="ba-divider" id="baDivider"></div>
           <div class="ba-handle" id="baHandle">⇔</div>
         </div>
-        <div class="ba-caption">// drag to compare — path junction fix</div>
+        <div class="ba-caption">// drag to compare - path junction fix</div>
       </div>
 
       <!-- RIGHT: Code block -->
       <div class="code-block" style="margin: 0; display: flex; flex-direction: column;">
         <div class="code-block-header">
-          <span class="code-block-filename">TODO: FileName.cs — brief description</span>
+          <span class="code-block-filename">TODO: FileName.cs - brief description</span>
           <span class="code-block-lang">C#</span>
         </div>
         <pre style="flex: 1; overflow-y: auto; overflow-x: hidden; white-space: pre-wrap; word-break: break-word;"><code><span class="tok-comment">// TODO: Paste a relevant code snippet here</span>
@@ -1072,7 +1072,7 @@
         <div class="arc-step-body">
           <div class="arc-step-title">Validated Junction Resolution</div>
           <p>Paths of any count can now be combined and collapsed without broken junctions. 
-            Each tile resolves based on its connection count—tiles with one connection become ends, two form straight paths,  and three or more create junctions.
+            Each tile resolves based on its connection count-tiles with one connection become ends, two form straight paths,  and three or more create junctions.
             Overlapping paths can now emerge naturally without any hardcoded rules.</p>
         </div>
       </div>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Personal Projects — Jonathan To</title>
+<title>Personal Projects - Jonathan To</title>
 
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -182,13 +182,12 @@
   .project-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
+    gap: 1rem;
   }
 
   .project-card {
     background: var(--bg-panel);
+    border: 1px solid var(--border);
     display: flex;
     flex-direction: column;
     text-decoration: none;
@@ -223,7 +222,7 @@
   }
   .card-thumb img {
     width: 100%; height: 100%;
-    object-fit: cover;
+    object-fit: fill;
     display: block;
     filter: saturate(0.85);
     transition: filter 0.2s;
@@ -286,6 +285,7 @@
   .tag-unity       { background: var(--tag-unity); color: #a8c8e8; }
   .tag-unreal      { background: var(--tag-unreal); color: #e8b8b8; }
   .tag-wip         { background: var(--tag-wip); color: #e0c878; }
+  .tag-team        { background: #2a3a4a; color: #88b8d8; }
 
   .card-desc {
     font-family: var(--mono);
@@ -339,10 +339,10 @@
   <!-- PAGE HEADER -->
   <header class="page-header">
     <span class="page-header-comment">// ============================================================<br>
-// &nbsp;&nbsp;personal_projects[] — tinkering, experiments, WIPs<br>
+// &nbsp;&nbsp;personal_projects[] - tinkering, experiments, WIPs<br>
 // ============================================================</span>
     <h1 class="page-header-title">PersonalProjects()</h1>
-    <p class="page-header-sub">Personal experiments, works-in-progress, and non-game pieces — things built for curiosity rather than class.</p>
+    <p class="page-header-sub">Personal experiments, works-in-progress, and non-game pieces - things built for curiosity rather than class.</p>
   </header>
 
   <!-- FILTER BAR -->
@@ -352,6 +352,7 @@
     <button class="filter-btn">Programming</button>
     <button class="filter-btn">Design</button>
     <button class="filter-btn">WIP</button>
+    <button class="filter-btn">Team</button>
   </div>
 
   <!-- PROJECT GRID -->
@@ -363,156 +364,123 @@
     </div>
     <div class="project-grid">
 
-      <!-- PROJECT 1 — WIP example -->
-      <a class="project-card" href="#">
+      <!-- RONIN RUN -->
+      <a class="project-card" href="../ronin-run/index.html">
         <div class="card-thumb">
           <span class="card-wip-badge">WIP</span>
-          <!-- TODO: Replace with <img src="project-name/hero.png" alt="Project Name"> -->
-          <div class="card-thumb-placeholder">
-            <span class="card-thumb-icon">◈</span>
-            <span>// hero.png</span>
+          <div class="card-thumb">
+            <img src="../cover-images/roninrun_hero.png" alt="Ronin Run" class="card-thumb-img">
           </div>
         </div>
         <div class="card-body">
           <div class="card-header">
-            <div class="card-title">Project Title</div>
+            <div class="card-title">Ronin Run</div>
             <span class="card-arrow">→</span>
           </div>
           <div class="card-tags">
             <span class="tag tag-programming">Programming</span>
+            <span class="tag tag-design">Design</span>
             <span class="tag tag-wip">WIP</span>
           </div>
-          <p class="card-desc">TODO: Short description — what sparked it, what you're exploring, current status.</p>
+          <p class="card-desc">Source-inspired movement system with CS-style strafing and shurikens that each carry their own movement and traversal mechanics.</p>
           <div class="card-meta">
-            <div class="card-meta-item">started <span>TODO</span></div>
             <div class="card-meta-item">status <span>ongoing</span></div>
             <div class="card-meta-item">team <span>solo</span></div>
           </div>
         </div>
       </a>
 
-      <!-- PROJECT 2 -->
-      <a class="project-card" href="#">
+      <!-- WFC GENERATOR -->
+      <a class="project-card" href="../wfc-generator/index.html">
         <div class="card-thumb">
-          <div class="card-thumb-placeholder">
-            <span class="card-thumb-icon">◈</span>
-            <span>// hero.png</span>
+          <div class="card-thumb">
+            <img src="../cover-images/wfc_hero.png" alt="Wave Function Collapse Generator" class="card-thumb-img">
           </div>
         </div>
         <div class="card-body">
           <div class="card-header">
-            <div class="card-title">Project Title</div>
-            <span class="card-arrow">→</span>
-          </div>
-          <div class="card-tags">
-            <span class="tag tag-design">Design</span>
-          </div>
-          <p class="card-desc">TODO: Short description — what sparked it, what you're exploring, current status.</p>
-          <div class="card-meta">
-            <div class="card-meta-item">started <span>TODO</span></div>
-            <div class="card-meta-item">status <span>complete</span></div>
-            <div class="card-meta-item">team <span>solo</span></div>
-          </div>
-        </div>
-      </a>
-
-      <!-- PROJECT 3 -->
-      <a class="project-card" href="#">
-        <div class="card-thumb">
-          <div class="card-thumb-placeholder">
-            <span class="card-thumb-icon">◈</span>
-            <span>// hero.png</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="card-header">
-            <div class="card-title">Project Title</div>
+            <div class="card-title">Procedural Map Generator w/ Pathfinding</div>
             <span class="card-arrow">→</span>
           </div>
           <div class="card-tags">
             <span class="tag tag-programming">Programming</span>
           </div>
-          <p class="card-desc">TODO: Short description — what sparked it, what you're exploring, current status.</p>
+          <p class="card-desc">Wave function collapse-based procedural 2D map generator with integrated pathfinding via BFS and DFS.</p>
           <div class="card-meta">
-            <div class="card-meta-item">started <span>TODO</span></div>
             <div class="card-meta-item">status <span>complete</span></div>
             <div class="card-meta-item">team <span>solo</span></div>
           </div>
         </div>
       </a>
 
-      <!-- PROJECT 4 -->
-      <a class="project-card" href="#">
+      <!-- DETERMINISTIC DICE -->
+      <a class="project-card" href="../deterministic-dice/index.html">
         <div class="card-thumb">
-          <div class="card-thumb-placeholder">
-            <span class="card-thumb-icon">◈</span>
-            <span>// hero.png</span>
+          <div class="card-thumb">
+            <img src="../cover-images/deterministicdice_hero.png" alt="Deterministic Dice" class="card-thumb-img">
           </div>
         </div>
         <div class="card-body">
           <div class="card-header">
-            <div class="card-title">Project Title</div>
+            <div class="card-title">Deterministic Dice</div>
             <span class="card-arrow">→</span>
           </div>
           <div class="card-tags">
+            <span class="tag tag-programming">Programming</span>
           </div>
-          <p class="card-desc">TODO: Short description — what sparked it, what you're exploring, current status.</p>
+          <p class="card-desc">Rigged physics-based dice roll that guarantees a target face - uses a recording and resimulation system to lock in the result.</p>
           <div class="card-meta">
-            <div class="card-meta-item">started <span>TODO</span></div>
             <div class="card-meta-item">status <span>complete</span></div>
             <div class="card-meta-item">team <span>solo</span></div>
           </div>
         </div>
       </a>
 
-      <!-- PROJECT 5 — WIP example -->
-      <a class="project-card" href="#">
+      <!-- LIGHT MOTH -->
+      <a class="project-card" href="../light-moth/index.html">
         <div class="card-thumb">
           <span class="card-wip-badge">WIP</span>
-          <div class="card-thumb-placeholder">
-            <span class="card-thumb-icon">◈</span>
-            <span>// hero.png</span>
+          <div class="card-thumb">
+            <img src="../cover-images/lightmoth_hero.png" alt=Light Moth" class="card-thumb-img">
           </div>
         </div>
         <div class="card-body">
           <div class="card-header">
-            <div class="card-title">Project Title</div>
+            <div class="card-title">Light Moth</div>
             <span class="card-arrow">→</span>
           </div>
           <div class="card-tags">
             <span class="tag tag-design">Design</span>
             <span class="tag tag-wip">WIP</span>
           </div>
-          <p class="card-desc">TODO: Short description — what sparked it, what you're exploring, current status.</p>
+          <p class="card-desc">Players indirectly control a moth by toggling and adjusting the intensity of light sources to steer it. Originated as a jam concept, now rebuilding in 3D.</p>
           <div class="card-meta">
-            <div class="card-meta-item">started <span>TODO</span></div>
             <div class="card-meta-item">status <span>ongoing</span></div>
             <div class="card-meta-item">team <span>solo</span></div>
           </div>
         </div>
       </a>
 
-      <!-- PROJECT 6 -->
-      <a class="project-card" href="#">
+      <!-- SKY HIGH SCRUBBING -->
+      <a class="project-card" href="../sky-high-scrubbing/index.html">
         <div class="card-thumb">
-          <div class="card-thumb-placeholder">
-            <span class="card-thumb-icon">◈</span>
-            <span>// hero.png</span>
+          <div class="card-thumb">
+            <img src="../cover-images/skyhighscrubbing_hero.png" alt="Sky High Scrubbing" class="card-thumb-img">
           </div>
         </div>
         <div class="card-body">
           <div class="card-header">
-            <div class="card-title">Project Title</div>
+            <div class="card-title">Sky High Scrubbing</div>
             <span class="card-arrow">→</span>
           </div>
           <div class="card-tags">
-            <span class="tag tag-programming">Programming</span>
+            <span class="tag tag-design">Design</span>
+            <span class="tag tag-team">Team</span>
           </div>
-          <p class="card-desc">TODO: Short description — what sparked it, what you're exploring, current status.</p>
+          <p class="card-desc">Arcade cabinet microgame for Sheridan College's Design Week 2023, shipped in a week. P1 scrubs omnidirectionally, P2 moves the scaffolding and sprays water - one minute on the clock.</p>
           <div class="card-meta">
-            <div class="card-meta-item">started <span>TODO</span></div>
             <div class="card-meta-item">status <span>complete</span></div>
-            <div class="card-meta-item">team <span>solo</span></div>
+            <div class="card-meta-item">team <span>collab</span></div>
           </div>
         </div>
       </a>

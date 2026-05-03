@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Paint Rush Racer — Jonathan To</title>
+<title>Paint Rush Racer - Jonathan To</title>
 
 <style>
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
@@ -95,6 +96,126 @@
   .tok-method   { color: #dcdcaa; }
   .tok-param    { color: #9cdcfe; }
   .tok-bool     { color: #569cd6; }
+
+  /* BEFORE / AFTER SLIDER */
+  .ba-wrap {
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+  }
+  .ba-header {
+    background: #1e1e1e;
+    border-bottom: 1px solid var(--border);
+    padding: 7px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .ba-header-labels {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .ba-label-before { color: #c0625a; }
+  .ba-label-after  { color: var(--green); }
+  .ba-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    cursor: ew-resize;
+    user-select: none;
+    background: var(--bg-card);
+  }
+  .ba-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .ba-img-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ba-after {
+    clip-path: inset(0 50% 0 0);
+    transition: clip-path 0s;
+  }
+  .ba-divider {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 50%;
+    width: 2px;
+    background: var(--green);
+    transform: translateX(-50%);
+    pointer-events: none;
+    opacity: 0.85;
+  }
+  .ba-handle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--bg-panel);
+    border: 2px solid var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--green);
+    pointer-events: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+  .ba-tag {
+    position: absolute;
+    top: 10px;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 8px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+  .ba-tag-before {
+    left: 12px;
+    background: rgba(192,98,90,0.2);
+    color: #c0625a;
+    border: 1px solid rgba(192,98,90,0.4);
+  }
+  .ba-tag-after {
+    right: 12px;
+    background: rgba(126,200,126,0.15);
+    color: var(--green);
+    border: 1px solid rgba(126,200,126,0.3);
+  }
+  .ba-caption {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    padding: 8px 12px;
+    border-top: 1px solid var(--border);
+    background: var(--bg-panel);
+  }
 
   /* DEEP DIVE */
   .deep-dive-arc {
@@ -205,11 +326,11 @@
 
   /* LAYOUT */
   .page {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 2rem 2rem 4rem;
     display: grid;
-    grid-template-columns: 1fr 260px;
+    grid-template-columns: 1fr;
     gap: 2rem;
   }
 
@@ -294,7 +415,7 @@
   }
 
   /* HERO IMAGE */
-  .hero-image-section { grid-column: 1 / -1; }
+  .hero-image-section { grid-column: 1; }
   .hero-image-wrap {
     border: 1px solid var(--border);
     background: var(--bg-card);
@@ -326,7 +447,7 @@
   }
 
   /* MAIN COLUMN */
-  .main-col { min-width: 0; }
+  .main-col { min-width: 0; grid-column: 1 / -1; }
 
   /* SECTION BLOCK */
   .section-block {
@@ -400,6 +521,29 @@
     font-family: var(--mono);
     font-size: 10px;
     color: var(--text-dim);
+  }
+
+  /* DEEP DIVE GRID */
+  .deep-dive-grid {
+    display: grid;
+    grid-template-columns: 1fr 260px; /* Matches the width of the details sidebar */
+    column-gap: 1.5rem;
+  }
+  .deep-dive-left {
+    display: flex;
+    flex-direction: column;
+  }
+  .deep-dive-right {
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .deep-dive-right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   /* SIDEBAR */
@@ -522,12 +666,28 @@
   .rt-grid {
     grid-column: 1 / -1;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    border: 1px solid var(--border);
-    background: var(--border);
+    grid-template-columns: 1fr 260px;
+    column-gap: 1.5rem;
+    row-gap: 0;
   }
   .rt-panel { background: var(--bg-panel); padding: 0; }
+  .rt-panel-full {
+    grid-column: 1 / -1;
+    background: var(--bg-panel);
+    padding: 0;
+    border-top: 1px solid var(--border);
+  }
+  .rt-takeaways-cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+  .rt-takeaways-cols .rt-takeaway {
+    padding: 0 1.5rem;
+    border-right: 1px solid var(--border);
+  }
+  .rt-takeaways-cols .rt-takeaway:first-child { padding-left: 0; }
+  .rt-takeaways-cols .rt-takeaway:last-child { border-right: none; }
   .rt-panel-header {
     background: var(--bg-card);
     padding: 10px 16px;
@@ -619,14 +779,19 @@
   .ftab-panel.active {
     display: grid;
     grid-template-columns: 3fr 2fr;
+    grid-template-rows: 1fr;
   }
   .ftab-image {
     border-right: 1px solid var(--border);
-    aspect-ratio: 16/9;
     overflow: hidden;
+    position: relative;
+    background: #141414;
+    aspect-ratio: 4/3;
+    width: 100%;
   }
   .ftab-img-placeholder {
-    width: 100%; height: 100%;
+    position: absolute;
+    inset: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -636,6 +801,13 @@
     font-size: 11px;
     color: var(--text-muted);
     background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 50%, #1a1a2a 100%);
+  }
+  .ftab-image img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
   .ftab-img-icon { font-size: 32px; opacity: 0.15; }
   .ftab-content {
@@ -659,13 +831,14 @@
     display: flex;
     justify-content: space-between;
   }
+
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="../">Home()</a>
+  <a class="nav-logo" href="../index.html">Home()</a>
   <ul class="nav-links">
     <li><a href="../about/index.html"><span class="nav-icon">◇</span> About()</a></li>
     <li><a href="../portfolio/index.html"><span class="nav-icon">□</span> Portfolio()</a></li>
@@ -675,9 +848,11 @@
 
 <!-- BREADCRUMB -->
 <div class="breadcrumb-bar">
+
   <a href="../portfolio/index.html">Portfolio()</a>
   <span class="breadcrumb-sep">/</span>
   <span class="breadcrumb-current">PaintRushRacer.cs</span>
+
 </div>
 
 <!-- PAGE GRID -->
@@ -685,6 +860,7 @@
 
   <!-- PROJECT HEADER -->
   <header class="project-header">
+
     <span class="header-comment-top">// ============================================================</span>
     <h1 class="project-title">Paint Rush Racer</h1>
     <!-- TODO: Update subtitle with your role(s) and context (e.g. school, game jam) -->
@@ -696,11 +872,12 @@
       <span class="tag tag-unity">Unity</span>
     </div>
     <!-- TODO: One-sentence description of the project -->
-    <p class="project-desc">TODO: Short project description — what it is, what makes it interesting.</p>
+    <p class="project-desc">TODO: Short project description - what it is, what makes it interesting.</p>
+  
   </header>
 
   <!-- HERO IMAGE -->
-  <section class="hero-image-section">
+  <section class="hero-image-section" style="grid-column: 1 / -1;">
     <div class="hero-image-wrap">
       <!-- TODO: Replace hero-placeholder with <img src="hero.png" alt="..."> when ready -->
       <div class="hero-placeholder">
@@ -708,186 +885,36 @@
         <span>// hero_screenshot.png</span>
       </div>
       <!-- TODO: Update caption -->
-      <div class="image-caption">// fig_01 — Main gameplay screenshot · Paint Rush Racer</div>
+      <div class="image-caption">// fig_01 - Main gameplay screenshot · Paint Rush Racer</div>
     </div>
   </section>
 
   <!-- ROLES & TAKEAWAYS -->
   <div class="rt-grid">
-    <div class="rt-panel">
+    <!-- LEFT: Contributions -->
+    <div class="rt-panel" style="border: 1px solid var(--border);">
       <div class="rt-panel-header">
         <div class="dot"></div>
         // my_contributions[]
       </div>
       <div class="rt-panel-body">
-        <ul class="contrib-list">
+<ul class="contrib-list">
           <!-- TODO: List your specific contributions to the project -->
-          <li class="contrib-item"><span class="contrib-bullet">—</span>TODO: Contribution one</li>
-          <li class="contrib-item"><span class="contrib-bullet">—</span>TODO: Contribution two</li>
-          <li class="contrib-item"><span class="contrib-bullet">—</span>TODO: Contribution three</li>
-          <li class="contrib-item"><span class="contrib-bullet">—</span>TODO: Contribution four</li>
+          <li class="contrib-item"><span class="contrib-bullet">-</span>TODO: Contribution one</li>
+          <li class="contrib-item"><span class="contrib-bullet">-</span>TODO: Contribution two</li>
+          <li class="contrib-item"><span class="contrib-bullet">-</span>TODO: Contribution three</li>
+          <li class="contrib-item"><span class="contrib-bullet">-</span>TODO: Contribution four</li>
         </ul>
       </div>
     </div>
-    <div class="rt-panel" style="border-left: 1px solid var(--border);">
+    <!-- RIGHT: Project Details + Links -->
+    <div class="rt-panel" style="border: 1px solid var(--border);">
       <div class="rt-panel-header">
         <div class="dot"></div>
-        // takeaways[]
+        // project_meta
       </div>
       <div class="rt-panel-body">
-        <div class="rt-takeaways">
-          <!-- TODO: What did you learn? Use a short label + 1-2 sentence reflection -->
-          <div class="rt-takeaway">
-            <span class="rt-takeaway-bullet">▸</span>
-            <div class="rt-takeaway-text">
-              <div class="rt-takeaway-label">TODO: Category (e.g. Architecture)</div>
-              TODO: What you learned or would do differently.
-            </div>
-          </div>
-          <div class="rt-takeaway">
-            <span class="rt-takeaway-bullet">▸</span>
-            <div class="rt-takeaway-text">
-              <div class="rt-takeaway-label">TODO: Category</div>
-              TODO: Takeaway two.
-            </div>
-          </div>
-          <div class="rt-takeaway">
-            <span class="rt-takeaway-bullet">▸</span>
-            <div class="rt-takeaway-text">
-              <div class="rt-takeaway-label">TODO: Category</div>
-              TODO: Takeaway three.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- KEY FEATURES TABS -->
-  <!-- TODO: Update tab names and content for each key feature -->
-  <div style="grid-column: 1 / -1;">
-    <span class="section-comment" style="display:block; margin-bottom: 1rem;">// key_features[]</span>
-    <div class="feature-tabs" id="featureTabs">
-      <div class="ftab-bar">
-        <button class="ftab-btn active" data-tab="0"><span class="ftab-num">01</span><span class="ftab-name">TODO: Feature 1</span></button>
-        <button class="ftab-btn" data-tab="1"><span class="ftab-num">02</span><span class="ftab-name">TODO: Feature 2</span></button>
-        <button class="ftab-btn" data-tab="2"><span class="ftab-num">03</span><span class="ftab-name">TODO: Feature 3</span></button>
-        <button class="ftab-btn" data-tab="3"><span class="ftab-num">04</span><span class="ftab-name">TODO: Feature 4</span></button>
-      </div>
-      <div class="ftab-panel active" data-panel="0">
-        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_01.png</span></div></div>
-        <div class="ftab-content">
-          <div class="ftab-label">TODO: Feature 1 Title</div>
-          <p class="ftab-desc">TODO: Describe the feature — what it does, how you built it, what makes it interesting from a technical or design perspective.</p>
-        </div>
-      </div>
-      <div class="ftab-panel" data-panel="1">
-        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_02.png</span></div></div>
-        <div class="ftab-content">
-          <div class="ftab-label">TODO: Feature 2 Title</div>
-          <p class="ftab-desc">TODO: Describe the feature.</p>
-        </div>
-      </div>
-      <div class="ftab-panel" data-panel="2">
-        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_03.png</span></div></div>
-        <div class="ftab-content">
-          <div class="ftab-label">TODO: Feature 3 Title</div>
-          <p class="ftab-desc">TODO: Describe the feature.</p>
-        </div>
-      </div>
-      <div class="ftab-panel" data-panel="3">
-        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_04.png</span></div></div>
-        <div class="ftab-content">
-          <div class="ftab-label">TODO: Feature 4 Title</div>
-          <p class="ftab-desc">TODO: Describe the feature.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MAIN CONTENT -->
-  <main class="main-col">
-
-    <!-- OVERVIEW -->
-    <div class="section-block">
-      <div class="section-block-header">
-        <div class="dot"></div>
-        // overview
-      </div>
-      <div class="section-block-body">
-        <!-- TODO: 1–2 paragraphs describing the project in more detail -->
-        <p>TODO: What is JellyFish? What was the goal of the project? What's the genre/platform/scope?</p>
-        <p>TODO: What was the core design or technical challenge you were trying to solve?</p>
-      </div>
-    </div>
-
-    <!-- DEEP DIVE -->
-    <!-- TODO: Pick one interesting technical or design problem you solved and walk through it -->
-    <div class="section-block" style="margin-bottom:0;">
-      <div class="section-block-header">
-        <div class="dot"></div>
-        // deep_dive — TODO: topic name (e.g. "fluid simulation approach")
-      </div>
-      <div class="section-block-body" style="padding-bottom: 0;">
-        <p>TODO: Set up the problem. What was the challenge, and why was it hard? Give enough context that someone unfamiliar with the project understands the stakes.</p>
-      </div>
-    </div>
-    <div class="deep-dive-arc">
-      <div class="arc-step">
-        <div class="arc-step-label">
-          <span class="arc-step-tag">problem</span>
-          <span class="arc-step-icon">◎</span>
-        </div>
-        <div class="arc-step-body">
-          <div class="arc-step-title">TODO: Short problem statement</div>
-          <p>TODO: Describe the root cause or constraint you were dealing with.</p>
-        </div>
-      </div>
-      <div class="arc-step">
-        <div class="arc-step-label">
-          <span class="arc-step-tag">approach</span>
-          <span class="arc-step-icon">◈</span>
-        </div>
-        <div class="arc-step-body">
-          <div class="arc-step-title">TODO: How you approached it</div>
-          <p>TODO: What did you try? What decisions did you make and why?</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- TODO: Optionally add a code block here. Remove this section if not applicable. -->
-    <div class="code-block" style="margin-bottom: 2rem;">
-      <div class="code-block-header">
-        <span class="code-block-filename">TODO: FileName.cs — brief description</span>
-        <span class="code-block-lang">C#</span>
-      </div>
-      <pre><code><span class="tok-comment">// TODO: Paste a relevant code snippet here</span>
-<span class="tok-comment">// Remove this entire .code-block div if you don't have one</span></code></pre>
-    </div>
-
-    <div class="deep-dive-arc" style="margin-bottom: 2rem;">
-      <div class="arc-step">
-        <div class="arc-step-label">
-          <span class="arc-step-tag">result</span>
-          <span class="arc-step-icon">▸</span>
-        </div>
-        <div class="arc-step-body">
-          <div class="arc-step-title">TODO: Outcome</div>
-          <p>TODO: What was the result? What worked, what didn't, what would you change?</p>
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-
-    <!-- PROJECT META -->
-    <div class="sidebar-card">
-      <div class="sidebar-card-header">// project_meta</div>
-      <div class="sidebar-card-body">
-        <!-- TODO: Fill in project metadata -->
+<!-- TODO: Fill in project metadata -->
         <div class="meta-row">
           <span class="meta-key">status</span>
           <span class="meta-val highlight">TODO: complete / in progress</span>
@@ -930,33 +957,171 @@
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- TECH STACK -->
-    <div class="sidebar-card">
-      <div class="sidebar-card-header">// tech_stack[]</div>
-      <div class="sidebar-card-body">
-        <div class="tech-list">
-          <!-- TODO: List tools and technologies used -->
-          <div class="tech-item">
-            <div class="tech-bullet"></div>
-            <span class="tech-name">TODO: Engine / Language</span>
-            <span class="tech-note">primary</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-bullet"></div>
-            <span class="tech-name">TODO: Tool</span>
-            <span class="tech-note">art</span>
-          </div>
-          <div class="tech-item">
-            <div class="tech-bullet"></div>
-            <span class="tech-name">TODO: Tool</span>
-            <span class="tech-note">audio</span>
-          </div>
+  <!-- KEY FEATURES TABS -->
+  <div style="grid-column: 1 / -1;">
+    <span class="section-comment" style="display:block; margin-bottom: 1rem;">// key_features[]</span>
+    <div class="feature-tabs" id="featureTabs">
+      <div class="ftab-bar">
+        <button class="ftab-btn active" data-tab="0"><span class="ftab-num">01</span><span class="ftab-name">TODO: Feature 1</span></button>
+        <button class="ftab-btn" data-tab="1"><span class="ftab-num">02</span><span class="ftab-name">TODO: Feature 2</span></button>
+        <button class="ftab-btn" data-tab="2"><span class="ftab-num">03</span><span class="ftab-name">TODO: Feature 3</span></button>
+        <button class="ftab-btn" data-tab="3"><span class="ftab-num">04</span><span class="ftab-name">TODO: Feature 4</span></button>
+      </div>
+      <div class="ftab-panel active" data-panel="0">
+        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_01.png</span></div></div>
+        <div class="ftab-content">
+          <div class="ftab-label">TODO: Feature 1 Title</div>
+          <p class="ftab-desc">TODO: Describe the feature - what it does, how you built it, what makes it interesting from a technical or design perspective.</p>
+        </div>
+      </div>
+      <div class="ftab-panel" data-panel="1">
+        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_02.png</span></div></div>
+        <div class="ftab-content">
+          <div class="ftab-label">TODO: Feature 2 Title</div>
+          <p class="ftab-desc">TODO: Describe the feature.</p>
+        </div>
+      </div>
+      <div class="ftab-panel" data-panel="2">
+        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_03.png</span></div></div>
+        <div class="ftab-content">
+          <div class="ftab-label">TODO: Feature 3 Title</div>
+          <p class="ftab-desc">TODO: Describe the feature.</p>
+        </div>
+      </div>
+      <div class="ftab-panel" data-panel="3">
+        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_04.png</span></div></div>
+        <div class="ftab-content">
+          <div class="ftab-label">TODO: Feature 4 Title</div>
+          <p class="ftab-desc">TODO: Describe the feature.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- MAIN CONTENT -->
+  <main class="main-col">
+    <div class="section-block" style="margin-bottom:0;">
+      <div class="section-block-header">
+        <div class="dot"></div>
+        // deep_dive - TODO: topic name (e.g. "fluid simulation approach")
+      </div>
+    </div>
+    <div class="deep-dive-arc">
+      <div class="arc-step">
+        <div class="arc-step-label">
+          <span class="arc-step-tag">problem</span>
+          <span class="arc-step-icon">◎</span>
+        </div>
+        <div class="arc-step-body">
+          <div class="arc-step-title">TODO: Short problem statement</div>
+          <p>TODO: Describe the root cause or constraint you were dealing with.</p>
+        </div>
+      </div>
+      <div class="arc-step">
+        <div class="arc-step-label">
+          <span class="arc-step-tag">approach</span>
+          <span class="arc-step-icon">◈</span>
+        </div>
+        <div class="arc-step-body">
+          <div class="arc-step-title">TODO: How you approached it</div>
+          <p>TODO: What did you try? What decisions did you make and why?</p>
         </div>
       </div>
     </div>
 
-  </aside>
+    <!-- SLIDER (70%) + CODE (30%) -->
+    <div style="display: grid; grid-template-columns: 7fr 3fr; gap: 1.5rem; margin-bottom: 2rem;">
+
+      <!-- LEFT: Before / After slider -->
+      <div class="ba-wrap" style="margin: 0;">
+        <div class="ba-header">
+          <span>// deep_dive_visual</span>
+          <span class="ba-header-labels">
+            <span class="ba-label-before">◎ before</span>
+            <span class="ba-label-after">◎ after</span>
+          </span>
+        </div>
+        <div class="ba-container" id="baSlider">
+          <!-- swap with: <img class="ba-img" src="images/deep_dive_before.png" alt="Before fix"> -->
+          <div class="ba-img-placeholder" style="background: #1e1a1a;">
+            <span style="font-size:32px; opacity:0.15;">◎</span>
+            <span>before</span>
+            <span style="font-size:10px; opacity:0.5;">replace with: images/deep_dive_before.png</span>
+          </div>
+          <!-- swap with: <img class="ba-img ba-after" id="baAfter" src="images/deep_dive_after.png" alt="After fix"> -->
+          <div class="ba-after ba-img-placeholder" id="baAfter" style="background: #1a1e1a;">
+            <span style="font-size:32px; opacity:0.15;">◈</span>
+            <span>after</span>
+            <span style="font-size:10px; opacity:0.5;">replace with: images/deep_dive_after.png</span>
+          </div>
+          <span class="ba-tag ba-tag-before">before</span>
+          <span class="ba-tag ba-tag-after">after</span>
+          <div class="ba-divider" id="baDivider"></div>
+          <div class="ba-handle" id="baHandle">⇔</div>
+        </div>
+        <div class="ba-caption">// drag to compare</div>
+      </div>
+
+      <!-- RIGHT: Code block -->
+      <div class="code-block" style="margin: 0; display: flex; flex-direction: column;">
+        <div class="code-block-header">
+          <span class="code-block-filename">TODO: FileName.cs - brief description</span>
+          <span class="code-block-lang">C#</span>
+        </div>
+        <pre style="flex: 1; overflow-y: auto; overflow-x: hidden; white-space: pre-wrap; word-break: break-word;"><code><span class="tok-comment">// TODO: Paste a relevant code snippet here</span>
+<span class="tok-comment">// Remove this entire .code-block div if you don't have one</span></code></pre>
+      </div>
+
+    </div>
+
+    <div class="deep-dive-arc" style="margin-bottom: 2rem;">
+      <div class="arc-step">
+        <div class="arc-step-label">
+          <span class="arc-step-tag">result</span>
+          <span class="arc-step-icon">▸</span>
+        </div>
+        <div class="arc-step-body">
+          <div class="arc-step-title">TODO: Outcome</div>
+          <p>TODO: What was the result? What worked, what didn't, what would you change?</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+    <!-- TAKEAWAYS -->
+  <div class="rt-panel-full" style="grid-column: 1 / -1; border: 1px solid var(--border);">
+    <div class="rt-panel-header">
+      <div class="dot"></div>
+      // takeaways[]
+    </div>
+    <div class="rt-panel-body">
+      <div class="rt-takeaways-cols">
+        <div class="rt-takeaway">
+          <span class="rt-takeaway-bullet">▸</span>
+          <div class="rt-takeaway-text">
+            <div class="rt-takeaway-label">TODO: Category (e.g. Architecture)</div>
+            TODO: What you learned or would do differently.
+          </div>
+        </div>
+        <div class="rt-takeaway">
+          <span class="rt-takeaway-bullet">▸</span>
+          <div class="rt-takeaway-text">
+            <div class="rt-takeaway-label">TODO: Category</div>
+            TODO: Takeaway two.
+          </div>
+        </div>
+        <div class="rt-takeaway">
+          <span class="rt-takeaway-bullet">▸</span>
+          <div class="rt-takeaway-text">
+            <div class="rt-takeaway-label">TODO: Category</div>
+            TODO: Takeaway three.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- PREV / NEXT NAV -->
   <!-- TODO: Update project names and hrefs to adjacent projects -->
@@ -979,6 +1144,34 @@
 
 </div>
 <script>
+
+  // Before / After Slider
+  (function() {
+    const container = document.getElementById('baSlider');
+    const after     = document.getElementById('baAfter');
+    const divider   = document.getElementById('baDivider');
+    const handle    = document.getElementById('baHandle');
+    if (!container) return;
+
+    let dragging = false;
+
+    function setPos(x) {
+      const rect = container.getBoundingClientRect();
+      let pct = Math.max(0, Math.min(1, (x - rect.left) / rect.width));
+      const p = (pct * 100).toFixed(2) + '%';
+      after.style.clipPath   = `inset(0 ${(100 - pct * 100).toFixed(2)}% 0 0)`;
+      divider.style.left     = p;
+      handle.style.left      = p;
+    }
+
+    container.addEventListener('mousedown',  e => { dragging = true; setPos(e.clientX); });
+    window.addEventListener  ('mousemove',   e => { if (dragging) setPos(e.clientX); });
+    window.addEventListener  ('mouseup',     ()  => { dragging = false; });
+    container.addEventListener('touchstart', e => { dragging = true; setPos(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener  ('touchmove',   e => { if (dragging) setPos(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener  ('touchend',    ()  => { dragging = false; });
+  })();
+
   document.querySelectorAll('.ftab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const idx = btn.dataset.tab;
@@ -988,6 +1181,7 @@
       document.querySelector(`.ftab-panel[data-panel="${idx}"]`).classList.add('active');
     });
   });
+
 </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Cosmic Ranger V - Jonathan To</title>
+<title>Light Moth - Jonathan To</title>
 
 <style>
 
@@ -779,15 +779,13 @@
   .ftab-panel.active {
     display: grid;
     grid-template-columns: 3fr 2fr;
-    grid-template-rows: 1fr;
   }
   .ftab-image {
     border-right: 1px solid var(--border);
     overflow: hidden;
     position: relative;
     background: #141414;
-    aspect-ratio: 4/3;
-    width: 100%;
+    min-height: 280px;
   }
   .ftab-img-placeholder {
     position: absolute;
@@ -848,11 +846,9 @@
 
 <!-- BREADCRUMB -->
 <div class="breadcrumb-bar">
-
-  <a href="../portfolio/.index.html">Portfolio()</a>
+  <a href="../portfolio/index.html">PersonalProjects()</a>
   <span class="breadcrumb-sep">/</span>
-  <span class="breadcrumb-current">CosmicRangerV.cs</span>
-
+  <span class="breadcrumb-current">LightMoth.cs</span>
 </div>
 
 <!-- PAGE GRID -->
@@ -860,36 +856,29 @@
 
   <!-- PROJECT HEADER -->
   <header class="project-header">
-
     <span class="header-comment-top">// ============================================================</span>
-    <h1 class="project-title">Cosmic Ranger V</h1>
-    <!-- TODO: Update subtitle with your role(s) and context (e.g. school, game jam) -->
+    <h1 class="project-title">Light Moth</h1>
     <div class="project-subtitle">// TODO: Role · Context</div>
     <div class="tag-row">
-      <!-- TODO: Add/remove tags to match the project. Options: tag-programming, tag-design, tag-unity, tag-unreal, tag-art -->
       <span class="tag tag-programming">Programming</span>
       <span class="tag tag-design">Design</span>
       <span class="tag tag-unity">Unity</span>
     </div>
-    <!-- TODO: One-sentence description of the project -->
     <p class="project-desc">TODO: Short project description - what it is, what makes it interesting.</p>
-  
   </header>
 
   <!-- HERO IMAGE -->
-  <section class="hero-image-section" style="grid-column: 1 / -1;">
+  <section class="hero-image-section">
     <div class="hero-image-wrap">
-      <!-- TODO: Replace hero-placeholder with <img src="hero.png" alt="..."> when ready -->
       <div class="hero-placeholder">
         <div class="hero-placeholder-icon">◈</div>
         <span>// hero_screenshot.png</span>
       </div>
-      <!-- TODO: Update caption -->
-      <div class="image-caption">// fig_01 - Main gameplay screenshot · Cosmic Ranger V</div>
+      <div class="image-caption">// fig_01 - Main gameplay screenshot · Light Moth</div>
     </div>
   </section>
 
-  <!-- ROLES & TAKEAWAYS -->
+  <!-- ROLES & METADATA -->
   <div class="rt-grid">
     <!-- LEFT: Contributions -->
     <div class="rt-panel" style="border: 1px solid var(--border);">
@@ -898,8 +887,7 @@
         // my_contributions[]
       </div>
       <div class="rt-panel-body">
-<ul class="contrib-list">
-          <!-- TODO: List your specific contributions to the project -->
+        <ul class="contrib-list">
           <li class="contrib-item"><span class="contrib-bullet">-</span>TODO: Contribution one</li>
           <li class="contrib-item"><span class="contrib-bullet">-</span>TODO: Contribution two</li>
           <li class="contrib-item"><span class="contrib-bullet">-</span>TODO: Contribution three</li>
@@ -914,7 +902,6 @@
         // project_meta
       </div>
       <div class="rt-panel-body">
-<!-- TODO: Fill in project metadata -->
         <div class="meta-row">
           <span class="meta-key">status</span>
           <span class="meta-val highlight">TODO: complete / in progress</span>
@@ -941,7 +928,6 @@
         </div>
         <div style="border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px;">
           <div style="font-family: var(--mono); font-size: 10px; color: var(--text-muted); margin-bottom: 10px; letter-spacing: 0.05em;">// links[]</div>
-          <!-- TODO: Update hrefs. Remove any links that don't apply -->
           <a class="link-btn" href="#">
             <span class="link-btn-icon">▷</span> Play on itch.io
             <span class="link-btn-arrow">→</span>
@@ -1124,7 +1110,6 @@
   </div>
 
   <!-- PREV / NEXT NAV -->
-  <!-- TODO: Update project names and hrefs to adjacent projects -->
   <nav class="project-nav">
     <a class="project-nav-item" href="#">
       <span class="nav-dir">// ← prev_project</span>
