@@ -445,16 +445,40 @@
       creating bounce pads, speed boosts, and slowdown zones to control space and outmaneuver opponents.</p>
   </header>
 
-  <!-- HERO IMAGE -->
+  <!-- HERO VIDEO -->
   <section style="grid-column: 1 / -1;">
     <div class="hero-image-wrap">
-      <div class="hero-placeholder">
-        <div class="hero-placeholder-icon">◈</div>
-        <span>// hero_screenshot.png</span>
+      <div class="yt-embed" data-id="ozZJKUA0SN8" style="position:relative; aspect-ratio:16/9; cursor:pointer; overflow:hidden; background:#0d0d0d;">
+        <img
+          src="https://img.youtube.com/vi/ozZJKUA0SN8/maxresdefault.jpg"
+          alt="Paint Rush Racer gameplay"
+          style="width:100%; height:100%; object-fit:cover; display:block;">
+        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+            <div style="width:56px; height:56px; background:rgba(0,0,0,0.7); border:2px solid var(--green); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--green); font-size:20px; transition: background 0.15s;">▶</div>
+            <span style="font-family:var(--mono); font-size:11px; color:var(--text-muted); letter-spacing:0.08em;">// click to play</span>
+          </div>
+        </div>
       </div>
-      <div class="image-caption">// fig_01 - Main gameplay screenshot · Paint Rush Racer</div>
+      <div class="image-caption">// fig_01 - Gameplay trailer · Paint Rush Racer</div>
     </div>
   </section>
+
+  <script>
+  document.querySelectorAll('.yt-embed').forEach(el => {
+    el.addEventListener('click', () => {
+      const id = el.dataset.id;
+      el.innerHTML = `
+        <iframe 
+          src="https://www.youtube.com/embed/${id}?autoplay=1&origin=${location.origin}"
+          style="width:100%;height:100%;border:none;display:block;"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen>
+        </iframe>`;
+    });
+  });
+</script>
 
   <!-- ROLES & TAKEAWAYS -->
   <div class="rt-grid" style="row-gap: 1.5rem;">
