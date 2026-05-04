@@ -407,7 +407,7 @@
     font-size: 13px;
     color: var(--text-dim);
     line-height: 1.8;
-    max-width: 700px;
+    max-width: 100%;
   }
   .project-desc::before {
     content: '// ';
@@ -415,7 +415,6 @@
   }
 
   /* HERO IMAGE */
-  .hero-image-section { grid-column: 1; }
   .hero-image-wrap {
     border: 1px solid var(--border);
     background: var(--bg-card);
@@ -481,135 +480,6 @@
   }
   .section-block-body p:last-child { margin-bottom: 0; }
 
-  /* SCREENSHOT GRID */
-  .screenshot-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    margin-bottom: 2rem;
-  }
-  .screenshot-cell {
-    background: var(--bg-card);
-    aspect-ratio: 16/9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-muted);
-    flex-direction: column;
-    gap: 8px;
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .screenshot-cell:hover { background: #303030; }
-  .screenshot-cell img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    position: absolute;
-    inset: 0;
-  }
-  .screenshot-label {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    background: rgba(0,0,0,0.7);
-    padding: 4px 8px;
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-dim);
-  }
-
-  /* DEEP DIVE GRID */
-  .deep-dive-grid {
-    display: grid;
-    grid-template-columns: 1fr 260px; /* Matches the width of the details sidebar */
-    column-gap: 1.5rem;
-  }
-  .deep-dive-left {
-    display: flex;
-    flex-direction: column;
-  }
-  .deep-dive-right {
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-  .deep-dive-right img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* SIDEBAR */
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    align-self: start;
-  }
-  .sidebar-card {
-    border: 1px solid var(--border);
-    background: var(--bg-panel);
-  }
-  .sidebar-card-header {
-    padding: 8px 14px;
-    background: var(--bg-card);
-    border-bottom: 1px solid var(--border);
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--green-dim);
-  }
-  .sidebar-card-body { padding: 14px; }
-
-  .meta-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 7px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-  }
-  .meta-row:last-child { border-bottom: none; }
-  .meta-key {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-muted);
-  }
-  .meta-val {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text);
-    text-align: right;
-  }
-  .meta-val.highlight { color: var(--green); }
-
-  .tech-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .tech-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: var(--mono);
-    font-size: 12px;
-  }
-  .tech-bullet {
-    width: 4px; height: 4px;
-    border-radius: 50%;
-    background: var(--green);
-    opacity: 0.6;
-    flex-shrink: 0;
-  }
-  .tech-name { color: var(--text); }
-  .tech-note { color: var(--text-muted); margin-left: auto; font-size: 10px; }
-
   /* LINK BTNS */
   .link-btn {
     display: flex;
@@ -668,7 +538,6 @@
     display: grid;
     grid-template-columns: 1fr 260px;
     column-gap: 1.5rem;
-    row-gap: 0;
   }
   .rt-panel { background: var(--bg-panel); padding: 0; }
   .rt-panel-full {
@@ -701,6 +570,12 @@
   }
   .rt-panel-body { padding: 1.25rem 1.5rem; }
 
+  .meta-row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .meta-row:last-child { border-bottom: none; }
+  .meta-key { font-family: var(--mono); font-size: 11px; color: var(--text-muted); }
+  .meta-val { font-family: var(--mono); font-size: 11px; color: var(--text); text-align: right; }
+  .meta-val.highlight { color: var(--green); }
+
   .contrib-list {
     list-style: none;
     display: flex;
@@ -717,7 +592,6 @@
   }
   .contrib-bullet { color: var(--green-dim); flex-shrink: 0; margin-top: 1px; }
 
-  .rt-takeaways { display: flex; flex-direction: column; gap: 10px; }
   .rt-takeaway { display: flex; gap: 12px; align-items: flex-start; }
   .rt-takeaway-bullet {
     font-family: var(--mono);
@@ -779,7 +653,6 @@
   .ftab-panel.active {
     display: grid;
     grid-template-columns: 3fr 2fr;
-    grid-template-rows: 1fr;
   }
   .ftab-image {
     border-right: 1px solid var(--border);
@@ -848,11 +721,9 @@
 
 <!-- BREADCRUMB -->
 <div class="breadcrumb-bar">
-
   <a href="../portfolio/index.html">Portfolio()</a>
   <span class="breadcrumb-sep">/</span>
   <span class="breadcrumb-current">BunkerDownDemo.cs</span>
-
 </div>
 
 <!-- PAGE GRID -->
@@ -860,24 +731,22 @@
 
   <!-- PROJECT HEADER -->
   <header class="project-header">
-
     <span class="header-comment-top">// ============================================================</span>
     <h1 class="project-title">Bunker Down! Demo</h1>
     <!-- TODO: Update subtitle with your role(s) and context (e.g. school, game jam) -->
-    <div class="project-subtitle">// TODO: Role · Context</div>
+    <div class="project-subtitle">// Gameplay Programmer · Contract</div>
     <div class="tag-row">
       <!-- TODO: Add/remove tags to match the project. Options: tag-programming, tag-design, tag-unity, tag-unreal, tag-art -->
       <span class="tag tag-programming">Programming</span>
-      <span class="tag tag-design">Design</span>
       <span class="tag tag-unity">Unity</span>
     </div>
     <!-- TODO: One-sentence description of the project -->
-    <p class="project-desc">TODO: Short project description - what it is, what makes it interesting.</p>
-  
+    <p class="project-desc">A virtual demo of the physical board game, Bunker Down!, created as a marketing tool for our client's Kickstarter campaign. 
+      Worked as programmer on the card and deck systems, game phase manager, animated UI board, and co-developed a suite of NPC opponents with distinct decision-making behaviours.</p>
   </header>
 
   <!-- HERO IMAGE -->
-  <section class="hero-image-section" style="grid-column: 1 / -1;">
+  <section style="grid-column: 1 / -1;">
     <div class="hero-image-wrap">
       <!-- TODO: Replace hero-placeholder with <img src="hero.png" alt="..."> when ready -->
       <div class="hero-placeholder">
@@ -890,70 +759,57 @@
   </section>
 
   <!-- ROLES & TAKEAWAYS -->
-  <div class="rt-grid">
-    <!-- LEFT: Contributions -->
-    <div class="rt-panel" style="border: 1px solid var(--border);">
+  <div class="rt-grid" style="row-gap: 1.5rem;">
+    <!-- LEFT row 1: Overview -->
+    <div class="rt-panel" style="border: 1px solid var(--border); grid-column: 1; grid-row: 1;">
       <div class="rt-panel-header">
-        <div class="dot"></div>
+        <div class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--green);opacity:0.5;"></div>
+        // overview
+      </div>
+      <div class="rt-panel-body">
+        <p style="font-family: var(--mono); font-size: 12px; color: var(--text-dim); line-height: 1.8;">//  Served as the primary systems programmer - responsible for the card and deck architecture, 
+the phase-driven game manager, and the UI board that serves as the player's sole interaction layer. 
+Co-developed four NPC opponents, each with distinct behavioural profiles built on top of shared game systems.</p>
+      </div>
+    </div>
+
+    <!-- LEFT row 2: Contributions -->
+    <div class="rt-panel" style="border: 1px solid var(--border); grid-column: 1; grid-row: 2;">
+      <div class="rt-panel-header">
+        <div class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--green);opacity:0.5;"></div>
         // my_contributions[]
       </div>
       <div class="rt-panel-body">
-<ul class="contrib-list">
+        <ul class="contrib-list">
           <!-- TODO: List your specific contributions to the project -->
-          <li class="contrib-item"><span class="contrib-bullet">-</span>TODO: Contribution one</li>
-          <li class="contrib-item"><span class="contrib-bullet">-</span>TODO: Contribution two</li>
-          <li class="contrib-item"><span class="contrib-bullet">-</span>TODO: Contribution three</li>
-          <li class="contrib-item"><span class="contrib-bullet">-</span>TODO: Contribution four</li>
+          <li class="contrib-item"><span class="contrib-bullet">-</span>Scriptable object-based card and deck system, including card data architecture and runtime deck management</li>
+          <li class="contrib-item"><span class="contrib-bullet">-</span>Game manager handling turn structure and phase sequencing across all game states</li>
+          <li class="contrib-item"><span class="contrib-bullet">-</span>Animated UI game board, with all player interaction routed through physical-style board buttons</li>
+          <li class="contrib-item"><span class="contrib-bullet">-</span>Co-developed four NPC opponents with distinct resource and card-play behaviours</li>
         </ul>
       </div>
     </div>
-    <!-- RIGHT: Project Details + Links -->
-    <div class="rt-panel" style="border: 1px solid var(--border);">
+
+    <!-- RIGHT: Project meta - spans both rows -->
+    <div class="rt-panel" style="border: 1px solid var(--border); grid-column: 2; grid-row: 1 / 3;">
       <div class="rt-panel-header">
-        <div class="dot"></div>
+        <div class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--green);opacity:0.5;"></div>
         // project_meta
       </div>
       <div class="rt-panel-body">
-<!-- TODO: Fill in project metadata -->
-        <div class="meta-row">
-          <span class="meta-key">status</span>
-          <span class="meta-val highlight">TODO: complete / in progress</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-key">year</span>
-          <span class="meta-val">TODO: 2026</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-key">duration</span>
-          <span class="meta-val">TODO: X months</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-key">team_size</span>
-          <span class="meta-val">TODO: N (solo / team)</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-key">platform</span>
-          <span class="meta-val">TODO: PC / WebGL / etc.</span>
-        </div>
-        <div class="meta-row" style="margin-bottom: 1rem;">
-          <span class="meta-key">context</span>
-          <span class="meta-val">TODO: Game Jam / Class / Personal</span>
-        </div>
-        <div style="border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px;">
-          <div style="font-family: var(--mono); font-size: 10px; color: var(--text-muted); margin-bottom: 10px; letter-spacing: 0.05em;">// links[]</div>
+        <!-- TODO: Fill in project metadata -->
+        <div class="meta-row"><span class="meta-key">status</span><span class="meta-val highlight">complete</span></div>
+        <div class="meta-row"><span class="meta-key">year</span><span class="meta-val">2023</span></div>
+        <div class="meta-row"><span class="meta-key">duration</span><span class="meta-val">4 months</span></div>
+        <div class="meta-row"><span class="meta-key">team_size</span><span class="meta-val">2 (team)</span></div>
+        <div class="meta-row"><span class="meta-key">platform</span><span class="meta-val">PC / WebGL</span></div>
+        <div class="meta-row" style="margin-bottom:1rem;"><span class="meta-key">context</span><span class="meta-val">Contract</span></div>
+        <div style="border-top:1px solid var(--border);padding-top:12px;margin-top:4px;">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text-muted);margin-bottom:10px;letter-spacing:0.05em;">// links[]</div>
           <!-- TODO: Update hrefs. Remove any links that don't apply -->
-          <a class="link-btn" href="#">
-            <span class="link-btn-icon">▷</span> Play on itch.io
-            <span class="link-btn-arrow">→</span>
-          </a>
-          <a class="link-btn" href="#">
-            <span class="link-btn-icon">◇</span> View on GitHub
-            <span class="link-btn-arrow">→</span>
-          </a>
-          <a class="link-btn" href="#" style="margin-bottom: 0;">
-            <span class="link-btn-icon">□</span> Design Doc (PDF)
-            <span class="link-btn-arrow">→</span>
-          </a>
+          <a class="link-btn" href="#"><span class="link-btn-icon">▷</span> Play on itch.io <span class="link-btn-arrow">→</span></a>
+          <a class="link-btn" href="#"><span class="link-btn-icon">◇</span> View on GitHub <span class="link-btn-arrow">→</span></a>
+          <a class="link-btn" href="#" style="margin-bottom: 0;"><span class="link-btn-icon">□</span> Design Doc (PDF) <span class="link-btn-arrow">→</span></a>
         </div>
       </div>
     </div>
@@ -964,43 +820,51 @@
     <span class="section-comment" style="display:block; margin-bottom: 1rem;">// key_features[]</span>
     <div class="feature-tabs" id="featureTabs">
       <div class="ftab-bar">
-        <button class="ftab-btn active" data-tab="0"><span class="ftab-num">01</span><span class="ftab-name">TODO: Feature 1</span></button>
-        <button class="ftab-btn" data-tab="1"><span class="ftab-num">02</span><span class="ftab-name">TODO: Feature 2</span></button>
-        <button class="ftab-btn" data-tab="2"><span class="ftab-num">03</span><span class="ftab-name">TODO: Feature 3</span></button>
-        <button class="ftab-btn" data-tab="3"><span class="ftab-num">04</span><span class="ftab-name">TODO: Feature 4</span></button>
+        <button class="ftab-btn active" data-tab="0"><span class="ftab-num">01</span><span class="ftab-name">Card & Deck System</span></button>
+        <button class="ftab-btn" data-tab="1"><span class="ftab-num">02</span><span class="ftab-name">Game Phase Manager</span></button>
+        <button class="ftab-btn" data-tab="2"><span class="ftab-num">03</span><span class="ftab-name">Animated UI Game Board</span></button>
+        <button class="ftab-btn" data-tab="3"><span class="ftab-num">04</span><span class="ftab-name">NPC Opponents</span></button>
       </div>
       <div class="ftab-panel active" data-panel="0">
         <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_01.png</span></div></div>
         <div class="ftab-content">
-          <div class="ftab-label">TODO: Feature 1 Title</div>
-          <p class="ftab-desc">TODO: Describe the feature - what it does, how you built it, what makes it interesting from a technical or design perspective.</p>
+          <div class="ftab-label">Card & Deck System</div>
+          <p class="ftab-desc">Scriptable object-based card architecture with runtime deck management. 
+Cards define their own data, allowing decks to be authored and modified 
+without code changes - designed for extensibility across card types and game modes.</p>
         </div>
       </div>
       <div class="ftab-panel" data-panel="1">
         <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_02.png</span></div></div>
         <div class="ftab-content">
-          <div class="ftab-label">TODO: Feature 2 Title</div>
-          <p class="ftab-desc">TODO: Describe the feature.</p>
+          <div class="ftab-label">Game Phase Manager</div>
+          <p class="ftab-desc">Centralised game manager driving turn structure and phase sequencing. 
+Coordinates state transitions across draw, play, and resolution phases, 
+with hooks for NPC turns and win condition evaluation.</p>
         </div>
       </div>
       <div class="ftab-panel" data-panel="2">
         <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_03.png</span></div></div>
         <div class="ftab-content">
-          <div class="ftab-label">TODO: Feature 3 Title</div>
-          <p class="ftab-desc">TODO: Describe the feature.</p>
+          <div class="ftab-label">Animated UI Game Board</div>
+          <p class="ftab-desc">All player interaction delivered through a single physical-style button board, 
+emulating the tactile feel of a tabletop game. UI state and transitions driven 
+entirely by tweens, with board layout reflecting current game phase.</p>
         </div>
       </div>
       <div class="ftab-panel" data-panel="3">
         <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_04.png</span></div></div>
         <div class="ftab-content">
-          <div class="ftab-label">TODO: Feature 4 Title</div>
-          <p class="ftab-desc">TODO: Describe the feature.</p>
+          <div class="ftab-label">NPC Opponents</div>
+          <p class="ftab-desc">Four opponents with distinct behavioural profiles - each making independent 
+card and resource decisions based on game state. Shared underlying systems 
+with per-NPC logic layered on top to produce meaningfully different playstyles.</p>
         </div>
       </div>
     </div>
   </div>
 
-    <!-- MAIN CONTENT -->
+  <!-- MAIN CONTENT -->
   <main class="main-col">
     <div class="section-block" style="margin-bottom:0;">
       <div class="section-block-header">
@@ -1033,8 +897,6 @@
 
     <!-- SLIDER (70%) + CODE (30%) -->
     <div style="display: grid; grid-template-columns: 7fr 3fr; gap: 1.5rem; margin-bottom: 2rem;">
-
-      <!-- LEFT: Before / After slider -->
       <div class="ba-wrap" style="margin: 0;">
         <div class="ba-header">
           <span>// deep_dive_visual</span>
@@ -1044,13 +906,11 @@
           </span>
         </div>
         <div class="ba-container" id="baSlider">
-          <!-- swap with: <img class="ba-img" src="images/deep_dive_before.png" alt="Before fix"> -->
           <div class="ba-img-placeholder" style="background: #1e1a1a;">
             <span style="font-size:32px; opacity:0.15;">◎</span>
             <span>before</span>
             <span style="font-size:10px; opacity:0.5;">replace with: images/deep_dive_before.png</span>
           </div>
-          <!-- swap with: <img class="ba-img ba-after" id="baAfter" src="images/deep_dive_after.png" alt="After fix"> -->
           <div class="ba-after ba-img-placeholder" id="baAfter" style="background: #1a1e1a;">
             <span style="font-size:32px; opacity:0.15;">◈</span>
             <span>after</span>
@@ -1064,7 +924,6 @@
         <div class="ba-caption">// drag to compare</div>
       </div>
 
-      <!-- RIGHT: Code block -->
       <div class="code-block" style="margin: 0; display: flex; flex-direction: column;">
         <div class="code-block-header">
           <span class="code-block-filename">TODO: FileName.cs - brief description</span>
@@ -1073,7 +932,6 @@
         <pre style="flex: 1; overflow-y: auto; overflow-x: hidden; white-space: pre-wrap; word-break: break-word;"><code><span class="tok-comment">// TODO: Paste a relevant code snippet here</span>
 <span class="tok-comment">// Remove this entire .code-block div if you don't have one</span></code></pre>
       </div>
-
     </div>
 
     <div class="deep-dive-arc" style="margin-bottom: 2rem;">
@@ -1090,7 +948,7 @@
     </div>
   </main>
 
-    <!-- TAKEAWAYS -->
+  <!-- TAKEAWAYS -->
   <div class="rt-panel-full" style="grid-column: 1 / -1; border: 1px solid var(--border);">
     <div class="rt-panel-header">
       <div class="dot"></div>
@@ -1124,7 +982,6 @@
   </div>
 
   <!-- PREV / NEXT NAV -->
-  <!-- TODO: Update project names and hrefs to adjacent projects -->
   <nav class="project-nav">
     <a class="project-nav-item" href="#">
       <span class="nav-dir">// ← prev_project</span>
@@ -1143,8 +1000,8 @@
   </footer>
 
 </div>
-<script>
 
+<script>
   // Before / After Slider
   (function() {
     const container = document.getElementById('baSlider');
@@ -1181,7 +1038,6 @@
       document.querySelector(`.ftab-panel[data-panel="${idx}"]`).classList.add('active');
     });
   });
-
 </script>
 </body>
 </html>

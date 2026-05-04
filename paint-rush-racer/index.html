@@ -40,7 +40,6 @@
     min-height: 100vh;
   }
 
-  /* CODE BLOCK */
   .code-block {
     background: #141414;
     border: 1px solid var(--border);
@@ -97,7 +96,6 @@
   .tok-param    { color: #9cdcfe; }
   .tok-bool     { color: #569cd6; }
 
-  /* BEFORE / AFTER SLIDER */
   .ba-wrap {
     border: 1px solid var(--border);
     overflow: hidden;
@@ -114,10 +112,7 @@
     font-size: 11px;
     color: var(--text-muted);
   }
-  .ba-header-labels {
-    display: flex;
-    gap: 1.5rem;
-  }
+  .ba-header-labels { display: flex; gap: 1.5rem; }
   .ba-label-before { color: #c0625a; }
   .ba-label-after  { color: var(--green); }
   .ba-container {
@@ -135,12 +130,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--text-muted);
   }
   .ba-img-placeholder {
     position: absolute;
@@ -154,10 +143,7 @@
     flex-direction: column;
     gap: 8px;
   }
-  .ba-after {
-    clip-path: inset(0 50% 0 0);
-    transition: clip-path 0s;
-  }
+  .ba-after { clip-path: inset(0 50% 0 0); transition: clip-path 0s; }
   .ba-divider {
     position: absolute;
     top: 0; bottom: 0;
@@ -173,8 +159,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 36px;
-    height: 36px;
+    width: 36px; height: 36px;
     border-radius: 50%;
     background: var(--bg-panel);
     border: 2px solid var(--green);
@@ -196,18 +181,8 @@
     text-transform: uppercase;
     pointer-events: none;
   }
-  .ba-tag-before {
-    left: 12px;
-    background: rgba(192,98,90,0.2);
-    color: #c0625a;
-    border: 1px solid rgba(192,98,90,0.4);
-  }
-  .ba-tag-after {
-    right: 12px;
-    background: rgba(126,200,126,0.15);
-    color: var(--green);
-    border: 1px solid rgba(126,200,126,0.3);
-  }
+  .ba-tag-before { left: 12px; background: rgba(192,98,90,0.2); color: #c0625a; border: 1px solid rgba(192,98,90,0.4); }
+  .ba-tag-after  { right: 12px; background: rgba(126,200,126,0.15); color: var(--green); border: 1px solid rgba(126,200,126,0.3); }
   .ba-caption {
     font-family: var(--mono);
     font-size: 11px;
@@ -217,13 +192,7 @@
     background: var(--bg-panel);
   }
 
-  /* DEEP DIVE */
-  .deep-dive-arc {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    margin-bottom: 2rem;
-  }
+  .deep-dive-arc { display: flex; flex-direction: column; gap: 0; margin-bottom: 2rem; }
   .arc-step {
     display: grid;
     grid-template-columns: 80px 1fr;
@@ -241,31 +210,12 @@
     align-items: flex-start;
     gap: 6px;
   }
-  .arc-step-tag {
-    font-family: var(--mono);
-    font-size: 9px;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  .arc-step-icon {
-    font-size: 16px;
-    color: var(--green-dim);
-  }
+  .arc-step-tag { font-family: var(--mono); font-size: 9px; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+  .arc-step-icon { font-size: 16px; color: var(--green-dim); }
   .arc-step-body { padding: 1.25rem 1.5rem; }
-  .arc-step-title {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--yellow);
-    margin-bottom: 0.5rem;
-  }
-  .arc-step-body p {
-    font-size: 13px;
-    color: var(--text-dim);
-    line-height: 1.8;
-  }
+  .arc-step-title { font-family: var(--mono); font-size: 12px; color: var(--yellow); margin-bottom: 0.5rem; }
+  .arc-step-body p { font-size: 13px; color: var(--text-dim); line-height: 1.8; }
 
-  /* NAV */
   nav {
     background: var(--bg-panel);
     border-bottom: 1px solid var(--border);
@@ -278,32 +228,12 @@
     top: 0;
     z-index: 10;
   }
-  .nav-logo {
-    font-family: var(--mono);
-    font-size: 14px;
-    color: var(--green);
-    text-decoration: none;
-    letter-spacing: 0.02em;
-  }
-  .nav-links {
-    display: flex;
-    gap: 2rem;
-    list-style: none;
-  }
-  .nav-links a {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--text-dim);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: color 0.15s;
-  }
+  .nav-logo { font-family: var(--mono); font-size: 14px; color: var(--green); text-decoration: none; letter-spacing: 0.02em; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-family: var(--mono); font-size: 12px; color: var(--text-dim); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.15s; }
   .nav-links a:hover { color: var(--green); }
   .nav-icon { font-size: 11px; opacity: 0.7; }
 
-  /* BREADCRUMB BAR */
   .breadcrumb-bar {
     background: var(--bg-panel);
     border-bottom: 1px solid var(--border);
@@ -316,15 +246,11 @@
     font-size: 11px;
     color: var(--text-muted);
   }
-  .breadcrumb-bar a {
-    color: var(--text-dim);
-    text-decoration: none;
-  }
+  .breadcrumb-bar a { color: var(--text-dim); text-decoration: none; }
   .breadcrumb-bar a:hover { color: var(--green); }
   .breadcrumb-sep { color: var(--border-hi); }
   .breadcrumb-current { color: var(--green); }
 
-  /* LAYOUT */
   .page {
     max-width: 1200px;
     margin: 0 auto;
@@ -333,16 +259,8 @@
     grid-template-columns: 1fr;
     gap: 2rem;
   }
+  .section-comment { font-family: var(--mono); font-size: 13px; color: var(--green-dim); margin-bottom: 1rem; display: block; }
 
-  .section-comment {
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--green-dim);
-    margin-bottom: 1rem;
-    display: block;
-  }
-
-  /* PROJECT HEADER */
   .project-header {
     grid-column: 1 / -1;
     border: 1px solid var(--border);
@@ -351,79 +269,22 @@
     position: relative;
     overflow: hidden;
   }
-  .project-header::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--green);
-    opacity: 0.6;
-  }
-  .header-comment-top {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--green-dim);
-    margin-bottom: 1.5rem;
-    display: block;
-    letter-spacing: 0.05em;
-  }
-  .project-title {
-    font-family: var(--mono);
-    font-size: 2.4rem;
-    font-weight: 700;
-    color: var(--green);
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 0.5rem;
-  }
-  .project-subtitle {
-    font-family: var(--mono);
-    font-size: 14px;
-    color: var(--yellow);
-    margin-bottom: 1.5rem;
-  }
-  .tag-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 1.5rem;
-  }
-  .tag {
-    font-family: var(--mono);
-    font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 3px;
-    font-weight: 500;
-    letter-spacing: 0.03em;
-  }
+  .project-header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--green); opacity: 0.6; }
+  .header-comment-top { font-family: var(--mono); font-size: 12px; color: var(--green-dim); margin-bottom: 1.5rem; display: block; letter-spacing: 0.05em; }
+  .project-title { font-family: var(--mono); font-size: 2.4rem; font-weight: 700; color: var(--green); letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 0.5rem; }
+  .project-subtitle { font-family: var(--mono); font-size: 14px; color: var(--yellow); margin-bottom: 1.5rem; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.5rem; }
+  .tag { font-family: var(--mono); font-size: 11px; padding: 3px 10px; border-radius: 3px; font-weight: 500; letter-spacing: 0.03em; }
   .tag-programming { background: var(--tag-prog); color: #c8b8f0; }
   .tag-design      { background: var(--tag-design); color: #a8d8c0; }
   .tag-unity       { background: var(--tag-unity); color: #a8c8e8; }
   .tag-unreal      { background: var(--tag-unreal); color: #e8b8b8; }
   .tag-art         { background: var(--tag-art); color: #e0cfaa; }
+  .project-desc { font-family: var(--mono); font-size: 13px; color: var(--text-dim); line-height: 1.8; max-width: 100%; }
+  .project-desc::before { content: '// '; color: var(--green-dim); }
 
-  .project-desc {
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--text-dim);
-    line-height: 1.8;
-    max-width: 700px;
-  }
-  .project-desc::before {
-    content: '// ';
-    color: var(--green-dim);
-  }
-
-  /* HERO IMAGE */
-  .hero-image-section { grid-column: 1; }
-  .hero-image-wrap {
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-    overflow: hidden;
-    position: relative;
-  }
-  .hero-image-wrap img,
-  .hero-placeholder { width: 100%; display: block; }
+  .hero-image-wrap { border: 1px solid var(--border); background: var(--bg-card); overflow: hidden; position: relative; }
+  .hero-image-wrap img, .hero-placeholder { width: 100%; display: block; }
   .hero-placeholder {
     height: 420px;
     background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 50%, #1a1a2a 100%);
@@ -437,180 +298,13 @@
     font-size: 12px;
   }
   .hero-placeholder-icon { font-size: 48px; opacity: 0.2; }
-  .image-caption {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-muted);
-    padding: 8px 12px;
-    border-top: 1px solid var(--border);
-    background: var(--bg-panel);
-  }
+  .image-caption { font-family: var(--mono); font-size: 11px; color: var(--text-muted); padding: 8px 12px; border-top: 1px solid var(--border); background: var(--bg-panel); }
 
-  /* MAIN COLUMN */
   .main-col { min-width: 0; grid-column: 1 / -1; }
+  .section-block { margin-bottom: 2rem; border: 1px solid var(--border); background: var(--bg-panel); }
+  .section-block-header { background: var(--bg-card); padding: 10px 16px; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 12px; color: var(--green-dim); display: flex; align-items: center; gap: 8px; }
+  .section-block-header .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); opacity: 0.5; }
 
-  /* SECTION BLOCK */
-  .section-block {
-    margin-bottom: 2rem;
-    border: 1px solid var(--border);
-    background: var(--bg-panel);
-  }
-  .section-block-header {
-    background: var(--bg-card);
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border);
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--green-dim);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .section-block-header .dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--green);
-    opacity: 0.5;
-  }
-  .section-block-body { padding: 1.25rem 1.5rem; }
-  .section-block-body p {
-    font-size: 14px;
-    color: var(--text);
-    line-height: 1.8;
-    margin-bottom: 1rem;
-  }
-  .section-block-body p:last-child { margin-bottom: 0; }
-
-  /* SCREENSHOT GRID */
-  .screenshot-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    margin-bottom: 2rem;
-  }
-  .screenshot-cell {
-    background: var(--bg-card);
-    aspect-ratio: 16/9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-muted);
-    flex-direction: column;
-    gap: 8px;
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .screenshot-cell:hover { background: #303030; }
-  .screenshot-cell img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    position: absolute;
-    inset: 0;
-  }
-  .screenshot-label {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    background: rgba(0,0,0,0.7);
-    padding: 4px 8px;
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-dim);
-  }
-
-  /* DEEP DIVE GRID */
-  .deep-dive-grid {
-    display: grid;
-    grid-template-columns: 1fr 260px; /* Matches the width of the details sidebar */
-    column-gap: 1.5rem;
-  }
-  .deep-dive-left {
-    display: flex;
-    flex-direction: column;
-  }
-  .deep-dive-right {
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-  .deep-dive-right img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* SIDEBAR */
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    align-self: start;
-  }
-  .sidebar-card {
-    border: 1px solid var(--border);
-    background: var(--bg-panel);
-  }
-  .sidebar-card-header {
-    padding: 8px 14px;
-    background: var(--bg-card);
-    border-bottom: 1px solid var(--border);
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--green-dim);
-  }
-  .sidebar-card-body { padding: 14px; }
-
-  .meta-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 7px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-  }
-  .meta-row:last-child { border-bottom: none; }
-  .meta-key {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-muted);
-  }
-  .meta-val {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text);
-    text-align: right;
-  }
-  .meta-val.highlight { color: var(--green); }
-
-  .tech-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .tech-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: var(--mono);
-    font-size: 12px;
-  }
-  .tech-bullet {
-    width: 4px; height: 4px;
-    border-radius: 50%;
-    background: var(--green);
-    opacity: 0.6;
-    flex-shrink: 0;
-  }
-  .tech-name { color: var(--text); }
-  .tech-note { color: var(--text-muted); margin-left: auto; font-size: 10px; }
-
-  /* LINK BTNS */
   .link-btn {
     display: flex;
     align-items: center;
@@ -629,7 +323,6 @@
   .link-btn-icon { opacity: 0.6; margin-right: 8px; }
   .link-btn-arrow { opacity: 0.4; }
 
-  /* PROJECT NAV */
   .project-nav {
     grid-column: 1 / -1;
     display: grid;
@@ -639,204 +332,89 @@
     border: 1px solid var(--border);
     margin-top: 1rem;
   }
-  .project-nav-item {
-    background: var(--bg-panel);
-    padding: 1.25rem 1.5rem;
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    transition: background 0.15s;
-  }
+  .project-nav-item { background: var(--bg-panel); padding: 1.25rem 1.5rem; text-decoration: none; display: flex; flex-direction: column; gap: 6px; transition: background 0.15s; }
   .project-nav-item:hover { background: var(--bg-card); }
-  .nav-dir {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-muted);
-    letter-spacing: 0.05em;
-  }
-  .nav-project-name {
-    font-family: var(--mono);
-    font-size: 14px;
-    color: var(--green);
-  }
+  .nav-dir { font-family: var(--mono); font-size: 10px; color: var(--text-muted); letter-spacing: 0.05em; }
+  .nav-project-name { font-family: var(--mono); font-size: 14px; color: var(--green); }
   .project-nav-item.next { align-items: flex-end; }
 
-  /* ROLES & TAKEAWAYS */
   .rt-grid {
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: 1fr 260px;
     column-gap: 1.5rem;
-    row-gap: 0;
   }
   .rt-panel { background: var(--bg-panel); padding: 0; }
-  .rt-panel-full {
-    grid-column: 1 / -1;
-    background: var(--bg-panel);
-    padding: 0;
-    border-top: 1px solid var(--border);
-  }
-  .rt-takeaways-cols {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0;
-  }
-  .rt-takeaways-cols .rt-takeaway {
-    padding: 0 1.5rem;
-    border-right: 1px solid var(--border);
-  }
+  .rt-panel-full { grid-column: 1 / -1; background: var(--bg-panel); padding: 0; border-top: 1px solid var(--border); }
+  .rt-takeaways-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+  .rt-takeaways-cols .rt-takeaway { padding: 0 1.5rem; border-right: 1px solid var(--border); }
   .rt-takeaways-cols .rt-takeaway:first-child { padding-left: 0; }
   .rt-takeaways-cols .rt-takeaway:last-child { border-right: none; }
-  .rt-panel-header {
-    background: var(--bg-card);
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border);
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--green-dim);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+  .rt-panel-header { background: var(--bg-card); padding: 10px 16px; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 12px; color: var(--green-dim); display: flex; align-items: center; gap: 8px; }
   .rt-panel-body { padding: 1.25rem 1.5rem; }
 
-  .contrib-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .contrib-item {
-    display: flex;
-    gap: 10px;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--text-dim);
-    line-height: 1.6;
-  }
+  .meta-row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .meta-row:last-child { border-bottom: none; }
+  .meta-key { font-family: var(--mono); font-size: 11px; color: var(--text-muted); }
+  .meta-val { font-family: var(--mono); font-size: 11px; color: var(--text); text-align: right; }
+  .meta-val.highlight { color: var(--green); }
+
+  .contrib-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .contrib-item { display: flex; gap: 10px; font-family: var(--mono); font-size: 12px; color: var(--text-dim); line-height: 1.6; }
   .contrib-bullet { color: var(--green-dim); flex-shrink: 0; margin-top: 1px; }
 
-  .rt-takeaways { display: flex; flex-direction: column; gap: 10px; }
   .rt-takeaway { display: flex; gap: 12px; align-items: flex-start; }
-  .rt-takeaway-bullet {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--yellow);
-    margin-top: 1px;
-    flex-shrink: 0;
-  }
+  .rt-takeaway-bullet { font-family: var(--mono); font-size: 12px; color: var(--yellow); margin-top: 1px; flex-shrink: 0; }
   .rt-takeaway-text { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
-  .rt-takeaway-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 2px;
-  }
+  .rt-takeaway-label { font-family: var(--mono); font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
 
-  /* FEATURE TABS */
-  .feature-tabs {
-    border: 1px solid var(--border);
-    background: var(--bg-panel);
-    margin-bottom: 2rem;
-  }
-  .ftab-bar {
-    display: flex;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg-card);
-  }
+  .feature-tabs { border: 1px solid var(--border); background: var(--bg-panel); margin-bottom: 2rem; }
+  .ftab-bar { display: flex; border-bottom: 1px solid var(--border); background: var(--bg-card); }
   .ftab-btn {
-    display: flex;
-    flex: 1;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 10px 16px;
+    display: flex; flex: 1;
+    align-items: center; justify-content: center;
+    gap: 8px; padding: 10px 16px;
     background: transparent;
     border: none;
     border-right: 1px solid var(--border);
     border-bottom: 2px solid transparent;
     color: var(--text-muted);
-    font-family: var(--mono);
-    font-size: 12px;
-    cursor: pointer;
-    white-space: nowrap;
+    font-family: var(--mono); font-size: 12px;
+    cursor: pointer; white-space: nowrap;
     transition: color 0.15s, background 0.15s, border-color 0.15s;
     margin-bottom: -1px;
   }
   .ftab-btn:hover { color: var(--text-dim); background: rgba(255,255,255,0.03); }
-  .ftab-btn.active {
-    color: var(--green);
-    background: var(--bg-panel);
-    border-bottom-color: var(--green);
-  }
+  .ftab-btn.active { color: var(--green); background: var(--bg-panel); border-bottom-color: var(--green); }
   .ftab-num { opacity: 0.4; font-size: 10px; }
   .ftab-btn.active .ftab-num { opacity: 0.7; }
-
   .ftab-panel { display: none; }
-  .ftab-panel.active {
-    display: grid;
-    grid-template-columns: 3fr 2fr;
-    grid-template-rows: 1fr;
-  }
-  .ftab-image {
-    border-right: 1px solid var(--border);
-    overflow: hidden;
-    position: relative;
-    background: #141414;
-    aspect-ratio: 4/3;
-    width: 100%;
-  }
+  .ftab-panel.active { display: grid; grid-template-columns: 3fr 2fr; }
+  .ftab-image { border-right: 1px solid var(--border); overflow: hidden; position: relative; background: #141414; aspect-ratio: 4/3; width: 100%; }
   .ftab-img-placeholder {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-muted);
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+    font-family: var(--mono); font-size: 11px; color: var(--text-muted);
     background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 50%, #1a1a2a 100%);
   }
-  .ftab-image img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
+  .ftab-image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
   .ftab-img-icon { font-size: 32px; opacity: 0.15; }
-  .ftab-content {
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 12px;
-  }
+  .ftab-content { padding: 1.5rem; display: flex; flex-direction: column; justify-content: center; gap: 12px; }
   .ftab-label { font-family: var(--mono); font-size: 13px; color: var(--yellow); }
   .ftab-desc { font-size: 13px; color: var(--text-dim); line-height: 1.8; }
 
-  /* FOOTER LINE */
   .footer-line {
     grid-column: 1 / -1;
     border-top: 1px solid var(--border);
     padding-top: 1rem;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-muted);
-    display: flex;
-    justify-content: space-between;
+    font-family: var(--mono); font-size: 11px; color: var(--text-muted);
+    display: flex; justify-content: space-between;
   }
 
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a class="nav-logo" href="../index.html">Home()</a>
   <ul class="nav-links">
@@ -846,114 +424,84 @@
   </ul>
 </nav>
 
-<!-- BREADCRUMB -->
 <div class="breadcrumb-bar">
-
   <a href="../portfolio/index.html">Portfolio()</a>
   <span class="breadcrumb-sep">/</span>
   <span class="breadcrumb-current">PaintRushRacer.cs</span>
-
 </div>
 
-<!-- PAGE GRID -->
 <div class="page">
 
   <!-- PROJECT HEADER -->
   <header class="project-header">
-
     <span class="header-comment-top">// ============================================================</span>
     <h1 class="project-title">Paint Rush Racer</h1>
-    <!-- TODO: Update subtitle with your role(s) and context (e.g. school, game jam) -->
-    <div class="project-subtitle">// TODO: Role · Context</div>
+    <div class="project-subtitle">// Gameplay Programmer · Co-op</div>
     <div class="tag-row">
-      <!-- TODO: Add/remove tags to match the project. Options: tag-programming, tag-design, tag-unity, tag-unreal, tag-art -->
       <span class="tag tag-programming">Programming</span>
-      <span class="tag tag-design">Design</span>
-      <span class="tag tag-unity">Unity</span>
+      <span class="tag tag-unreal">Unreal Engine</span>
     </div>
-    <!-- TODO: One-sentence description of the project -->
-    <p class="project-desc">TODO: Short project description - what it is, what makes it interesting.</p>
-  
+    <p class="project-desc">A local multiplayer arcade kart racer built in Unreal Engine where players fire paint splats onto the track to dynamically alter racing lines by 
+      creating bounce pads, speed boosts, and slowdown zones to control space and outmaneuver opponents.</p>
   </header>
 
   <!-- HERO IMAGE -->
-  <section class="hero-image-section" style="grid-column: 1 / -1;">
+  <section style="grid-column: 1 / -1;">
     <div class="hero-image-wrap">
-      <!-- TODO: Replace hero-placeholder with <img src="hero.png" alt="..."> when ready -->
       <div class="hero-placeholder">
         <div class="hero-placeholder-icon">◈</div>
         <span>// hero_screenshot.png</span>
       </div>
-      <!-- TODO: Update caption -->
       <div class="image-caption">// fig_01 - Main gameplay screenshot · Paint Rush Racer</div>
     </div>
   </section>
 
   <!-- ROLES & TAKEAWAYS -->
-  <div class="rt-grid">
-    <!-- LEFT: Contributions -->
-    <div class="rt-panel" style="border: 1px solid var(--border);">
+  <div class="rt-grid" style="row-gap: 1.5rem;">
+    <!-- LEFT row 1: Overview -->
+    <div class="rt-panel" style="border: 1px solid var(--border); grid-column: 1; grid-row: 1;">
       <div class="rt-panel-header">
-        <div class="dot"></div>
+        <div class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--green);opacity:0.5;"></div>
+        // overview
+      </div>
+      <div class="rt-panel-body">
+        <p style="font-family: var(--mono); font-size: 12px; color: var(--text-dim); line-height: 1.8;">// Joined as the gameplay programmer on a team project - responsible for the kart's physics feel, the drift system, all race management logic, and prototyping new mechanics. Worked in Unreal Engine using Blueprints and C++, shipped a playable co-op build.</p>
+      </div>
+    </div>
+
+    <!-- LEFT row 2: Contributions -->
+    <div class="rt-panel" style="border: 1px solid var(--border); grid-column: 1; grid-row: 2;">
+      <div class="rt-panel-header">
+        <div class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--green);opacity:0.5;"></div>
         // my_contributions[]
       </div>
       <div class="rt-panel-body">
-<ul class="contrib-list">
-          <!-- TODO: List your specific contributions to the project -->
-          <li class="contrib-item"><span class="contrib-bullet">-</span>TODO: Contribution one</li>
-          <li class="contrib-item"><span class="contrib-bullet">-</span>TODO: Contribution two</li>
-          <li class="contrib-item"><span class="contrib-bullet">-</span>TODO: Contribution three</li>
-          <li class="contrib-item"><span class="contrib-bullet">-</span>TODO: Contribution four</li>
+        <ul class="contrib-list">
+          <li class="contrib-item"><span class="contrib-bullet">-</span>Physics-based arcade suspension with a non-linear spring and independently tunable compression and rebound damping per wheel</li>
+          <li class="contrib-item"><span class="contrib-bullet">-</span>Reworked drift mechanic with arcade-style handling for tighter, more controllable drift lines; refactored boost to apply a scaling speed increase instead of a flat multiplier</li>
+          <li class="contrib-item"><span class="contrib-bullet">-</span>Game Manager covering AI and player kart spawning, race lifecycle state machine, and real-time position ranking</li>
+          <li class="contrib-item"><span class="contrib-bullet">-</span>Assisted with AI kart behavior; prototyped a new kart variant, paint spray mechanic, and alternate shooting modes (cut for scope)</li>
         </ul>
       </div>
     </div>
-    <!-- RIGHT: Project Details + Links -->
-    <div class="rt-panel" style="border: 1px solid var(--border);">
+
+    <!-- RIGHT: Project meta - spans both rows -->
+    <div class="rt-panel" style="border: 1px solid var(--border); grid-column: 2; grid-row: 1 / 3;">
       <div class="rt-panel-header">
-        <div class="dot"></div>
+        <div class="dot" style="width:6px;height:6px;border-radius:50%;background:var(--green);opacity:0.5;"></div>
         // project_meta
       </div>
       <div class="rt-panel-body">
-<!-- TODO: Fill in project metadata -->
-        <div class="meta-row">
-          <span class="meta-key">status</span>
-          <span class="meta-val highlight">TODO: complete / in progress</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-key">year</span>
-          <span class="meta-val">TODO: 2026</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-key">duration</span>
-          <span class="meta-val">TODO: X months</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-key">team_size</span>
-          <span class="meta-val">TODO: N (solo / team)</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-key">platform</span>
-          <span class="meta-val">TODO: PC / WebGL / etc.</span>
-        </div>
-        <div class="meta-row" style="margin-bottom: 1rem;">
-          <span class="meta-key">context</span>
-          <span class="meta-val">TODO: Game Jam / Class / Personal</span>
-        </div>
-        <div style="border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px;">
-          <div style="font-family: var(--mono); font-size: 10px; color: var(--text-muted); margin-bottom: 10px; letter-spacing: 0.05em;">// links[]</div>
-          <!-- TODO: Update hrefs. Remove any links that don't apply -->
-          <a class="link-btn" href="#">
-            <span class="link-btn-icon">▷</span> Play on itch.io
-            <span class="link-btn-arrow">→</span>
-          </a>
-          <a class="link-btn" href="#">
-            <span class="link-btn-icon">◇</span> View on GitHub
-            <span class="link-btn-arrow">→</span>
-          </a>
-          <a class="link-btn" href="#" style="margin-bottom: 0;">
-            <span class="link-btn-icon">□</span> Design Doc (PDF)
-            <span class="link-btn-arrow">→</span>
-          </a>
+        <div class="meta-row"><span class="meta-key">status</span><span class="meta-val highlight">complete</span></div>
+        <div class="meta-row"><span class="meta-key">year</span><span class="meta-val">2025</span></div>
+        <div class="meta-row"><span class="meta-key">duration</span><span class="meta-val">1.5 months</span></div>
+        <div class="meta-row"><span class="meta-key">team_size</span><span class="meta-val">4</span></div>
+        <div class="meta-row"><span class="meta-key">platform</span><span class="meta-val">PC (controller)</span></div>
+        <div class="meta-row" style="margin-bottom:1rem;"><span class="meta-key">context</span><span class="meta-val">TODO: Game Jam / Class</span></div>
+        <div style="border-top:1px solid var(--border);padding-top:12px;margin-top:4px;">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text-muted);margin-bottom:10px;letter-spacing:0.05em;">// links[]</div>
+          <a class="link-btn" href="https://chromagamesstudio.itch.io/paint-rush"><span class="link-btn-icon">▷</span> Play on itch.io <span class="link-btn-arrow">→</span></a>
+          <a class="link-btn" href="https://github.com/TristanChadHafkenscheid/PaintRushKartRacer"><span class="link-btn-icon">◇</span> View on GitHub <span class="link-btn-arrow">→</span></a>
         </div>
       </div>
     </div>
@@ -961,51 +509,55 @@
 
   <!-- KEY FEATURES TABS -->
   <div style="grid-column: 1 / -1;">
-    <span class="section-comment" style="display:block; margin-bottom: 1rem;">// key_features[]</span>
+    <span class="section-comment" style="display:block;margin-bottom:1rem;">// key_features[]</span>
     <div class="feature-tabs" id="featureTabs">
       <div class="ftab-bar">
-        <button class="ftab-btn active" data-tab="0"><span class="ftab-num">01</span><span class="ftab-name">TODO: Feature 1</span></button>
-        <button class="ftab-btn" data-tab="1"><span class="ftab-num">02</span><span class="ftab-name">TODO: Feature 2</span></button>
-        <button class="ftab-btn" data-tab="2"><span class="ftab-num">03</span><span class="ftab-name">TODO: Feature 3</span></button>
-        <button class="ftab-btn" data-tab="3"><span class="ftab-num">04</span><span class="ftab-name">TODO: Feature 4</span></button>
+        <button class="ftab-btn active" data-tab="0"><span class="ftab-num">01</span><span class="ftab-name">Arcade Suspension</span></button>
+        <button class="ftab-btn" data-tab="1"><span class="ftab-num">02</span><span class="ftab-name">Reworked Drift and Paint Mechanics</span></button>
+        <button class="ftab-btn" data-tab="2"><span class="ftab-num">03</span><span class="ftab-name">Game Manager</span></button>
+        <button class="ftab-btn" data-tab="3"><span class="ftab-num">04</span><span class="ftab-name">Kart and Paint Prototypes</span></button>
       </div>
+
       <div class="ftab-panel active" data-panel="0">
-        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_01.png</span></div></div>
+        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_suspension.png</span></div></div>
         <div class="ftab-content">
-          <div class="ftab-label">TODO: Feature 1 Title</div>
-          <p class="ftab-desc">TODO: Describe the feature - what it does, how you built it, what makes it interesting from a technical or design perspective.</p>
+          <div class="ftab-label">Physics Arcade Suspension</div>
+          <p class="ftab-desc">Raycast-based suspension using a non-linear spring curve - stiff near the rest length for stability, softer at extremes to absorb big bumps. Compression and rebound damping are tuned independently per wheel, giving that snappy arcade signature without parameters fighting each other.</p>
         </div>
       </div>
+
       <div class="ftab-panel" data-panel="1">
-        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_02.png</span></div></div>
+        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_drift.png</span></div></div>
         <div class="ftab-content">
-          <div class="ftab-label">TODO: Feature 2 Title</div>
-          <p class="ftab-desc">TODO: Describe the feature.</p>
+          <div class="ftab-label">Reworked Drift and Paint Mechanics</div>
+          <p class="ftab-desc">Reworked original prototype's multiplier-based drift and boost paint systems with arcade-style handling and a capped, scaling speed boost implementation.</p>
         </div>
       </div>
+
       <div class="ftab-panel" data-panel="2">
-        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_03.png</span></div></div>
+        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_gamemanager.png</span></div></div>
         <div class="ftab-content">
-          <div class="ftab-label">TODO: Feature 3 Title</div>
-          <p class="ftab-desc">TODO: Describe the feature.</p>
+          <div class="ftab-label">Game Manager &amp; Race State</div>
+          <p class="ftab-desc">Central Game Manager handles spawn logic for AI and player karts, the race lifecycle, and a continuous ranking system tracking position in real time using track progress rather than raw world distance.</p>
         </div>
       </div>
+
       <div class="ftab-panel" data-panel="3">
-        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_04.png</span></div></div>
+        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_paint.png</span></div></div>
         <div class="ftab-content">
-          <div class="ftab-label">TODO: Feature 4 Title</div>
-          <p class="ftab-desc">TODO: Describe the feature.</p>
+          <div class="ftab-label">Kart and Paint Prototypes</div>
+          <p class="ftab-desc">Prototyped a new kart variant with a reworked paint spray mechanic alongside several alternate shooting modes - directional burst, AoE splat, and trail-paint. Cut for scope before submission, but early prototyping validated the core territory loop and surfaced design issues weeks before they would have become critical.</p>
         </div>
       </div>
     </div>
   </div>
 
-    <!-- MAIN CONTENT -->
+  <!-- MAIN CONTENT -->
   <main class="main-col">
     <div class="section-block" style="margin-bottom:0;">
       <div class="section-block-header">
         <div class="dot"></div>
-        // deep_dive - TODO: topic name (e.g. "fluid simulation approach")
+        // deep_dive - TODO: topic name
       </div>
     </div>
     <div class="deep-dive-arc">
@@ -1033,8 +585,6 @@
 
     <!-- SLIDER (70%) + CODE (30%) -->
     <div style="display: grid; grid-template-columns: 7fr 3fr; gap: 1.5rem; margin-bottom: 2rem;">
-
-      <!-- LEFT: Before / After slider -->
       <div class="ba-wrap" style="margin: 0;">
         <div class="ba-header">
           <span>// deep_dive_visual</span>
@@ -1044,13 +594,11 @@
           </span>
         </div>
         <div class="ba-container" id="baSlider">
-          <!-- swap with: <img class="ba-img" src="images/deep_dive_before.png" alt="Before fix"> -->
           <div class="ba-img-placeholder" style="background: #1e1a1a;">
             <span style="font-size:32px; opacity:0.15;">◎</span>
             <span>before</span>
             <span style="font-size:10px; opacity:0.5;">replace with: images/deep_dive_before.png</span>
           </div>
-          <!-- swap with: <img class="ba-img ba-after" id="baAfter" src="images/deep_dive_after.png" alt="After fix"> -->
           <div class="ba-after ba-img-placeholder" id="baAfter" style="background: #1a1e1a;">
             <span style="font-size:32px; opacity:0.15;">◈</span>
             <span>after</span>
@@ -1064,7 +612,6 @@
         <div class="ba-caption">// drag to compare</div>
       </div>
 
-      <!-- RIGHT: Code block -->
       <div class="code-block" style="margin: 0; display: flex; flex-direction: column;">
         <div class="code-block-header">
           <span class="code-block-filename">TODO: FileName.cs - brief description</span>
@@ -1073,7 +620,6 @@
         <pre style="flex: 1; overflow-y: auto; overflow-x: hidden; white-space: pre-wrap; word-break: break-word;"><code><span class="tok-comment">// TODO: Paste a relevant code snippet here</span>
 <span class="tok-comment">// Remove this entire .code-block div if you don't have one</span></code></pre>
       </div>
-
     </div>
 
     <div class="deep-dive-arc" style="margin-bottom: 2rem;">
@@ -1090,7 +636,7 @@
     </div>
   </main>
 
-    <!-- TAKEAWAYS -->
+  <!-- TAKEAWAYS -->
   <div class="rt-panel-full" style="grid-column: 1 / -1; border: 1px solid var(--border);">
     <div class="rt-panel-header">
       <div class="dot"></div>
@@ -1124,7 +670,6 @@
   </div>
 
   <!-- PREV / NEXT NAV -->
-  <!-- TODO: Update project names and hrefs to adjacent projects -->
   <nav class="project-nav">
     <a class="project-nav-item" href="#">
       <span class="nav-dir">// ← prev_project</span>
@@ -1136,34 +681,29 @@
     </a>
   </nav>
 
-  <!-- FOOTER -->
   <footer class="footer-line">
     <span>// Jonathan To · Gameplay Programmer & Game Designer</span>
     <span>© 2026</span>
   </footer>
 
 </div>
-<script>
 
-  // Before / After Slider
+<script>
   (function() {
     const container = document.getElementById('baSlider');
     const after     = document.getElementById('baAfter');
     const divider   = document.getElementById('baDivider');
     const handle    = document.getElementById('baHandle');
     if (!container) return;
-
     let dragging = false;
-
     function setPos(x) {
       const rect = container.getBoundingClientRect();
       let pct = Math.max(0, Math.min(1, (x - rect.left) / rect.width));
       const p = (pct * 100).toFixed(2) + '%';
-      after.style.clipPath   = `inset(0 ${(100 - pct * 100).toFixed(2)}% 0 0)`;
-      divider.style.left     = p;
-      handle.style.left      = p;
+      after.style.clipPath = `inset(0 ${(100 - pct * 100).toFixed(2)}% 0 0)`;
+      divider.style.left   = p;
+      handle.style.left    = p;
     }
-
     container.addEventListener('mousedown',  e => { dragging = true; setPos(e.clientX); });
     window.addEventListener  ('mousemove',   e => { if (dragging) setPos(e.clientX); });
     window.addEventListener  ('mouseup',     ()  => { dragging = false; });
@@ -1181,7 +721,6 @@
       document.querySelector(`.ftab-panel[data-panel="${idx}"]`).classList.add('active');
     });
   });
-
 </script>
 </body>
 </html>
