@@ -809,6 +809,13 @@
     height: 100%;
     object-fit: contain;
   }
+  .ftab-image video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
   .ftab-img-icon { font-size: 32px; opacity: 0.15; }
   .ftab-content {
     padding: 1.5rem;
@@ -898,7 +905,7 @@
         <span>// hero_screenshot.png</span>
       </div>
       <!-- TODO: Update caption -->
-      <div class="image-caption">// fig_01 - Main gameplay screenshot · Cosmic Ranger V</div>
+      <div class="image-caption">// fig_01 - Gameplay Trailer, created by our level designer, Braeden Hammill · Cosmic Ranger V</div>
     </div>
   </section>
 
@@ -911,7 +918,7 @@
         // overview
       </div>
       <div class="rt-panel-body">
-        <p style="font-family: var(--mono); font-size: 12px; color: var(--text-dim); line-height: 1.8;">// Served as the primary gameplay programmer — responsible for the player controller, camera system, and the core fishing rod hold mechanic that the game's puzzle design is built around. Prototyped extensively throughout development, with several fully-realised systems cut late for scope.</p>
+        <p style="font-family: var(--mono); font-size: 12px; color: var(--text-dim); line-height: 1.8;">// Served as the primary gameplay programmer - responsible for the player controller, camera system, and the core fishing rod hold mechanic that the game's puzzle design is built around. Prototyped extensively throughout development, with several fully-realised systems cut late for scope.</p>
       </div>
     </div>
     <!-- LEFT: Contributions -->
@@ -925,7 +932,7 @@
           <li class="contrib-item"><span class="contrib-bullet">-</span>Custom camera system with in-world cutscenes</li>
           <li class="contrib-item"><span class="contrib-bullet">-</span>Physics grab system ("Fishing Rod"), including NPC capture and grabbable object backend</li>
           <li class="contrib-item"><span class="contrib-bullet">-</span>Physics character controller with swing, ledge grab, and mantle mechanics, and moving platform support</li>
-          <li class="contrib-item"><span class="contrib-bullet">-</span>NPC companion with associated mechanics, additional movement and grab mechanics, and environmental interactables (cut for scope)</li>
+          <li class="contrib-item"><span class="contrib-bullet">-</span>NPC companion with hold, recall, and summon, additional movement and grab mechanics, and environmental interactables (cut for scope)</li>
         </ul>
       </div>
     </div>
@@ -970,10 +977,6 @@
             <span class="link-btn-icon">◇</span> View on GitHub
             <span class="link-btn-arrow">→</span>
           </a>
-          <a class="link-btn" href="#" style="margin-bottom: 0;">
-            <span class="link-btn-icon">□</span> Design Doc (PDF)
-            <span class="link-btn-arrow">→</span>
-          </a>
         </div>
       </div>
     </div>
@@ -987,10 +990,15 @@
         <button class="ftab-btn active" data-tab="0"><span class="ftab-num">01</span><span class="ftab-name">Physics Hold Fishing Rod</span></button>
         <button class="ftab-btn" data-tab="1"><span class="ftab-num">02</span><span class="ftab-name">Custom Camera System</span></button>
         <button class="ftab-btn" data-tab="2"><span class="ftab-num">03</span><span class="ftab-name">Player Movement</span></button>
-        <button class="ftab-btn" data-tab="3"><span class="ftab-num">04</span><span class="ftab-name">Cut Features</span></button>
+        <button class="ftab-btn" data-tab="3"><span class="ftab-num">04</span><span class="ftab-name">Cliffs Greybox</span></button>
+        <button class="ftab-btn" data-tab="4"><span class="ftab-num">05</span><span class="ftab-name">Cut Features</span></button>
       </div>
       <div class="ftab-panel active" data-panel="0">
-        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_01.png</span></div></div>
+        <div class="ftab-image">
+          <!-- PLUG IN: replace src with your video file, e.g. src="videos/feature_01_fishing_rod.mp4" -->
+          <video autoplay loop muted playsinline src=""></video>
+          <div class="ftab-img-placeholder" id="ftab-placeholder-0"><span class="ftab-img-icon">◈</span><span>// feature_01_fishing_rod.mp4</span></div>
+        </div>
         <div class="ftab-content">
           <div class="ftab-label">Physics Hold Fishing Rod</div>
           <p class="ftab-desc">Point-hold grabbing and manipulating objects at range, 
@@ -999,7 +1007,11 @@
         </div>
       </div>
       <div class="ftab-panel" data-panel="1">
-        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_02.png</span></div></div>
+        <div class="ftab-image">
+          <!-- PLUG IN: replace src with your video file, e.g. src="videos/feature_02_camera.mp4" -->
+          <video autoplay loop muted playsinline src=""></video>
+          <div class="ftab-img-placeholder" id="ftab-placeholder-1"><span class="ftab-img-icon">◈</span><span>// feature_02_camera.mp4</span></div>
+        </div>
         <div class="ftab-content">
           <div class="ftab-label">Custom Camera System</div>
           <p class="ftab-desc">Discrete zoom steps with asymmetric easing (snappy zoom-in, damped zoom-out), 
@@ -1008,7 +1020,11 @@
         </div>
       </div>
       <div class="ftab-panel" data-panel="2">
-        <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_03.png</span></div></div>
+        <div class="ftab-image">
+          <!-- PLUG IN: replace src with your video file, e.g. src="videos/feature_03_movement.mp4" -->
+          <video autoplay loop muted playsinline src=""></video>
+          <div class="ftab-img-placeholder" id="ftab-placeholder-2"><span class="ftab-img-icon">◈</span><span>// feature_03_movement.mp4</span></div>
+        </div>
         <div class="ftab-content">
           <div class="ftab-label">Player Movement</div>
           <p class="ftab-desc">Rigidbody-based controller with moving platform sticking, velocity inheritance for launches, 
@@ -1018,9 +1034,20 @@
       <div class="ftab-panel" data-panel="3">
         <div class="ftab-image"><div class="ftab-img-placeholder"><span class="ftab-img-icon">◈</span><span>// feature_04.png</span></div></div>
         <div class="ftab-content">
+          <div class="ftab-label">Cliffs Greybox</div>
+          <p class="ftab-desc">Greyboxed final challenge area, with teach and test regions to introduce tether-bridging mechanic, as well as pullable platforms.</p>
+        </div>
+      </div>
+      <div class="ftab-panel" data-panel="4">
+        <div class="ftab-image">
+          <!-- PLUG IN: replace src with your video file, e.g. src="videos/feature_05_cut.mp4" -->
+          <video autoplay loop muted playsinline src=""></video>
+          <div class="ftab-img-placeholder" id="ftab-placeholder-4"><span class="ftab-img-icon">◈</span><span>// feature_05_cut.mp4</span></div>
+        </div>
+        <div class="ftab-content">
           <div class="ftab-label">Cut Features</div>
           <p class="ftab-desc">NPC capture-and-recall companion, extended grab + movement interactions (pull-to-player, player-pull-to-object), 
-            object free and torque-based snap rotation, and a suite of physics-driven tools (piston, bomb, shotgun, player-carrying umbrella) - fully developed but cut for scope.</p>
+            object free and torque-based angle snap rotation, and a suite of physics-driven tools (piston, bomb, shotgun, player-carrying umbrella) - fully developed but cut for scope.</p>
         </div>
       </div>
     </div>
@@ -1031,7 +1058,7 @@
     <div class="section-block" style="margin-bottom:0;">
       <div class="section-block-header">
         <div class="dot"></div>
-        // deep_dive - TODO: topic name (e.g. "fluid simulation approach")
+        // deep_dive - creating a unique physics hold mechanic
       </div>
     </div>
     <div class="deep-dive-arc">
@@ -1041,8 +1068,8 @@
           <span class="arc-step-icon">◎</span>
         </div>
         <div class="arc-step-body">
-          <div class="arc-step-title">TODO: Short problem statement</div>
-          <p>TODO: Describe the root cause or constraint you were dealing with.</p>
+          <div class="arc-step-title">A mechanic designed to support another - and constantly cut back to prove it</div>
+          <p>Playtests showed the hold was too dominant - its ease of use made it the go-to over the tether, and players were repositioning held objects by moving their character instead of the mouse. Features were cut until it became a shell of what it was designed to be.</p>
         </div>
       </div>
       <div class="arc-step">
@@ -1051,16 +1078,15 @@
           <span class="arc-step-icon">◈</span>
         </div>
         <div class="arc-step-body">
-          <div class="arc-step-title">TODO: How you approached it</div>
-          <p>TODO: What did you try? What decisions did you make and why?</p>
+          <div class="arc-step-title">Build, cut, rebuild - from start to finish</div>
+          <p>The mechanic went through numerous iterations and feature cuts - mass-based yank, free and snap rotation, in-world activation - eventually settling on a point-hold that pitches with the camera and zooms out to frame the held object. On the physics side, critically damped springs, corrective torque scaled by lever arm length, and a look-at spring gave it a stable, substantial feel - but with little left to use it on.</p>
         </div>
       </div>
     </div>
 
-    <!-- SLIDER (70%) + CODE (30%) -->
-    <div style="display: grid; grid-template-columns: 7fr 3fr; gap: 1.5rem; margin-bottom: 2rem;">
 
-      <!-- LEFT: Before / After slider -->
+    <!-- SLIDER + collapsible snippet as caption -->
+    <div style="margin-bottom: 1.5rem;">
       <div class="ba-wrap" style="margin: 0;">
         <div class="ba-header">
           <span>// deep_dive_visual</span>
@@ -1087,20 +1113,46 @@
           <div class="ba-divider" id="baDivider"></div>
           <div class="ba-handle" id="baHandle">⇔</div>
         </div>
-        <div class="ba-caption">// drag to compare</div>
-      </div>
-
-      <!-- RIGHT: Code block -->
-      <div class="code-block" style="margin: 0; display: flex; flex-direction: column;">
-        <div class="code-block-header">
-          <span class="code-block-filename">TODO: FileName.cs - brief description</span>
-          <span class="code-block-lang">C#</span>
+        <!-- snippet toggle replaces drag-to-compare caption -->
+        <div class="code-snippet-toggle" onclick="toggleSnippet()" style="display:flex; align-items:center; justify-content:space-between; padding:9px 14px; background:#1e1e1e; border-top:1px solid var(--border); cursor:pointer; transition:background 0.15s;">
+          <span style="font-family:var(--mono); font-size:11px; color:var(--text-muted); display:flex; align-items:center; gap:8px;">
+            <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#3a7a3a; opacity:0.7;"></span>
+            // Lasso.cs - hold force &amp; torque
+          </span>
+          <span id="snippetPill" style="font-family:var(--mono); font-size:10px; color:var(--green); border:1px solid var(--green-dim); padding:4px 12px; border-radius:999px; letter-spacing:0.06em; text-transform:uppercase;">▸ view snippet</span>
         </div>
-        <pre style="flex: 1; overflow-y: auto; overflow-x: hidden; white-space: pre-wrap; word-break: break-word;"><code><span class="tok-comment">// TODO: Paste a relevant code snippet here</span>
-<span class="tok-comment">// Remove this entire .code-block div if you don't have one</span></code></pre>
-      </div>
+        <div id="snippetBody" style="max-height:0; overflow:hidden; transition:max-height 0.25s ease;">
+          <div class="code-block" style="margin:0; border-top:none;">
+            <pre style="margin:0; padding:1.25rem 1.5rem; overflow-x:auto; white-space:pre-wrap; word-break:break-word;"><code><span class="tok-keyword">private</span> <span class="tok-type">Vector3</span> <span class="tok-method">CalculateLinearForce</span>(<span class="tok-type">Vector3</span> <span class="tok-param">displacement</span>, <span class="tok-type">Vector3</span> <span class="tok-param">pointVelocity</span>)
+{
+    <span class="tok-type">Vector3</span> <span class="tok-param">springForce</span> = <span class="tok-param">lassoHoldStrength</span> * <span class="tok-param">displacement</span>;
+    <span class="tok-keyword">float</span> <span class="tok-param">damping</span> = <span class="tok-num">2f</span> * Mathf.<span class="tok-method">Sqrt</span>(<span class="tok-param">lassoHoldStrength</span> * SnaredObject.Rb.<span class="tok-param">mass</span>);
+    <span class="tok-type">Vector3</span> <span class="tok-param">dampingForce</span> = -<span class="tok-param">pointVelocity</span> * <span class="tok-param">damping</span>;
+    <span class="tok-type">Vector3</span> <span class="tok-param">totalForce</span> = <span class="tok-param">springForce</span> + <span class="tok-param">dampingForce</span>;
 
+    <span class="tok-param">totalForce</span> = <span class="tok-param">totalForce</span>.normalized
+        * Mathf.<span class="tok-method">Clamp</span>(<span class="tok-param">totalForce</span>.magnitude, <span class="tok-num">0f</span>, <span class="tok-param">maxLassoStrength</span>);
+    <span class="tok-keyword">return</span> <span class="tok-param">totalForce</span>;
+}
+
+<span class="tok-keyword">private</span> <span class="tok-type">Vector3</span> <span class="tok-method">CalculateTorqueForce</span>(<span class="tok-type">Vector3</span> <span class="tok-param">attachPointWorld</span>, <span class="tok-type">Vector3</span> <span class="tok-param">linearForce</span>)
+{
+    <span class="tok-type">Vector3</span> <span class="tok-param">r</span> = <span class="tok-param">attachPointWorld</span> - SnaredObject.Rb.<span class="tok-param">worldCenterOfMass</span>;
+    <span class="tok-keyword">float</span> <span class="tok-param">scale</span> = <span class="tok-num">1f</span> / (<span class="tok-num">1f</span> + <span class="tok-param">r</span>.magnitude); <span class="tok-comment">// attenuate by lever arm</span>
+
+    <span class="tok-type">Vector3</span> <span class="tok-param">corrective</span> = Vector3.<span class="tok-method">Cross</span>(<span class="tok-param">r</span>, <span class="tok-param">linearForce</span>) * <span class="tok-param">scale</span>;
+    <span class="tok-param">corrective</span> = <span class="tok-param">corrective</span>.normalized
+        * Mathf.<span class="tok-method">Clamp</span>(<span class="tok-param">corrective</span>.magnitude, <span class="tok-num">0f</span>, <span class="tok-param">maxLassoTorque</span>);
+
+    <span class="tok-type">Vector3</span> <span class="tok-param">dampingTorque</span> = -SnaredObject.Rb.<span class="tok-param">angularVelocity</span> * <span class="tok-param">rotationalDampingStrength</span>;
+    <span class="tok-keyword">return</span> SnaredObject.<span class="tok-method">IsTouchingSurface</span>
+        ? <span class="tok-param">corrective</span> + <span class="tok-param">dampingTorque</span> : <span class="tok-param">corrective</span>;
+}</code></pre>
+          </div>
+        </div>
+      </div>
     </div>
+
 
     <div class="deep-dive-arc" style="margin-bottom: 2rem;">
       <div class="arc-step">
@@ -1109,8 +1161,11 @@
           <span class="arc-step-icon">▸</span>
         </div>
         <div class="arc-step-body">
-          <div class="arc-step-title">TODO: Outcome</div>
-          <p>TODO: What was the result? What worked, what didn't, what would you change?</p>
+          <div class="arc-step-title">Stable and novel - but never given room to land</div>
+          <p>The physics are solid: no oscillation and a consistent, distinct feel to object manipulation. 
+            What didn't work was the broader context - the project struggled with finding its identity, and playtesting demonstrated the dominant nature of the initial versions of the hold. 
+            Unfortunately, a lot of its original design was cut to try and accommodate for the more straightforward design of the tether. 
+            If I could go back, I'd push earlier for a defined role split between the two mechanics rather than iterating on capability and cutting after the fact.</p>
         </div>
       </div>
     </div>
@@ -1127,22 +1182,22 @@
         <div class="rt-takeaway">
           <span class="rt-takeaway-bullet">▸</span>
           <div class="rt-takeaway-text">
-            <div class="rt-takeaway-label">TODO: Category (e.g. Architecture)</div>
-            TODO: What you learned or would do differently.
+            <div class="rt-takeaway-label">Know when to let go</div>
+            Fighting for your ideas matters - but so does knowing when to step back. While I believe there was more potential than what shipped, scoping down was a necessity.
           </div>
         </div>
         <div class="rt-takeaway">
           <span class="rt-takeaway-bullet">▸</span>
           <div class="rt-takeaway-text">
-            <div class="rt-takeaway-label">TODO: Category</div>
-            TODO: Takeaway two.
+            <div class="rt-takeaway-label">Physics is solvable</div>
+            Physics interactions feel chaotic until you understand the underlying mechanisms; there's a calculation out there for every problem, you just have to find it.
           </div>
         </div>
         <div class="rt-takeaway">
           <span class="rt-takeaway-bullet">▸</span>
           <div class="rt-takeaway-text">
-            <div class="rt-takeaway-label">TODO: Category</div>
-            TODO: Takeaway three.
+            <div class="rt-takeaway-label">Trust the process</div>
+            Pivots, cuts, and incoherence made it hard to believe in what we were making. It worked out. Ship first, reflect after.
           </div>
         </div>
       </div>
@@ -1198,17 +1253,54 @@
     window.addEventListener  ('touchend',    ()  => { dragging = false; });
   })();
 
+  document.querySelectorAll('.code-snippet-toggle').forEach(bar => {
+    bar.addEventListener('mouseenter', () => bar.style.background = '#242424');
+    bar.addEventListener('mouseleave', () => bar.style.background = '#1e1e1e');
+  });
+
+  function toggleSnippet() {
+    const body = document.getElementById('snippetBody');
+    const pill = document.getElementById('snippetPill');
+    const isOpen = body.style.maxHeight !== '0px' && body.style.maxHeight !== '';
+    body.style.maxHeight = isOpen ? '0' : body.scrollHeight + 'px';
+    pill.textContent = isOpen ? '▸ view snippet' : '▸ hide snippet';
+  }
+
+
   document.querySelectorAll('.ftab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const idx = btn.dataset.tab;
       document.querySelectorAll('.ftab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.ftab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.ftab-panel').forEach(p => {
+        p.classList.remove('active');
+        const v = p.querySelector('video');
+        if (v) v.pause();
+      });
       btn.classList.add('active');
-      document.querySelector(`.ftab-panel[data-panel="${idx}"]`).classList.add('active');
+      const activePanel = document.querySelector(`.ftab-panel[data-panel="${idx}"]`);
+      activePanel.classList.add('active');
+      const activeVideo = activePanel.querySelector('video');
+      if (activeVideo && activeVideo.src && activeVideo.src !== window.location.href) {
+        activeVideo.play();
+      }
     });
   });
 
 </script>
+  <script>
+    // Hide the placeholder overlay once a video src is populated
+    document.querySelectorAll('.ftab-image video').forEach(video => {
+      const placeholder = video.nextElementSibling;
+      if (video.src && video.src !== window.location.href) {
+        // src is already set (not empty)
+        if (placeholder) placeholder.style.display = 'none';
+      }
+      video.addEventListener('loadeddata', () => {
+        if (placeholder) placeholder.style.display = 'none';
+      });
+    });
+  </script>
+
   <script>
     document.querySelectorAll('.yt-embed').forEach(el => {
       el.addEventListener('click', () => {
