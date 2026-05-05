@@ -881,8 +881,19 @@
   <!-- HERO IMAGE -->
   <section class="hero-image-section" style="grid-column: 1 / -1;">
     <div class="hero-image-wrap">
-      <!-- TODO: Replace hero-placeholder with <img src="hero.png" alt="..."> when ready -->
-      <div class="hero-placeholder">
+      <div class="yt-embed" data-id="f6-TXsnPdGo" style="position:relative; aspect-ratio:16/9; cursor:pointer; overflow:hidden; background:#0d0d0d;">
+        <img
+          src="https://img.youtube.com/vi/f6-TXsnPdGo/maxresdefault.jpg"
+          alt="Cosmic Ranger V Trailer"
+          style="width:100%; height:100%; object-fit:cover; display:block;">
+        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+            <div style="width:56px; height:56px; background:rgba(0,0,0,0.7); border:2px solid var(--green); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--green); font-size:20px;">▶</div>
+            <span style="font-family:var(--mono); font-size:11px; color:var(--text-muted); letter-spacing:0.08em;">// click to play</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:none">
         <div class="hero-placeholder-icon">◈</div>
         <span>// hero_screenshot.png</span>
       </div>
@@ -912,8 +923,8 @@
       <div class="rt-panel-body">
         <ul class="contrib-list">
           <li class="contrib-item"><span class="contrib-bullet">-</span>Custom camera system with in-world cutscenes</li>
-          <li class="contrib-item"><span class="contrib-bullet">-</span>Physics grab system ("Fishing Rod"), including grabbable object backend</li>
-          <li class="contrib-item"><span class="contrib-bullet">-</span>Physics character controller with swing mechanic and moving platform support</li>
+          <li class="contrib-item"><span class="contrib-bullet">-</span>Physics grab system ("Fishing Rod"), including NPC capture and grabbable object backend</li>
+          <li class="contrib-item"><span class="contrib-bullet">-</span>Physics character controller with swing, ledge grab, and mantle mechanics, and moving platform support</li>
           <li class="contrib-item"><span class="contrib-bullet">-</span>NPC companion with associated mechanics, additional movement and grab mechanics, and environmental interactables (cut for scope)</li>
         </ul>
       </div>
@@ -1198,5 +1209,20 @@
   });
 
 </script>
+  <script>
+    document.querySelectorAll('.yt-embed').forEach(el => {
+      el.addEventListener('click', () => {
+        const id = el.dataset.id;
+        el.innerHTML = `<iframe
+          src="https://www.youtube.com/embed/${id}?autoplay=1"
+          style="width:100%;height:100%;border:none;display:block;"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen></iframe>`;
+      });
+    });
+  </script>
 </body>
 </html>
