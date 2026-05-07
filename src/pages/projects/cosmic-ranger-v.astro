@@ -54,6 +54,123 @@ const lassoSnippetHtml = `<span class="tok-keyword">private</span> <span class="
     <span class="tok-type">Vector3</span> <span class="tok-param">dampingTorque</span> = -SnaredObject.Rb.<span class="tok-param">angularVelocity</span> * <span class="tok-param">rotationalDampingStrength</span>;
     <span class="tok-keyword">return</span> SnaredObject.<span class="tok-method">IsTouchingSurface</span> ? <span class="tok-param">corrective</span> + <span class="tok-param">dampingTorque</span> : <span class="tok-param">corrective</span>;
 }`;
+
+const cameraSnippetPlain = `void HandleCameraCollision()
+{
+    //find the highest step whose position is unobstructed
+    int rawDesiredStep = FindClearStep();
+    //when collision clears suddenly (e.g. exiting a room), ease the desired step so _currentStep doesn't receive a huge jump all at once
+    //zoom-in is still instant
+    //bool isDrastic = Mathf.Abs(rawDesiredStep - _smoothedDesiredStep) >= collisionEdgeSmoothThreshold * (stepCount - 1);
+    //^use this and add collisionEdgeSmoothThreshold to make it work both ways, based on a threshold
+    if (collisionEdgeSmoothTime > 0.001f)
+    {
+        _smoothedDesiredStep = Mathf.SmoothDamp(_smoothedDesiredStep, rawDesiredStep, ref _smoothedDesiredStepVelocity, collisionEdgeSmoothTime);
+    }
+    else
+    {
+        _smoothedDesiredStep = rawDesiredStep;
+        _smoothedDesiredStepVelocity = 0f;
+    }
+    int desiredStep = Mathf.RoundToInt(_smoothedDesiredStep);
+    //zoom in immediately; zoom out only with input
+    if (desiredStep < _currentStep)
+    {
+        float newStep = _currentStep - _stepsPerFrameIn;
+        _currentStep = Mathf.Max(Mathf.RoundToInt(newStep), desiredStep);
+    }
+    else if (desiredStep > _currentStep && (_hasInput || CameraRefData.Instance.CameraCutsceneHandler.IsPlaying()))
+    {
+        float newStep = _currentStep + _stepsPerFrameOut;
+        _currentStep = Mathf.Min(Mathf.RoundToInt(newStep), desiredStep);
+    }
+    currentDistance = _stepDistances[_currentStep];
+    colliding = _currentStep < stepCount - 1;
+    collisionDistance = currentDistance;
+    //recompute final position at the stepped distance, preserving zOffset logic from the original
+    Vector3 steppedBase = smoothedTargetPosition - (ghostRotation * Vector3.forward * currentDistance);
+    Vector3 steppedDesired = ApplyScreenSpaceOffset(steppedBase);
+    Vector3 extendedDesiredPosition = steppedDesired - ghostRotation * Vector3.forward * zOffset;
+    ghostPosition = extendedDesiredPosition;
+}`;
+
+const cameraSnippetHtml = `<span class="tok-keyword">void</span> <span class="tok-method">HandleCameraCollision</span>()
+{
+    <span class="tok-comment">// find the highest step whose position is unobstructed</span>
+    <span class="tok-keyword">int</span> <span class="tok-param">rawDesiredStep</span> = <span class="tok-method">FindClearStep</span>();
+    <span class="tok-comment">// zoom-in is instant; ease zoom-out to avoid sudden jumps when collision clears</span>
+    <span class="tok-keyword">if</span> (<span class="tok-param">collisionEdgeSmoothTime</span> &gt; <span class="tok-num">0.001f</span>)
+    {
+        <span class="tok-param">_smoothedDesiredStep</span> = Mathf.<span class="tok-method">SmoothDamp</span>(<span class="tok-param">_smoothedDesiredStep</span>, <span class="tok-param">rawDesiredStep</span>, <span class="tok-keyword">ref</span> <span class="tok-param">_smoothedDesiredStepVelocity</span>, <span class="tok-param">collisionEdgeSmoothTime</span>);
+    }
+    <span class="tok-keyword">else</span>
+    {
+        <span class="tok-param">_smoothedDesiredStep</span> = <span class="tok-param">rawDesiredStep</span>;
+        <span class="tok-param">_smoothedDesiredStepVelocity</span> = <span class="tok-num">0f</span>;
+    }
+    <span class="tok-keyword">int</span> <span class="tok-param">desiredStep</span> = Mathf.<span class="tok-method">RoundToInt</span>(<span class="tok-param">_smoothedDesiredStep</span>);
+    <span class="tok-comment">// zoom in immediately; zoom out only with input</span>
+    <span class="tok-keyword">if</span> (<span class="tok-param">desiredStep</span> &lt; <span class="tok-param">_currentStep</span>)
+    {
+        <span class="tok-keyword">float</span> <span class="tok-param">newStep</span> = <span class="tok-param">_currentStep</span> - <span class="tok-param">_stepsPerFrameIn</span>;
+        <span class="tok-param">_currentStep</span> = Mathf.<span class="tok-method">Max</span>(Mathf.<span class="tok-method">RoundToInt</span>(<span class="tok-param">newStep</span>), <span class="tok-param">desiredStep</span>);
+    }
+    <span class="tok-keyword">else if</span> (<span class="tok-param">desiredStep</span> &gt; <span class="tok-param">_currentStep</span> &amp;&amp; (<span class="tok-param">_hasInput</span> || CameraRefData.Instance.CameraCutsceneHandler.<span class="tok-method">IsPlaying</span>()))
+    {
+        <span class="tok-keyword">float</span> <span class="tok-param">newStep</span> = <span class="tok-param">_currentStep</span> + <span class="tok-param">_stepsPerFrameOut</span>;
+        <span class="tok-param">_currentStep</span> = Mathf.<span class="tok-method">Min</span>(Mathf.<span class="tok-method">RoundToInt</span>(<span class="tok-param">newStep</span>), <span class="tok-param">desiredStep</span>);
+    }
+    <span class="tok-param">currentDistance</span> = <span class="tok-param">_stepDistances</span>[<span class="tok-param">_currentStep</span>];
+    <span class="tok-param">colliding</span> = <span class="tok-param">_currentStep</span> &lt; <span class="tok-param">stepCount</span> - <span class="tok-num">1</span>;
+    <span class="tok-param">collisionDistance</span> = <span class="tok-param">currentDistance</span>;
+    <span class="tok-comment">// recompute final position at the stepped distance, preserving zOffset logic from the original</span>
+    <span class="tok-type">Vector3</span> <span class="tok-param">steppedBase</span> = <span class="tok-param">smoothedTargetPosition</span> - (<span class="tok-param">ghostRotation</span> * Vector3.forward * <span class="tok-param">currentDistance</span>);
+    <span class="tok-type">Vector3</span> <span class="tok-param">steppedDesired</span> = <span class="tok-method">ApplyScreenSpaceOffset</span>(<span class="tok-param">steppedBase</span>);
+    <span class="tok-type">Vector3</span> <span class="tok-param">extendedDesiredPosition</span> = <span class="tok-param">steppedDesired</span> - <span class="tok-param">ghostRotation</span> * Vector3.forward * <span class="tok-param">zOffset</span>;
+    <span class="tok-param">ghostPosition</span> = <span class="tok-param">extendedDesiredPosition</span>;
+}`;
+
+const playerSnippetPlain = `private void FixedUpdate()
+{
+    HandleMovementState();
+    Vector3 relVel = Rb.linearVelocity - _lastExternalForce;
+    HandleGravityRelative(ref relVel);
+    if (CurrentMovementState.Equals(PlayerMoveState.Swinging))
+    {
+        _playerRefData.PlayerSwing.HandleSwingMovement(WishDir, ref relVel);
+        _playerRefData.PlayerSwing.ConstrainToRope(ref relVel);
+    }
+    else
+    {
+        ApplyAccelerationRelative(ref relVel);
+    }
+    ApplyFriction(ref relVel, Vector3.forward);
+    ApplyFriction(ref relVel, Vector3.right);
+    HandleVelocityOvershootRelative(ref relVel);
+    Rb.linearVelocity = relVel + _externalForce;
+    _lastExternalForce = _externalForce;
+}`;
+
+const playerSnippetHtml = `<span class="tok-keyword">private</span> <span class="tok-keyword">void</span> <span class="tok-method">FixedUpdate</span>()
+{
+    <span class="tok-method">HandleMovementState</span>();
+    <span class="tok-type">Vector3</span> <span class="tok-param">relVel</span> = Rb.<span class="tok-param">linearVelocity</span> - <span class="tok-param">_lastExternalForce</span>;
+    <span class="tok-method">HandleGravityRelative</span>(<span class="tok-keyword">ref</span> <span class="tok-param">relVel</span>);
+    <span class="tok-keyword">if</span> (CurrentMovementState.<span class="tok-method">Equals</span>(PlayerMoveState.Swinging))
+    {
+        _playerRefData.PlayerSwing.<span class="tok-method">HandleSwingMovement</span>(<span class="tok-param">WishDir</span>, <span class="tok-keyword">ref</span> <span class="tok-param">relVel</span>);
+        _playerRefData.PlayerSwing.<span class="tok-method">ConstrainToRope</span>(<span class="tok-keyword">ref</span> <span class="tok-param">relVel</span>);
+    }
+    <span class="tok-keyword">else</span>
+    {
+        <span class="tok-method">ApplyAccelerationRelative</span>(<span class="tok-keyword">ref</span> <span class="tok-param">relVel</span>);
+    }
+    <span class="tok-method">ApplyFriction</span>(<span class="tok-keyword">ref</span> <span class="tok-param">relVel</span>, Vector3.forward);
+    <span class="tok-method">ApplyFriction</span>(<span class="tok-keyword">ref</span> <span class="tok-param">relVel</span>, Vector3.right);
+    <span class="tok-method">HandleVelocityOvershootRelative</span>(<span class="tok-keyword">ref</span> <span class="tok-param">relVel</span>);
+    Rb.<span class="tok-param">linearVelocity</span> = <span class="tok-param">relVel</span> + <span class="tok-param">_externalForce</span>;
+    <span class="tok-param">_lastExternalForce</span> = <span class="tok-param">_externalForce</span>;
+}`;
 ---
 
 <BaseLayout title="Cosmic Ranger V - Jonathan To">
@@ -146,8 +263,9 @@ const lassoSnippetHtml = `<span class="tok-keyword">private</span> <span class="
       title="Physics Hold Fishing Rod"
       description="Point-hold grabbing and manipulating objects at range, with critically damped spring
         calculations for positional and rotational movement, scale-derived artificial weight, configurable
-        damping, unique hold controls and rope-constraint pendulum swing."
-      snippetLabel="Lasso.cs - hold force & torque"
+        damping, and NPC capture ability."
+      videoSrc="/videos/fishing-rod-demo.mp4"
+      snippetLabel="Lasso.cs - Hold force & torque"
       snippetFilename="Lasso.cs"
       snippetCode={lassoSnippetPlain}
       flip={true}
@@ -164,21 +282,31 @@ const lassoSnippetHtml = `<span class="tok-keyword">private</span> <span class="
         large-delta detection for smooth transitions between enclosed and open spaces,
         player-state-driven positional offset modifier, and a cutscene handler supporting both
         player-relative and world-space cutscenes via in-world triggers."
-      snippetLabel="CameraController.cs - zoom & offset"
+      videoSrc="/videos/camera-demo.mp4"
+      snippetLabel="CameraController.cs - Collision handling"
       snippetFilename="CameraController.cs"
-      snippetCode={`// plug in your camera snippet here`}
-    />
+      snippetCode={cameraSnippetPlain}
+    >
+      <pre
+        slot="snippet-code"
+        style="margin:0; padding:1.25rem 1.5rem; overflow-x:auto; background:var(--bg); font-size:12px; line-height:1.8; white-space:pre-wrap; word-break:break-word;"><code class="font-mono text-(--text-code)" set:html={cameraSnippetHtml} /></pre>
+    </KeyFeature>
 
     <KeyFeature
       index={3}
       title="Player Movement"
       description="Rigidbody-based controller with moving platform sticking, velocity inheritance for
-        launches, relative movement atop platforms, and a rope-constraint based swinging mechanic."
-      snippetLabel="PlayerController.cs - platform sticking"
+    launches, relative movement atop platforms, and a rope-constraint based swinging mechanic."
+      videoSrc="/videos/player-controller-demo.mp4"
+      snippetLabel="PlayerController.cs - Relative velocity"
       snippetFilename="PlayerController.cs"
-      snippetCode={`// plug in your movement snippet here`}
+      snippetCode={playerSnippetPlain}
       flip={true}
-    />
+    >
+      <pre
+        slot="snippet-code"
+        style="margin:0; padding:1.25rem 1.5rem; overflow-x:auto; background:var(--bg); font-size:12px; line-height:1.8; white-space:pre-wrap; word-break:break-word;"><code class="font-mono text-(--text-code)" set:html={playerSnippetHtml} /></pre>
+    </KeyFeature>
   </div>
 
   <!-- DEEP DIVE + TAKEAWAYS — 2rem gap between them, sits at page-level 2rem from key features -->

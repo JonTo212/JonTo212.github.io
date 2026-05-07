@@ -118,17 +118,20 @@ const hasSnippet = !!(snippetLabel && snippetCode);
 
 <style>
   .kf-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-  .kf-row-flip .kf-media {
-    order: 2;
-  }
-  .kf-row-flip .kf-content {
-    order: 1;
-  }
+  display: grid;
+  grid-template-columns: 55fr 45fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.kf-row-flip {
+  grid-template-columns: 45fr 55fr;
+}
+.kf-row-flip .kf-media {
+  order: 2;
+}
+.kf-row-flip .kf-content {
+  order: 1;
+}
 
   .kf-media {
     border: 1px solid var(--border);
