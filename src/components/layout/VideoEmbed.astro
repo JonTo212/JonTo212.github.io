@@ -1,0 +1,79 @@
+---
+interface Props {
+  /** YouTube video ID */
+  videoId: string;
+  caption?: string;
+  /** Alt text for the thumbnail */
+  alt?: string;
+}
+
+const { videoId, caption, alt = "Video thumbnail" } = Astro.props;
+const thumb = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+---
+
+<section class="col-span-full">
+  <div class="border border-(--border) overflow-hidden">
+    <div
+      class="yt-embed"
+      data-id={videoId}
+      style="position:relative; aspect-ratio:16/9; cursor:pointer; overflow:hidden; background:var(--bg-video);"
+    >
+      <img
+        src={thumb}
+        alt={alt}
+        style="width:100%; height:100%; object-fit:cover; display:block;"
+      />
+      <div
+        style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"
+      >
+        <div
+          style="display:flex; flex-direction:column; align-items:center; gap:10px;"
+        >
+          <div class="play-btn">▶</div>
+          <span
+            class="font-mono text-[11px] text-(--text-muted) tracking-[0.08em]"
+            >// click to play</span
+          >
+        </div>
+      </div>
+    </div>
+    {
+      caption && (
+        <div class="font-mono text-[14px] text-(--text-muted) px-3 py-2 border-t border-(--border) bg-(--bg-panel)">
+          {caption}
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .play-btn {
+    width: 56px;
+    height: 56px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid var(--green);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--green);
+    font-size: 20px;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".yt-embed").forEach((el) => {
+    el.addEventListener("click", () => {
+      const id = el.dataset.id;
+      el.innerHTML = `<iframe
+        src="https://www.youtube.com/embed/${id}?autoplay=1"
+        style="width:100%;height:100%;border:none;display:block;"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen></iframe>`;
+    });
+  });
+</script>

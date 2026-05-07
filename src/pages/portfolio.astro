@@ -1,0 +1,129 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/layout/PageHeader.astro";
+import FilterBar from "../components/layout/FilterBar.astro";
+import ProjectCard from "../components/layout/ProjectCard.astro";
+
+const filters = ["All", "Programming", "Design", "Unity", "Unreal"];
+
+const projects = [
+  {
+    title: "Cosmic Ranger V",
+    href: "/projects/cosmic-ranger-v/",
+    imgSrc: "/cover-images/crv_hero.png",
+    desc: "A physics-based 3D puzzle platformer built around manipulating objects in the environment. Worked as programmer and designer on the player controller, the fishing rod hold mechanic, custom camera system, and prototyped a range of physics-driven features throughout development.",
+    tags: [
+      { label: "Programming", type: "programming" },
+      { label: "Design", type: "design" },
+      { label: "Unity", type: "unity" },
+    ],
+    meta: [
+      { label: "year", value: "2025-2026" },
+      { label: "duration", value: "8 months" },
+      { label: "team", value: "6" },
+    ],
+  },
+  {
+    title: "JellyFish",
+    href: "/projects/jellyfish/",
+    imgSrc: "/cover-images/jellyfish_hero.png",
+    desc: "An online party game built for Steam with a custom lobby system. Served as the network programmer, rapidly learning multiplayer foundations in under two months. Implemented gameplay systems, networking infrastructure, and Steam features such as lobby management, hosting, and code-based invites.",
+    tags: [
+      { label: "Programming", type: "programming" },
+      { label: "Unity", type: "unity" },
+    ],
+    meta: [
+      { label: "year", value: "2025" },
+      { label: "duration", value: "1.5 months" },
+      { label: "team", value: "4" },
+    ],
+  },
+  {
+    title: "Paint Rush Racer",
+    href: "/projects/paint-rush-racer/",
+    imgSrc: "/cover-images/paintrush_hero.png",
+    desc: "A local multiplayer kart racer built in Unreal Engine. Programmed an arcade-style suspension, drift system, and paint mechanics, along with templates to make art integration fast and consistent for the team.",
+    tags: [
+      { label: "Programming", type: "programming" },
+      { label: "Unreal Engine", type: "unreal" },
+    ],
+    meta: [
+      { label: "year", value: "2025" },
+      { label: "duration", value: "1.5 months" },
+      { label: "team", value: "4" },
+    ],
+  },
+  {
+    title: "Bunker Down! Demo",
+    href: "/projects/bunker-down-demo/",
+    imgSrc: "/cover-images/bunkerdown_hero.png",
+    desc: "A virtual demo of a physical board game, created as a marketing tool for a client's Kickstarter campaign. Built the core game systems, a tween-based UI animation system, and a full card and deck system. Assisted with NPC programming and UI/art implementation.",
+    tags: [
+      { label: "Programming", type: "programming" },
+      { label: "Unity", type: "unity" },
+    ],
+    meta: [
+      { label: "year", value: "2023" },
+      { label: "duration", value: "4 months" },
+      { label: "team", value: "2" },
+    ],
+  },
+  {
+    title: "Jungle Gym",
+    href: "/projects/jungle-gym/",
+    imgSrc: "/cover-images/junglegym_hero.png",
+    desc: "A 3D platformer built around childlike whimsy and shenanigans. Designed and programmed the player controller from scratch, including roll, hover, and rope mechanics that define how the game feels to play.",
+    tags: [
+      { label: "Programming", type: "programming" },
+      { label: "Design", type: "design" },
+    ],
+    meta: [
+      { label: "year", value: "2023" },
+      { label: "duration", value: "4 months" },
+      { label: "team", value: "4" },
+    ],
+  },
+];
+---
+
+<BaseLayout title="Portfolio - Jonathan To">
+  <div
+    class="mx-auto flex max-w-[1100px] flex-col gap-8 px-8 py-8 pb-16 font-mono text-[15px] text-[#d4d4d4]"
+  >
+    <PageHeader
+      comment="// ============================================================<br />//   portfolio[] - academic + professional work<br />// ============================================================"
+      title="Portfolio()"
+      subtitle="A collection of completed academic and professional projects - from capstone builds to team collaborations."
+      accentColor="green"
+    />
+
+    <FilterBar filters={filters} accentColor="green" />
+
+    <section>
+      <div
+        class="mb-4 flex items-center gap-2 font-mono text-xs text-[#4a7a4a]"
+      >
+        <div class="h-1.5 w-1.5 rounded-full bg-[#7ec87e] opacity-50"></div>
+        // projects[]
+        <span class="count ml-auto text-[11px] text-[#555555]"
+          >// {projects.length} entries</span
+        >
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {
+          projects.map((project) => (
+            <ProjectCard
+              href={project.href}
+              imgSrc={project.imgSrc}
+              title={project.title}
+              desc={project.desc}
+              tags={project.tags as any}
+              meta={project.meta}
+            />
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>

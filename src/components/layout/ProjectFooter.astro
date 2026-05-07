@@ -1,0 +1,66 @@
+---
+interface NavItem {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  prev?: NavItem;
+  next?: NavItem;
+  author?: string;
+  year?: number;
+}
+
+const {
+  prev,
+  next,
+  author = "Jonathan To · Gameplay Programmer & Game Designer",
+  year = new Date().getFullYear(),
+} = Astro.props;
+---
+
+<!-- Prev / Next nav -->
+<nav
+  class="col-span-full mt-4 border border-(--border)"
+  style="display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border);"
+>
+  {
+    prev ? (
+      <a
+        class="bg-(--bg-panel) px-6 py-5 no-underline flex flex-col gap-1.5 transition-colors duration-150 hover:bg-(--bg-card)"
+        href={prev.href}
+      >
+        <span class="font-mono text-[10px] text-(--text-muted) tracking-wider">
+          // ← prev_project
+        </span>
+        <span class="font-mono text-[13px] text-(--green)">{prev.label}</span>
+      </a>
+    ) : (
+      <div class="bg-(--bg-panel)" />
+    )
+  }
+
+  {
+    next ? (
+      <a
+        class="bg-(--bg-panel) px-6 py-5 no-underline flex flex-col items-end gap-1.5 transition-colors duration-150 hover:bg-(--bg-card)"
+        href={next.href}
+      >
+        <span class="font-mono text-[10px] text-(--text-muted) tracking-wider">
+          next_project → //
+        </span>
+        <span class="font-mono text-[13px] text-(--green)">{next.label}</span>
+      </a>
+    ) : (
+      <div class="bg-(--bg-panel)" />
+    )
+  }
+</nav>
+
+<!-- Footer copyright line -->
+<footer
+  class="col-span-full flex justify-between border-t border-(--border) pt-4 font-mono text-[0.75rem] text-(--text-muted)"
+>
+  <span>// {author}</span>
+  <span>© {year}</span>
+</footer>

@@ -1,0 +1,32 @@
+---
+interface Props {
+  comment: string;
+  title: string;
+  subtitle?: string;
+  accentColor?: "green" | "yellow";
+}
+
+const { comment, title, subtitle, accentColor = "green" } = Astro.props;
+const accentHex = accentColor === "green" ? "bg-[#7ec87e]" : "bg-[#c8b97e]";
+const textHex = accentColor === "green" ? "text-[#7ec87e]" : "text-[#c8b97e]";
+---
+
+<header
+  class="relative overflow-hidden border border-[#3a3a3a] bg-[#222222] px-10 py-8"
+>
+  <div class={`absolute inset-x-0 top-0 h-0.5 opacity-60 ${accentHex}`}></div>
+  <span
+    class="mb-4 block text-xs tracking-wider text-[#4a7a4a] leading-[1.9]"
+    set:html={comment}
+  />
+  <h1 class={`mb-2 text-3xl font-bold tracking-tight leading-tight ${textHex}`}>
+    {title}
+  </h1>
+  {
+    subtitle && (
+      <p class="text-xs text-[#888888] leading-relaxed before:content-['//_'] before:text-[#4a7a4a]">
+        {subtitle}
+      </p>
+    )
+  }
+</header>

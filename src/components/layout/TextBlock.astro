@@ -1,0 +1,100 @@
+---
+interface TextBlockTable {
+  heading: string;
+  body: string;
+}
+
+function isTextBlockTable(
+  firstElement: TextBlockTable | string,
+): firstElement is TextBlockTable {
+  return typeof firstElement !== "string";
+}
+
+interface Props {
+  title: string;
+  /**
+   * - string        → single paragraph
+   * - string[]      → dash-bulleted contribution list
+   * - TextBlockTable[] → takeaway cards (heading + body), laid out as a 3-col row
+   */
+  content: string | string[] | TextBlockTable[];
+}
+
+const { title, content } = Astro.props;
+
+const isTable =
+  Array.isArray(content) && content.length > 0 && isTextBlockTable(content[0]);
+const isList = Array.isArray(content) && !isTable;
+---
+
+<div class="border border-(--border) bg-(--bg-panel) w-full">
+  <!-- Panel header -->
+  <div
+    class="flex items-center gap-2 px-4 py-2.5 border-b border-(--border) bg-(--bg-card) font-mono text-[1.1rem] text-(--green-dim)"
+  >
+    <div class="w-1.5 h-1.5"></div>
+    // {title}
+  </div>
+
+  <!-- Panel body -->
+  <div class="px-6 py-5">
+    {
+      typeof content === "string" && (
+        <p class="font-mono text-[1rem] text-(--text-dim) leading-[1.8]">
+          {content}
+        </p>
+      )
+    }
+
+    {
+      isList && (
+        <ul class="flex flex-col gap-2.5">
+          {(content as string[]).map((item) => (
+            <li class="contrib-item flex gap-2.5 font-mono text-[0.9rem] text-(--text-dim) leading-[1.6]">
+              <span class="text-(--green-dim) shrink-0 mt-px">-</span>
+              {item}
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    {
+      isTable && (
+        <div class="takeaways-cols">
+          {(content as TextBlockTable[]).map((item) => (
+            <div class="rt-takeaway flex gap-3 items-start">
+              <span class="font-mono text-[12px] text-(--yellow) mt-px shrink-0">
+                ▸
+              </span>
+              <div class="text-[14px] text-(--text-dim) leading-[1.6]">
+                <div class="font-mono text-[14px] text-(--text-muted) uppercase tracking-[0.08em] mb-0.5">
+                  {item.heading}
+                </div>
+                {item.body}
+              </div>
+            </div>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</div>
+
+<style>
+  .takeaways-cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+  .takeaways-cols .rt-takeaway {
+    padding: 0 1.5rem;
+    border-right: 1px solid var(--border);
+  }
+  .takeaways-cols .rt-takeaway:first-child {
+    padding-left: 0;
+  }
+  .takeaways-cols .rt-takeaway:last-child {
+    border-right: none;
+  }
+</style>

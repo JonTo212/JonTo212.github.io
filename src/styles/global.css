@@ -1,0 +1,167 @@
+/* src/styles/global.css */
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Commit Mono';
+  src: url('/fonts/CommitMono-Regular.ttf') format('opentype');
+  font-weight: 325;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ── BACKGROUNDS ── */
+  --bg:            #1a1a1a;
+  --bg-panel:      #222222;
+  --bg-card:       #2a2a2a;
+  --bg-card-hover: #303030;
+  --bg-tag:        #333;
+  --bg-media:      #141414;
+  --bg-code:       #1e1e1e;
+  --bg-code-hover: #242424;
+  --bg-video:      #0d0d0d;
+  --bg-before:     #1e1a1a;
+  --bg-after:      #1a1e1a;
+
+  /* ── BORDERS ── */
+  --border:    #3a3a3a;
+  --border-hi: #555;
+
+  /* ── GREENS ── */
+  --green:     #7ec87e;
+  --green-dim: #4a7a4a;
+  --dot-green: #3a7a3a;
+
+  /* ── ACCENT ── */
+  --yellow:    #c8b97e;
+  --red:       #c0625a;
+
+  /* ── TEXT ── */
+  --text:      #e0e0e0;
+  --text-dim:  #c0c0c0;
+  --text-muted:#666;
+  --text-code: #d4d4d4;
+
+  /* ── TAG COLOURS ── */
+  --tag-prog:   #6b4f9e;
+  --tag-design: #3a6b5a;
+  --tag-unity:  #3a5a7a;
+  --tag-unreal: #7a3a3a;
+  --tag-art:    #6b5a3a;
+
+  /* ── TAILWIND V4 FONT OVERRIDE ── */
+  --font-sans: 'Commit Mono', monospace;
+  --font-mono: 'Commit Mono', monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Commit Mono', monospace;
+  font-size: 1rem;
+  line-height: 1.6;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── NAV ── */
+nav.site-nav {
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.nav-logo {
+  font-family: 'Commit Mono', monospace;
+  font-size: 14px;
+  color: var(--green);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.nav-links a {
+  font-family: 'Commit Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.15s;
+}
+.nav-links a:hover { color: var(--green); }
+.nav-icon { font-size: 11px; opacity: 0.7; }
+
+/* ── BREADCRUMB ── */
+.breadcrumb-bar {
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Commit Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.breadcrumb-bar a {
+  color: var(--text-dim);
+  text-decoration: none;
+}
+.breadcrumb-bar a:hover  { color: var(--green); }
+.breadcrumb-sep          { color: var(--border-hi); }
+.breadcrumb-current      { color: var(--green); }
+
+/* ── PAGE GRID ── */
+.page {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 2rem 2rem 4rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+/* ── CODE SNIPPET ── */
+.code-snippet {
+  border: 1px solid var(--border-hi);
+  box-shadow: 0 0 8px rgba(58, 122, 58, 0.3);
+  overflow: hidden;
+}
+
+/* ── TAG COLOURS ── */
+.tag-programming { background: var(--tag-prog);   color: #c8b8f0; }
+.tag-design      { background: var(--tag-design);  color: #a8d8c0; }
+.tag-unity       { background: var(--tag-unity);   color: #a8c8e8; }
+.tag-unreal      { background: var(--tag-unreal);  color: #e8b8b8; }
+.tag-art         { background: var(--tag-art);     color: #e0cfaa; }
+
+/* ── SYNTAX TOKEN COLOURS ── */
+.tok-comment  { color: var(--text-muted); font-style: italic; }
+.tok-keyword  { color: #569cd6; }
+.tok-type     { color: #4ec9b0; }
+.tok-string   { color: #ce9178; }
+.tok-num      { color: #b5cea8; }
+.tok-method   { color: #dcdcaa; }
+.tok-param    { color: #9cdcfe; }
+.tok-bool     { color: #569cd6; }

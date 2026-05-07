@@ -1,0 +1,158 @@
+---
+
+interface Props {
+  index: number;
+  title: string;
+  description: string;
+  videoSrc?: string;
+  snippetLabel?: string;
+  snippetCode?: string;
+  snippetLang?: string;
+  snippetFilename?: string;
+  /** When true, media is on the right (content left) */
+  flip?: boolean;
+}
+
+const {
+  index,
+  title,
+  description,
+  videoSrc = "",
+  snippetLabel,
+  snippetCode,
+  snippetLang = "csharp",
+  snippetFilename,
+  flip = false,
+} = Astro.props;
+
+const num = String(index).padStart(2, "0");
+const snippetId = `kf-snippet-${index}`;
+const hasSnippet = !!(snippetLabel && snippetCode);
+---
+
+<div class={`kf-row${flip ? " kf-row-flip" : ""}`} id={`kf-row-${index}`}>
+  <!-- MEDIA -->
+  <div class="kf-media overflow-hidden relative">
+    <div class="relative w-full" style="aspect-ratio:16/9;">
+      {
+        videoSrc ? (
+          <video
+            autoplay
+            loop
+            muted
+            playsinline
+            src={videoSrc}
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+        ) : (
+          <div class="absolute inset-0 flex flex-col items-center justify-center gap-2 font-mono text-[11px] text-(--text-muted)">
+            <span style="font-size:28px; opacity:0.12;">◈</span>
+            <span>// feature_{num}.mp4</span>
+          </div>
+        )
+      }
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="kf-content flex flex-col">
+    <div class="flex-1 flex flex-col gap-2.5 px-6 py-5">
+      <span class="font-mono text-[14px] text-(--text-muted) tracking-[0.08em]"
+        >{num}</span
+      >
+      <div class="font-mono text-[1.1rem] text-(--yellow)">{title}</div>
+      <p class="font-mono text-[0.9rem] text-(--text-dim) leading-[1.8] flex-1">
+        {description}
+      </p>
+    </div>
+
+    {
+      hasSnippet && (
+        <button
+          class="snippet-toggle-btn flex items-center justify-between px-3.5 py-2.25 bg-(--bg-code) border-t border-(--border) cursor-pointer transition-colors duration-150 hover:bg-(--bg-code-hover) text-left w-full"
+          onclick={`toggleKfSnippet(${index}, this)`}
+          type="button"
+        >
+          <span class="font-mono text-[0.9rem] text-(--text-muted) flex items-center gap-2">
+            // {snippetLabel}
+          </span>
+          <span class="snippet-pill font-mono text-[0.9rem] text-(--green) border border-(--green-dim) px-3 py-1 rounded-full tracking-[0.06em]">
+            ▸ view snippet
+          </span>
+        </button>
+      )
+    }
+  </div>
+
+  <!-- SNIPPET BODY — spans full width as third grid child -->
+  {
+    hasSnippet && (
+      <div
+        id={snippetId}
+        style="max-height:0; overflow:hidden; transition:max-height 0.25s ease; grid-column: 1 / -1; order:99;"
+      >
+        <div class="code-snippet">
+          <!-- Header bar — always rendered regardless of slot override -->
+          <div class="flex items-center justify-between px-3.5 py-1.75 bg-(--bg-code) border-b border-(--border)">
+            <div class="flex items-center gap-2">
+              <span class="font-mono text-[0.9rem] text-(--text-muted)">
+                // {snippetFilename ?? snippetLabel}
+              </span>
+            </div>
+            <span class="font-mono text-[10px] text-(--border-hi) uppercase tracking-[0.08em]">
+              {snippetLang}
+            </span>
+          </div>
+          <!-- Code body — slot allows HTML-highlighted override, falls back to plain text -->
+          <slot name="snippet-code">
+            <pre
+              class="m-0 px-6 py-5 overflow-x-auto bg-(--bg) text-[0.9rem] leading-relaxed"
+              style="white-space: pre-wrap; word-break: break-word;"
+            ><code class="font-mono text-(--text-dim)">{snippetCode}</code></pre>
+          </slot>
+        </div>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .kf-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .kf-row-flip .kf-media {
+    order: 2;
+  }
+  .kf-row-flip .kf-content {
+    order: 1;
+  }
+
+  .kf-media {
+    border: 1px solid var(--border);
+    background: var(--bg-media);
+    overflow: hidden;
+    position: relative;
+  }
+  .kf-content {
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-panel);
+  }
+</style>
+
+<script>
+  if (typeof (window as any).toggleKfSnippet === "undefined") {
+    (window as any).toggleKfSnippet = function (idx: number, btn: HTMLElement) {
+      const body = document.getElementById("kf-snippet-" + idx);
+      if (!body) return;
+      const pill = btn.querySelector<HTMLElement>(".snippet-pill");
+      const isOpen = body.style.maxHeight && body.style.maxHeight !== "0px";
+      body.style.maxHeight = isOpen ? "0" : body.scrollHeight + "px";
+      if (pill) pill.textContent = isOpen ? "▸ view snippet" : "▸ hide snippet";
+    };
+  }
+</script>

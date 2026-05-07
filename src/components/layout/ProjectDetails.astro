@@ -1,0 +1,68 @@
+---
+interface MetaRow {
+  key: string;
+  value: string;
+  highlight?: boolean;
+}
+
+interface LinkButton {
+  label: string;
+  href: string;
+  icon?: string;
+}
+
+interface Props {
+  meta: MetaRow[];
+  links?: LinkButton[];
+}
+
+const { meta, links = [] } = Astro.props;
+---
+
+<div class="border border-(--border) bg-(--bg-panel) h-full">
+  <!-- Header -->
+  <div
+    class="px-3.5 py-2.5 bg-(--bg-card) border-b border-(--border) font-mono text-[1.1rem] text-(--green-dim)"
+  >
+    // Project Details
+  </div>
+  <!-- Body -->
+  <div class="p-3.5">
+    {
+      meta.map((row) => (
+        <div class="flex justify-between py-1.75 border-b border-(--border) last:border-b-0">
+          <span class="font-mono text-[14px] text-(--text-muted)">
+            {row.key}
+          </span>
+          <span
+            class={`font-mono text-[14px] text-right ${row.highlight ? "text-(--green)" : "text-(--text)"}`}
+          >
+            {row.value}
+          </span>
+        </div>
+      ))
+    }
+
+    {
+      links.length > 0 && (
+        <div class="border-t border-(--border) pt-3 mt-1">
+          <div class="font-mono text-[10px] text-(--text-muted) mb-2.5 tracking-wider">
+            // links[]
+          </div>
+          {links.map((link) => (
+            <a
+              class="link-btn flex items-center justify-between px-3 py-2.25 border border-(--border) bg-(--bg-card) text-(--text-dim) no-underline font-mono text-[12px] mb-2 last:mb-0 transition-colors duration-150 hover:border-(--green) hover:text-(--green)"
+              href={link.href}
+            >
+              <span>
+                <span class="opacity-60 mr-2">{link.icon ?? "▷"}</span>
+                {link.label}
+              </span>
+              <span class="opacity-40">→</span>
+            </a>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</div>

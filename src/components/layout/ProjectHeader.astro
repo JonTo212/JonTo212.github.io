@@ -1,0 +1,55 @@
+---
+interface Tag {
+  label: string;
+  type: "programming" | "design" | "unity" | "unreal" | "art";
+}
+
+interface Props {
+  title: string;
+  subtitle: string;
+  tags: Tag[];
+  description: string;
+}
+
+const { title, subtitle, tags, description } = Astro.props;
+---
+
+<header
+  class="project-header border border-(--border) bg-(--bg-panel) p-8 relative overflow-hidden col-span-full"
+>
+  <h1
+    class="font-mono text-[45px] font-bold text-(--green) tracking-[-0.02em] leading-[1.1] mb-2"
+  >
+    {title}
+  </h1>
+  <div class="font-mono text-[1.1rem] text-(--yellow) mb-6">
+    {subtitle}
+  </div>
+  <div class="flex flex-wrap gap-2 mb-6">
+    {
+      tags.map((tag) => (
+        <span
+          class={`tag-${tag.type} font-mono text-[0.9rem] px-2.5 py-0.75 rounded-[3px] font-medium tracking-[0.03em]`}
+        >
+          {tag.label}
+        </span>
+      ))
+    }
+  </div>
+  <p class="font-mono text-[0.9rem] text-(--text-dim) leading-[1.8]">
+    {description}
+  </p>
+</header>
+
+<style>
+  .project-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--green);
+    opacity: 0.6;
+  }
+</style>

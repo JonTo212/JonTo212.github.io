@@ -1,0 +1,201 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "../components/layout/ProjectCard.astro";
+
+const featuredProjects = [
+  {
+    title: "Cosmic Ranger V",
+    href: "/projects/cosmic-ranger-v/",
+    imgSrc: "/cover-images/crv_hero.png",
+    desc: "A physics-based 3D puzzle platformer built as my final capstone project at Sheridan College.",
+    tags: [
+      { label: "Programming", type: "programming" },
+      { label: "Design", type: "design" },
+      { label: "Unity", type: "unity" },
+    ],
+    meta: [
+      { label: "year", value: "2024" },
+      { label: "duration", value: "8 months" },
+      { label: "team", value: "solo" },
+    ],
+  },
+  {
+    title: "JellyFish",
+    href: "/projects/jellyfish/",
+    imgSrc: "/cover-images/jellyfish_hero.png",
+    desc: "An online multiplayer party game with Steam integration created over the course of 1.5 months during my co-op term.",
+    tags: [
+      { label: "Programming", type: "programming" },
+      { label: "Unity", type: "unity" },
+    ],
+    meta: [
+      { label: "year", value: "2025" },
+      { label: "duration", value: "1.5 months" },
+      { label: "team", value: "4" },
+    ],
+  },
+  {
+    title: "Paint Rush Racer",
+    href: "/projects/paint-rush-racer/",
+    imgSrc: "/cover-images/paintrush_hero.png",
+    desc: "A local multiplayer racing game created over the course of 1.5 months during my co-op term, made in Unreal Engine.",
+    tags: [
+      { label: "Programming", type: "programming" },
+      { label: "Unreal Engine", type: "unreal" },
+    ],
+    meta: [
+      { label: "year", value: "2025" },
+      { label: "duration", value: "1.5 months" },
+      { label: "team", value: "4" },
+    ],
+  },
+];
+---
+
+<BaseLayout title="Jonathan To - Gameplay Programmer & Game Designer">
+  <div
+    class="mx-auto flex max-w-[1100px] flex-col gap-8 px-8 py-8 pb-16 font-mono text-[15px] text-[#d4d4d4]"
+  >
+    <header
+      class="relative overflow-hidden border border-[#3a3a3a] bg-[#222222] px-10 pb-10 pt-12"
+    >
+      <div class="absolute inset-x-0 top-0 h-[2px] bg-[#7ec87e] opacity-60">
+      </div>
+
+      <span
+        class="mb-6 block text-xs tracking-wider text-[#4a7a4a] leading-[1.9]"
+      >
+        // ============================================================<br />
+        // &nbsp;&nbsp;portfolio.exe - Jonathan To<br />
+        // ============================================================
+      </span>
+
+      <h1
+        class="mb-1.5 text-5xl font-bold tracking-tight leading-[1.05] text-[#7ec87e]"
+      >
+        Jonathan To
+      </h1>
+
+      <div class="mb-8 text-[15px] text-[#c8b97e]">
+        // Gameplay Programmer &amp; Game Designer
+      </div>
+
+      <p
+        class="mb-8 max-w-full text-[13px] leading-[1.85] text-[#888888] before:content-['//_'] before:text-[#4a7a4a]"
+      >
+        Hey, I'm Jonathan! I'm a designer-programmer who loves to tinker, using
+        code as my creative outlet to bring ideas to life.
+      </p>
+
+      <div class="flex flex-wrap gap-2.5">
+        <a
+          href="https://github.com/JonTo212"
+          target="_blank"
+          class="inline-flex items-center gap-2 border border-[#3a3a3a] bg-[#2a2a2a] px-4 py-2 text-xs text-[#888888] no-underline transition-colors duration-150 hover:border-[#7ec87e] hover:text-[#7ec87e]"
+        >
+          <span class="opacity-60">◇</span> GitHub
+        </a>
+        <a
+          href="https://jonathanto.itch.io/"
+          target="_blank"
+          class="inline-flex items-center gap-2 border border-[#3a3a3a] bg-[#2a2a2a] px-4 py-2 text-xs text-[#888888] no-underline transition-colors duration-150 hover:border-[#7ec87e] hover:text-[#7ec87e]"
+        >
+          <span class="opacity-60">▷</span> itch.io
+        </a>
+        <a
+          href="https://drive.google.com/file/d/1Cta6i9EEs6AEyEd8_VQpO21_3bMZjivW/view?usp=sharing"
+          target="_blank"
+          class="inline-flex items-center gap-2 border border-[#3a3a3a] bg-[#2a2a2a] px-4 py-2 text-xs text-[#888888] no-underline transition-colors duration-150 hover:border-[#7ec87e] hover:text-[#7ec87e]"
+        >
+          <span class="opacity-60">□</span> Resume (PDF)
+        </a>
+        <a
+          href="https://www.linkedin.com/in/jonathan-to398/"
+          target="_blank"
+          class="inline-flex items-center gap-2 border border-[#3a3a3a] bg-[#2a2a2a] px-4 py-2 text-xs text-[#888888] no-underline transition-colors duration-150 hover:border-[#7ec87e] hover:text-[#7ec87e]"
+        >
+          <span class="opacity-60">◈</span> LinkedIn
+        </a>
+      </div>
+    </header>
+
+    <section>
+      <div
+        class="mb-4 flex items-center gap-2 font-mono text-xs text-[#4a7a4a]"
+      >
+        <div class="h-1.5 w-1.5 rounded-full bg-[#7ec87e] opacity-50"></div>
+        // featured_projects[]
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {
+          featuredProjects.map((project) => (
+            <ProjectCard
+              href={project.href}
+              imgSrc={project.imgSrc}
+              title={project.title}
+              desc={project.desc}
+              tags={project.tags as any}
+              meta={project.meta}
+            />
+          ))
+        }
+      </div>
+    </section>
+
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <a
+        href="/portfolio/"
+        class="group block border border-[#3a3a3a] bg-[#222222] no-underline transition-colors duration-150 hover:bg-[#272727]"
+      >
+        <div
+          class="flex items-center justify-between border-b border-[#3a3a3a] bg-[#2a2a2a] px-4 py-2.5 text-xs text-[#4a7a4a]"
+        >
+          <span class="flex items-center"
+            ><span
+              class="mr-2 inline-block h-1.5 w-1.5 rounded-full bg-[#7ec87e] opacity-50"
+            ></span>Portfolio()</span
+          >
+          <span
+            class="text-[11px] text-[#555555] opacity-0 transition-opacity duration-150 group-hover:text-[#7ec87e] group-hover:opacity-100"
+            >→</span
+          >
+        </div>
+        <div class="px-6 py-5">
+          <p
+            class="text-xs leading-[1.75] text-[#888888] before:content-['//_'] before:text-[#4a7a4a]"
+          >
+            A collection of completed academic + professional projects.
+          </p>
+        </div>
+      </a>
+
+      <a
+        href="/personal-projects/"
+        class="group block border border-[#3a3a3a] bg-[#222222] no-underline transition-colors duration-150 hover:bg-[#272727]"
+      >
+        <div
+          class="flex items-center justify-between border-b border-[#3a3a3a] bg-[#2a2a2a] px-4 py-2.5 text-xs text-[#4a7a4a]"
+        >
+          <span class="flex items-center"
+            ><span
+              class="mr-2 inline-block h-1.5 w-1.5 rounded-full bg-[#7ec87e] opacity-50"
+            ></span>PersonalProjects()</span
+          >
+          <span
+            class="text-[11px] text-[#555555] opacity-0 transition-opacity duration-150 group-hover:text-[#7ec87e] group-hover:opacity-100"
+            >→</span
+          >
+        </div>
+        <div class="px-6 py-5">
+          <p
+            class="text-xs leading-[1.75] text-[#888888] before:content-['//_'] before:text-[#4a7a4a]"
+          >
+            A collection of personal projects, including WIP and
+            non-game-specific pieces.
+          </p>
+        </div>
+      </a>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,124 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeader from "../components/layout/PageHeader.astro";
+import FilterBar from "../components/layout/FilterBar.astro";
+import ProjectCard from "../components/layout/ProjectCard.astro";
+
+const filters = ["All", "Programming", "Design", "WIP", "Team"];
+
+const projects = [
+  {
+    title: "Ronin Run",
+    href: "../projects/ronin-run/",
+    imgSrc: "/cover-images/roninrun_hero.png",
+    desc: "Source-inspired movement system with CS-style strafing and shurikens that each carry their own movement and traversal mechanics.",
+    isWip: true,
+    tags: [
+      { label: "Programming", type: "programming" },
+      { label: "Design", type: "design" },
+      { label: "WIP", type: "wip" },
+    ],
+    meta: [
+      { label: "status", value: "ongoing" },
+      { label: "team", value: "solo" },
+    ],
+  },
+  {
+    title: "Procedural 2D Map Generator",
+    href: "../projects/wfc-generator/",
+    imgSrc: "/cover-images/wfc_hero.png",
+    desc: "Wave function collapse-based procedural 2D map generator with integrated pathfinding via BFS and DFS.",
+    isWip: false,
+    tags: [{ label: "Programming", type: "programming" }],
+    meta: [
+      { label: "status", value: "complete" },
+      { label: "team", value: "solo" },
+    ],
+  },
+  {
+    title: "Deterministic Dice",
+    href: "../projects/deterministic-dice/",
+    imgSrc: "/cover-images/deterministicdice_hero.png",
+    desc: "Rigged physics-based dice roll that guarantees a target face - uses a recording and resimulation system to lock in the result.",
+    isWip: false,
+    tags: [{ label: "Programming", type: "programming" }],
+    meta: [
+      { label: "status", value: "complete" },
+      { label: "team", value: "solo" },
+    ],
+  },
+  {
+    title: "Light Moth",
+    href: "../projects/light-moth/",
+    imgSrc: "/cover-images/lightmoth_hero.png",
+    desc: "Players indirectly control a moth by toggling and adjusting the intensity of light sources to steer it. Originated as a jam concept, now rebuilding in 3D.",
+    isWip: true,
+    tags: [
+      { label: "Design", type: "design" },
+      { label: "WIP", type: "wip" },
+    ],
+    meta: [
+      { label: "status", value: "ongoing" },
+      { label: "team", value: "solo" },
+    ],
+  },
+  {
+    title: "Sky High Scrubbing",
+    href: "../projects/sky-high-scrubbing/",
+    imgSrc: "/cover-images/skyhighscrubbing_hero.png",
+    desc: "Arcade cabinet microgame for Sheridan College's Design Week 2023, shipped in a week. P1 scrubs omnidirectionally, P2 moves the scaffolding and sprays water - one minute on the clock.",
+    isWip: false,
+    tags: [
+      { label: "Design", type: "design" },
+      { label: "Team", type: "team" },
+    ],
+    meta: [
+      { label: "status", value: "complete" },
+      { label: "team", value: "collab" },
+    ],
+  },
+];
+---
+
+<BaseLayout title="Personal Projects - Jonathan To">
+  <div
+    class="mx-auto flex max-w-[1100px] flex-col gap-8 px-8 py-8 pb-16 font-mono text-[15px] text-[#d4d4d4]"
+  >
+    <PageHeader
+      comment="// ============================================================<br/>//   personal_projects[] - tinkering, experiments, WIPs<br/>// ============================================================"
+      title="PersonalProjects()"
+      subtitle="Personal experiments, works-in-progress, and non-game pieces - things built for curiosity rather than class."
+      accentColor="yellow"
+    />
+
+    <FilterBar filters={filters} accentColor="yellow" />
+
+    <section>
+      <div
+        class="mb-4 flex items-center gap-2 font-mono text-xs text-[#4a7a4a]"
+      >
+        <div class="h-1.5 w-1.5 rounded-full bg-[#c8b97e] opacity-50"></div>
+        // projects[]
+        <span class="count ml-auto text-[11px] text-[#555555]"
+          >// {projects.length} entries</span
+        >
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {
+          projects.map((project) => (
+            <ProjectCard
+              href={project.href}
+              imgSrc={project.imgSrc}
+              title={project.title}
+              desc={project.desc}
+              tags={project.tags as any}
+              meta={project.meta}
+              isWip={project.isWip}
+            />
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>

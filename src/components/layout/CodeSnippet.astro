@@ -1,0 +1,31 @@
+---
+interface Props {
+  filename: string;
+  code: string;
+  lang?: string;
+}
+
+const { filename, code, lang = "csharp" } = Astro.props;
+---
+
+<div class="code-snippet">
+  <div
+    class="flex items-center justify-between px-3.5 py-1.75 bg-(--bg-code) border-b border-(--border)"
+  >
+    <div class="flex items-center gap-2">
+      <span
+        class="inline-block w-2 h-2 rounded-full bg-(--dot-green) opacity-70"
+      ></span>
+      <span class="font-mono text-[0.9rem] text-(--text-muted)"
+        >// {filename}</span
+      >
+    </div>
+    <span
+      class="font-mono text-[10px] text-(--border-hi) uppercase tracking-[0.08em]"
+      >{lang}</span
+    >
+  </div>
+  <pre
+    class="m-0 px-6 py-5 overflow-x-auto bg-(--bg) text-[0.9rem] leading-relaxed"
+    style="white-space: pre-wrap; word-break: break-word;"><code class="font-mono text-(--text-dim)">{code}</code></pre>
+</div>

@@ -1,0 +1,24 @@
+---
+interface Props {
+  title: string;
+  paragraphs?: string[];
+}
+
+const { title, paragraphs } = Astro.props;
+---
+
+<div class="mb-8 border border-[#3a3a3a] bg-[#222222]">
+  <!-- Header: matches .section-block-header — font-size 50px is intentional (large decorative comment) -->
+  <div class="flex items-center gap-2 px-4 py-[10px] bg-[#2a2a2a] border-b border-[#3a3a3a] font-mono text-[1.1rem] text-[#4a7a4a]">
+    <div class="w-[6px] h-[6px] rounded-full bg-[#7ec87e] opacity-50 shrink-0"></div>
+    // {title}
+  </div>
+  <div class="px-6 py-5">
+    {paragraphs
+      ? paragraphs.map((p) => (
+          <p class="text-[16px] text-[#e0e0e0] leading-[1.8] mb-4 last:mb-0 font-mono">{p}</p>
+        ))
+      : <slot />
+    }
+  </div>
+</div>

@@ -1,0 +1,176 @@
+---
+interface ArcStep {
+  tag: "problem" | "approach" | "result" | string;
+  icon: string;
+  title: string;
+  body: string;
+}
+
+interface Props {
+  title: string;
+  steps: ArcStep[];
+  slider?: {
+    beforeSrc?: string;
+    afterSrc?: string;
+    label?: string;
+  };
+}
+
+const { title, steps, slider } = Astro.props;
+
+const stepsBeforeSlider = steps.filter((s) => s.tag !== "result");
+const stepsAfterSlider  = steps.filter((s) => s.tag === "result");
+---
+
+<div class="border border-(--border) bg-(--bg-panel) overflow-hidden">
+
+  <!-- Toggle header -->
+  <button
+    class="w-full flex items-center justify-between px-4 py-3 bg-(--bg-card) cursor-pointer transition-colors duration-150 hover:bg-(--bg-card-hover) text-left"
+    onclick="toggleDeepDive(this)"
+    type="button"
+  >
+    <span class="flex items-center gap-2 font-mono text-[1.1rem] text-(--green-dim)">
+      <span class="w-1.5 h-1.5"></span>
+      // {title}
+    </span>
+    <span class="deep-dive-pill font-mono text-[0.9rem] text-(--green) border border-(--green-dim) px-3 py-1 rounded-full tracking-[0.06em]">
+      ▸ expand
+    </span>
+  </button>
+
+  <!-- Collapsible body -->
+  <div class="deep-dive-body" style="max-height:0; overflow:hidden; transition:max-height 0.35s ease;">
+    <div class="border-t border-(--border)">
+
+      <!-- Steps before slider -->
+      {stepsBeforeSlider.length > 0 && (
+        <div class="flex flex-col">
+          {stepsBeforeSlider.map((step) => (
+            <div class="arc-step grid border-b border-(--border) bg-(--bg-panel)" style="grid-template-columns:80px 1fr;">
+              <div class="flex flex-col items-start gap-1.5 p-5 pr-4 border-r border-(--border) bg-(--bg-card)">
+                <span class="font-mono text-[0.75rem] text-(--text-muted) uppercase tracking-widest">{step.tag}</span>
+                <span class="text-(--green-dim) text-[16px]">{step.icon}</span>
+              </div>
+              <div class="p-5">
+                <div class="font-mono text-[1rem] text-(--yellow) mb-2">{step.title}</div>
+                <p class="text-[14px] text-(--text-dim) leading-[1.8]">{step.body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <!-- Before / After Slider -->
+      {slider && (
+        <div class="border-b border-(--border)">
+          <!-- Slider header bar -->
+          <div class="flex items-center justify-between px-3.5 py-1.75 bg-(--bg-code) border-b border-(--border) font-mono text-[0.9rem] text-(--text-muted)">
+            <span>// {slider.label ?? "deep_dive_visual"}</span>
+            <span class="flex gap-6">
+              <span class="text-(--red)">◎ before</span>
+              <span class="text-(--green)">◎ after</span>
+            </span>
+          </div>
+          <!-- Slider container -->
+          <div
+            class="ba-container relative w-full overflow-hidden select-none bg-(--bg-card)"
+            style="aspect-ratio:16/9; cursor:ew-resize;"
+            id="baSlider"
+          >
+            <!-- Before layer -->
+            {slider.beforeSrc
+              ? <img src={slider.beforeSrc} alt="Before" class="absolute inset-0 w-full h-full object-cover" />
+              : (
+                <div class="absolute inset-0 flex flex-col items-center justify-center gap-2 font-mono text-[0.9rem] text-(--text-muted)" style="background:var(--bg-before);">
+                  <span style="font-size:32px; opacity:0.15;">◎</span>
+                  <span>before</span>
+                  <span class="text-[10px] opacity-50">replace with: images/deep_dive_before.png</span>
+                </div>
+              )
+            }
+            <!-- After layer -->
+            <div class="absolute inset-0" id="baAfter" style="clip-path: inset(0 50% 0 0);">
+              {slider.afterSrc
+                ? <img src={slider.afterSrc} alt="After" class="w-full h-full object-cover" />
+                : (
+                  <div class="absolute inset-0 flex flex-col items-center justify-center gap-2 font-mono text-[0.9rem] text-(--text-muted)" style="background:var(--bg-after);">
+                    <span style="font-size:32px; opacity:0.15;">◈</span>
+                    <span>after</span>
+                    <span class="text-[10px] opacity-50">replace with: images/deep_dive_after.png</span>
+                  </div>
+                )
+              }
+            </div>
+            <!-- Corner labels -->
+            <span class="absolute top-2.5 left-3 font-mono text-[0.9rem] px-2 py-0.75 uppercase tracking-[0.08em] pointer-events-none" style="background:rgba(192,98,90,0.2); color:var(--red); border:1px solid rgba(192,98,90,0.4);">before</span>
+            <span class="absolute top-2.5 right-3 font-mono text-[0.9rem] px-2 py-0.75 uppercase tracking-[0.08em] pointer-events-none" style="background:rgba(126,200,126,0.15); color:var(--green); border:1px solid rgba(126,200,126,0.3);">after</span>
+            <!-- Divider line -->
+            <div id="baDivider" class="absolute top-0 bottom-0 pointer-events-none" style="left:50%; width:2px; background:var(--green); transform:translateX(-50%); opacity:0.85;"></div>
+            <!-- Handle -->
+            <div id="baHandle" class="absolute pointer-events-none flex items-center justify-center font-mono text-[0.9rem] text-(--green)" style="top:50%; left:50%; transform:translate(-50%,-50%); width:36px; height:36px; border-radius:50%; background:var(--bg-panel); border:2px solid var(--green); box-shadow:0 2px 8px rgba(0,0,0,0.5);">⇔</div>
+          </div>
+        </div>
+      )}
+
+      <!-- Steps after slider (result) -->
+      {stepsAfterSlider.length > 0 && (
+        <div class="flex flex-col">
+          {stepsAfterSlider.map((step) => (
+            <div class="arc-step grid bg-(--bg-panel)" style="grid-template-columns:80px 1fr;">
+              <div class="flex flex-col items-start gap-1.5 p-5 pr-4 border-r border-(--border) bg-(--bg-card)">
+                <span class="font-mono text-[0.75rem] text-(--text-muted) uppercase tracking-widest">{step.tag}</span>
+                <span class="text-(--green-dim) text-[16px]">{step.icon}</span>
+              </div>
+              <div class="p-5">
+                <div class="font-mono text-[1rem] text-(--yellow) mb-2">{step.title}</div>
+                <p class="text-[14px] text-(--text-dim) leading-[1.8]">{step.body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+    </div>
+  </div>
+</div>
+
+<script>
+  if (typeof (window as any).toggleDeepDive === "undefined") {
+    (window as any).toggleDeepDive = function (btn: HTMLElement) {
+      const accordion = btn.parentElement;
+      const body = accordion?.querySelector<HTMLElement>(".deep-dive-body");
+      const pill = btn.querySelector<HTMLElement>(".deep-dive-pill");
+      if (!body) return;
+      const isOpen = body.style.maxHeight && body.style.maxHeight !== "0px";
+      body.style.maxHeight = isOpen ? "0" : body.scrollHeight + "px";
+      if (pill) pill.textContent = isOpen ? "▸ expand" : "▸ collapse";
+    };
+  }
+
+  // BA Slider — scoped by closest container
+  document.querySelectorAll<HTMLElement>("#baSlider").forEach((container) => {
+    const after   = container.querySelector<HTMLElement>("#baAfter");
+    const divider = container.querySelector<HTMLElement>("#baDivider");
+    const handle  = container.querySelector<HTMLElement>("#baHandle");
+    if (!after || !divider || !handle) return;
+
+    let dragging = false;
+
+    function setPos(x: number) {
+      const rect = container.getBoundingClientRect();
+      const pct  = Math.max(0, Math.min(1, (x - rect.left) / rect.width));
+      const p    = (pct * 100).toFixed(2) + "%";
+      after!.style.clipPath = `inset(0 ${(100 - pct * 100).toFixed(2)}% 0 0)`;
+      divider!.style.left   = p;
+      handle!.style.left    = p;
+    }
+
+    container.addEventListener("mousedown",  (e) => { dragging = true; setPos((e as MouseEvent).clientX); });
+    window.addEventListener  ("mousemove",   (e) => { if (dragging) setPos((e as MouseEvent).clientX); });
+    window.addEventListener  ("mouseup",     ()  => { dragging = false; });
+    container.addEventListener("touchstart", (e) => { dragging = true; setPos((e as TouchEvent).touches[0].clientX); }, { passive: true });
+    window.addEventListener  ("touchmove",   (e) => { if (dragging) setPos((e as TouchEvent).touches[0].clientX); }, { passive: true });
+    window.addEventListener  ("touchend",    ()  => { dragging = false; });
+  });
+</script>

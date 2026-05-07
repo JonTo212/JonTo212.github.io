@@ -1,0 +1,94 @@
+---
+interface Tag {
+  label: string;
+  type: "programming" | "design" | "unity" | "unreal" | "wip" | "team";
+}
+
+interface Meta {
+  label: string;
+  value: string;
+}
+
+interface Props {
+  href: string;
+  imgSrc: string;
+  title: string;
+  desc: string;
+  tags: Tag[];
+  meta: Meta[];
+  isWip?: boolean;
+}
+
+const { href, imgSrc, title, desc, tags, meta, isWip = false } = Astro.props;
+
+const tagStyles = {
+  programming: "bg-[#6b4f9e] text-[#c8b8f0]",
+  design: "bg-[#3a6b5a] text-[#a8d8c0]",
+  unity: "bg-[#3a5a7a] text-[#a8c8e8]",
+  unreal: "bg-[#7a3a3a] text-[#e8b8b8]",
+  wip: "bg-[#5a4a20] text-[#e0c878]",
+  team: "bg-[#2a3a4a] text-[#88b8d8]",
+};
+---
+
+<a
+  href={href}
+  class="project-card group relative flex flex-col border border-[#3a3a3a] bg-[#222222] no-underline transition-colors duration-150 hover:bg-[#272727]"
+>
+  <div
+    class="relative aspect-video overflow-hidden border-b border-[#3a3a3a] bg-[#2a2a2a]"
+  >
+    {
+      isWip && (
+        <span class="absolute right-2.5 top-2.5 z-10 rounded-[3px] border border-[#6b5220] bg-[#3a2e10] px-2 py-0.5 font-mono text-[9px] tracking-wider text-[#c8b97e]">
+          WIP
+        </span>
+      )
+    }
+    <img
+      src={imgSrc}
+      alt={title}
+      class="block h-full w-full object-fill saturate-[0.85] transition-all duration-200 group-hover:saturate-100"
+    />
+  </div>
+
+  <div class="flex flex-1 flex-col gap-2.5 p-5">
+    <div class="flex items-start justify-between">
+      <div class="font-mono text-sm font-bold leading-[1.2] text-[#7ec87e]">
+        {title}
+      </div>
+      <span
+        class="ml-2 mt-0.5 shrink-0 text-xs text-[#555555] opacity-0 transition-all duration-150 group-hover:text-[#7ec87e] group-hover:opacity-100"
+        >→</span
+      >
+    </div>
+
+    <div class="flex flex-wrap gap-1.5">
+      {
+        tags.map((tag) => (
+          <span
+            class={`tag rounded-[3px] px-2 py-0.5 font-mono text-[10px] font-medium tracking-wide ${tagStyles[tag.type]}`}
+          >
+            {tag.label}
+          </span>
+        ))
+      }
+    </div>
+
+    <p
+      class="flex-1 font-mono text-xs leading-relaxed text-[#888888] before:content-['//_'] before:text-[#4a7a4a]"
+    >
+      {desc}
+    </p>
+
+    <div class="mt-auto flex gap-3 border-t border-[#3a3a3a] pt-2.5">
+      {
+        meta.map((m) => (
+          <div class="font-mono text-[10px] text-[#555555]">
+            {m.label} <span class="text-[#888888]">{m.value}</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</a>

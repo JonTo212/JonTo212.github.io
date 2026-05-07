@@ -1,0 +1,242 @@
+---
+// src/pages/portfolio/cosmic-ranger-v/index.astro
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import VideoEmbed from "../../components/layout/VideoEmbed.astro";
+import TextBlock from "../../components/layout/TextBlock.astro";
+import ProjectDetails from "../../components/layout/ProjectDetails.astro";
+import ProjectHeader from "../../components/layout/ProjectHeader.astro";
+import KeyFeature from "../../components/layout/KeyFeature.astro";
+import DeepDiveBlock from "../../components/layout/DeepDiveBlock.astro";
+import ProjectFooter from "../../components/layout/ProjectFooter.astro";
+
+const lassoSnippetPlain = `private Vector3 CalculateLinearForce(Vector3 displacement, Vector3 pointVelocity)
+{
+    Vector3 springForce = lassoHoldStrength * displacement;
+    float damping = 2f * Mathf.Sqrt(lassoHoldStrength * SnaredObject.Rb.mass);
+    Vector3 dampingForce = -pointVelocity * damping;
+    Vector3 totalForce = springForce + dampingForce;
+
+    totalForce = totalForce.normalized * Mathf.Clamp(totalForce.magnitude, 0f, maxLassoStrength);
+    return totalForce;
+}
+
+private Vector3 CalculateTorqueForce(Vector3 attachPointWorld, Vector3 linearForce)
+{
+    Vector3 r = attachPointWorld - SnaredObject.Rb.worldCenterOfMass;
+    float scale = 1f / (1f + r.magnitude);
+
+    Vector3 corrective = Vector3.Cross(r, linearForce) * scale;
+    corrective = corrective.normalized * Mathf.Clamp(corrective.magnitude, 0f, maxLassoTorque);
+
+    Vector3 dampingTorque = -SnaredObject.Rb.angularVelocity * rotationalDampingStrength;
+    return SnaredObject.IsTouchingSurface ? corrective + dampingTorque : corrective;
+}`;
+
+const lassoSnippetHtml = `<span class="tok-keyword">private</span> <span class="tok-type">Vector3</span> <span class="tok-method">CalculateLinearForce</span>(<span class="tok-type">Vector3</span> <span class="tok-param">displacement</span>, <span class="tok-type">Vector3</span> <span class="tok-param">pointVelocity</span>)
+{
+    <span class="tok-type">Vector3</span> <span class="tok-param">springForce</span> = <span class="tok-param">lassoHoldStrength</span> * <span class="tok-param">displacement</span>;
+    <span class="tok-keyword">float</span> <span class="tok-param">damping</span> = <span class="tok-num">2f</span> * Mathf.<span class="tok-method">Sqrt</span>(<span class="tok-param">lassoHoldStrength</span> * SnaredObject.Rb.<span class="tok-param">mass</span>);
+    <span class="tok-type">Vector3</span> <span class="tok-param">dampingForce</span> = -<span class="tok-param">pointVelocity</span> * <span class="tok-param">damping</span>;
+    <span class="tok-type">Vector3</span> <span class="tok-param">totalForce</span> = <span class="tok-param">springForce</span> + <span class="tok-param">dampingForce</span>;
+
+    <span class="tok-param">totalForce</span> = <span class="tok-param">totalForce</span>.normalized * Mathf.<span class="tok-method">Clamp</span>(<span class="tok-param">totalForce</span>.magnitude, <span class="tok-num">0f</span>, <span class="tok-param">maxLassoStrength</span>);
+    <span class="tok-keyword">return</span> <span class="tok-param">totalForce</span>;
+}
+
+<span class="tok-keyword">private</span> <span class="tok-type">Vector3</span> <span class="tok-method">CalculateTorqueForce</span>(<span class="tok-type">Vector3</span> <span class="tok-param">attachPointWorld</span>, <span class="tok-type">Vector3</span> <span class="tok-param">linearForce</span>)
+{
+    <span class="tok-type">Vector3</span> <span class="tok-param">r</span> = <span class="tok-param">attachPointWorld</span> - SnaredObject.Rb.<span class="tok-param">worldCenterOfMass</span>;
+    <span class="tok-keyword">float</span> <span class="tok-param">scale</span> = <span class="tok-num">1f</span> / (<span class="tok-num">1f</span> + <span class="tok-param">r</span>.magnitude); <span class="tok-comment">// attenuate by lever arm</span>
+
+    <span class="tok-type">Vector3</span> <span class="tok-param">corrective</span> = Vector3.<span class="tok-method">Cross</span>(<span class="tok-param">r</span>, <span class="tok-param">linearForce</span>) * <span class="tok-param">scale</span>;
+    <span class="tok-param">corrective</span> = <span class="tok-param">corrective</span>.normalized * Mathf.<span class="tok-method">Clamp</span>(<span class="tok-param">corrective</span>.magnitude, <span class="tok-num">0f</span>, <span class="tok-param">maxLassoTorque</span>);
+
+    <span class="tok-type">Vector3</span> <span class="tok-param">dampingTorque</span> = -SnaredObject.Rb.<span class="tok-param">angularVelocity</span> * <span class="tok-param">rotationalDampingStrength</span>;
+    <span class="tok-keyword">return</span> SnaredObject.<span class="tok-method">IsTouchingSurface</span> ? <span class="tok-param">corrective</span> + <span class="tok-param">dampingTorque</span> : <span class="tok-param">corrective</span>;
+}`;
+---
+
+<BaseLayout title="Cosmic Ranger V - Jonathan To">
+  <!-- BREADCRUMB -->
+  <div slot="breadcrumb" class="breadcrumb-bar">
+    <a href="/portfolio/">Portfolio()</a>
+    <span class="breadcrumb-sep">/</span>
+    <span class="breadcrumb-current">CosmicRangerV.cs</span>
+  </div>
+
+  <!-- PROJECT HEADER -->
+  <ProjectHeader
+    title="Cosmic Ranger V"
+    subtitle="Gameplay Programmer · Game Designer · Capstone"
+    tags={[
+      { label: "Programming", type: "programming" },
+      { label: "Design", type: "design" },
+      { label: "Unity", type: "unity" },
+    ]}
+    description="A physics-based 3D puzzle platformer built around manipulating objects in the environment.
+      Worked as programmer and designer on the player controller, the fishing rod hold mechanic, custom
+      camera system, and prototyped a range of physics-driven features throughout development."
+  />
+
+  <!-- VIDEO EMBED -->
+  <VideoEmbed
+    videoId="f6-TXsnPdGo"
+    caption="// fig_01 - Gameplay Trailer, created by our level designer, Braeden Hammill · Cosmic Ranger V"
+    alt="Cosmic Ranger V Trailer"
+  />
+
+  <!-- OVERVIEW + CONTRIBUTIONS + PROJECT DETAILS -->
+  <div class="grid gap-6" style="grid-template-columns: 1fr 260px;">
+    <TextBlock
+      title="Overview"
+      content="Served as the primary gameplay programmer - responsible for the player controller,
+        camera system, and the core fishing rod hold mechanic that the game's puzzle design is built
+        around. Prototyped extensively throughout development, with several fully-realised systems
+        cut late for scope."
+    />
+
+    <TextBlock
+      title="Contributions"
+      content={[
+        "Custom camera system with in-world cutscenes",
+        `Physics grab system ("Fishing Rod"), including NPC capture and grabbable object backend`,
+        "Physics character controller with swing, ledge grab, and mantle mechanics, and moving platform support",
+        "NPC companion with hold, recall, and summon, additional movement and grab mechanics, and environmental interactables (cut for scope)",
+      ]}
+    />
+
+    <div style="grid-column:2; grid-row:1/3;">
+      <ProjectDetails
+        meta={[
+          { key: "status", value: "complete", highlight: true },
+          { key: "year", value: "2025-2026" },
+          { key: "duration", value: "8 months" },
+          { key: "team_size", value: "6 (team)" },
+          { key: "platform", value: "PC" },
+          { key: "context", value: "Capstone" },
+        ]}
+        links={[
+          {
+            label: "Play on itch.io",
+            href: "https://braedenhammill.itch.io/cosmicrangerv",
+            icon: "▷",
+          },
+          {
+            label: "View on GitHub",
+            href: "https://github.com/JonTo212/Capstone2026",
+            icon: "◇",
+          },
+        ]}
+      />
+    </div>
+  </div>
+
+  <!-- KEY FEATURES — header + blocks at 1rem internal gap -->
+  <div style="display:flex; flex-direction:column; gap:1rem;">
+    <div style="border:1px solid var(--border); background:var(--bg-panel);">
+      <div
+        style="padding:10px 16px; background:var(--bg-card); border-bottom:1px solid var(--border); font-family:'Commit Mono',monospace; font-size:1.1rem; color:var(--green-dim);"
+      >
+        // Key Features
+      </div>
+    </div>
+
+    <KeyFeature
+      index={1}
+      title="Physics Hold Fishing Rod"
+      description="Point-hold grabbing and manipulating objects at range, with critically damped spring
+        calculations for positional and rotational movement, scale-derived artificial weight, configurable
+        damping, unique hold controls and rope-constraint pendulum swing."
+      snippetLabel="Lasso.cs - hold force & torque"
+      snippetFilename="Lasso.cs"
+      snippetCode={lassoSnippetPlain}
+      flip={true}
+    >
+      <pre
+        slot="snippet-code"
+        style="margin:0; padding:1.25rem 1.5rem; overflow-x:auto; background:var(--bg); font-size:12px; line-height:1.8; white-space:pre-wrap; word-break:break-word;"><code class="font-mono text-(--text-code)" set:html={lassoSnippetHtml} /></pre>
+    </KeyFeature>
+
+    <KeyFeature
+      index={2}
+      title="Custom Camera System"
+      description="Discrete zoom steps with asymmetric easing (snappy zoom-in, damped zoom-out),
+        large-delta detection for smooth transitions between enclosed and open spaces,
+        player-state-driven positional offset modifier, and a cutscene handler supporting both
+        player-relative and world-space cutscenes via in-world triggers."
+      snippetLabel="CameraController.cs - zoom & offset"
+      snippetFilename="CameraController.cs"
+      snippetCode={`// plug in your camera snippet here`}
+    />
+
+    <KeyFeature
+      index={3}
+      title="Player Movement"
+      description="Rigidbody-based controller with moving platform sticking, velocity inheritance for
+        launches, relative movement atop platforms, and a rope-constraint based swinging mechanic."
+      snippetLabel="PlayerController.cs - platform sticking"
+      snippetFilename="PlayerController.cs"
+      snippetCode={`// plug in your movement snippet here`}
+      flip={true}
+    />
+  </div>
+
+  <!-- DEEP DIVE + TAKEAWAYS — 2rem gap between them, sits at page-level 2rem from key features -->
+  <div style="display:flex; flex-direction:column; gap:2rem;">
+    <DeepDiveBlock
+      title="Deep dive - creating a unique physics hold mechanic"
+      steps={[
+        {
+          tag: "problem",
+          icon: "◎",
+          title:
+            "A mechanic designed to support another - and constantly cut back to prove it",
+          body: "Playtests showed the hold was too dominant - its ease of use made it the go-to over the tether, and players were repositioning held objects by moving their character instead of the mouse. Features were cut until it became a shell of what it was designed to be.",
+        },
+        {
+          tag: "approach",
+          icon: "◈",
+          title: "Build, cut, rebuild - from start to finish",
+          body: "The mechanic went through numerous iterations and feature cuts - mass-based yank, free and snap rotation, in-world activation - eventually settling on a point-hold that pitches with the camera and zooms out to frame the held object. On the physics side, critically damped springs, corrective torque scaled by lever arm length, and a look-at spring gave it a stable, substantial feel - but with little left to use it on.",
+        },
+        {
+          tag: "result",
+          icon: "▸",
+          title: "Stable and novel - but never given room to land",
+          body: "The physics are solid: no oscillation and a consistent, distinct feel to object manipulation. What didn't work was the broader context - the project struggled with finding its identity, and playtesting demonstrated the dominant nature of the initial versions of the hold. Unfortunately, a lot of its original design was cut to try and accommodate for the more straightforward design of the tether. If I could go back, I'd push earlier for a defined role split between the two mechanics rather than iterating on capability and cutting after the fact.",
+        },
+      ]}
+      slider={{
+        label: "deep_dive_visual",
+        beforeSrc: "",
+        afterSrc: "",
+      }}
+    />
+
+    <TextBlock
+      title="Takeaways"
+      content={[
+        {
+          heading: "Know when to let go",
+          body: "Fighting for your ideas matters - but so does knowing when to step back. While I believe there was more potential than what shipped, scoping down was a necessity.",
+        },
+        {
+          heading: "Physics is solvable",
+          body: "Physics interactions feel chaotic until you understand the underlying mechanisms; there's a calculation out there for every problem, you just have to find it.",
+        },
+        {
+          heading: "Trust the process",
+          body: "Pivots, cuts, and incoherence made it hard to believe in what we were making. It worked out. Ship first, reflect after.",
+        },
+      ]}
+    />
+  </div>
+
+  <!-- FOOTER -->
+  <ProjectFooter
+    prev={{ label: "TODO: Prev Project", href: "#" }}
+    next={{ label: "JellyFish", href: "../jellyfish/" }}
+    author="Jonathan To · Gameplay Programmer & Game Designer"
+    year={2026}
+  />
+</BaseLayout>
