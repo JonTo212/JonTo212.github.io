@@ -1,13 +1,18 @@
 ---
+import CodeSnippet from "./CodeSnippet.astro";
 
 interface Props {
   index: number;
   title: string;
   description: string;
   videoSrc?: string;
+  /** If provided, the toggle bar and drawer are rendered */
   snippetLabel?: string;
+  /** Passed through to CodeSnippet — plain-text fallback */
   snippetCode?: string;
+  /** Passed through to CodeSnippet */
   snippetLang?: string;
+  /** Passed through to CodeSnippet */
   snippetFilename?: string;
   /** When true, media is on the right (content left) */
   flip?: boolean;
@@ -27,111 +32,78 @@ const {
 
 const num = String(index).padStart(2, "0");
 const snippetId = `kf-snippet-${index}`;
-const hasSnippet = !!(snippetLabel && snippetCode);
+const hasSnippet = !!snippetLabel;
 ---
 
 <div class={`kf-row${flip ? " kf-row-flip" : ""}`} id={`kf-row-${index}`}>
+
   <!-- MEDIA -->
-  <div class="kf-media overflow-hidden relative">
-    <div class="relative w-full" style="aspect-ratio:16/9;">
-      {
-        videoSrc ? (
-          <video
-            autoplay
-            loop
-            muted
-            playsinline
-            src={videoSrc}
-            class="absolute inset-0 w-full h-full object-cover"
-          />
-        ) : (
-          <div class="absolute inset-0 flex flex-col items-center justify-center gap-2 font-mono text-[11px] text-(--text-muted)">
-            <span style="font-size:28px; opacity:0.12;">◈</span>
-            <span>// feature_{num}.mp4</span>
-          </div>
-        )
-      }
+  <div class="kf-media">
+    <div class="kf-media-inner">
+      {videoSrc ? (
+        <video autoplay loop muted playsinline src={videoSrc} class="kf-video" />
+      ) : (
+        <div class="kf-media-placeholder">
+          <span style="font-size:28px; opacity:0.12;">◈</span>
+          <span>// feature_{num}.mp4</span>
+        </div>
+      )}
     </div>
   </div>
 
   <!-- CONTENT -->
-  <div class="kf-content flex flex-col">
-    <div class="flex-1 flex flex-col gap-2.5 px-6 py-5">
-      <span class="font-mono text-[14px] text-(--text-muted) tracking-[0.08em]"
-        >{num}</span
-      >
-      <div class="font-mono text-[1.1rem] text-(--yellow)">{title}</div>
-      <p class="font-mono text-[0.9rem] text-(--text-dim) leading-[1.8] flex-1">
-        {description}
-      </p>
+  <div class="kf-content">
+    <div class="kf-content-body">
+      <span class="kf-index">{num}</span>
+      <div class="kf-title">{title}</div>
+      <p class="kf-description">{description}</p>
     </div>
 
-    {
-      hasSnippet && (
-        <button
-          class="snippet-toggle-btn flex items-center justify-between px-3.5 py-2.25 bg-(--bg-code) border-t border-(--border) cursor-pointer transition-colors duration-150 hover:bg-(--bg-code-hover) text-left w-full"
-          onclick={`toggleKfSnippet(${index}, this)`}
-          type="button"
-        >
-          <span class="font-mono text-[0.9rem] text-(--text-muted) flex items-center gap-2">
-            // {snippetLabel}
-          </span>
-          <span class="snippet-pill font-mono text-[0.9rem] text-(--green) border border-(--green-dim) px-3 py-1 rounded-full tracking-[0.06em]">
-            ▸ view snippet
-          </span>
-        </button>
-      )
-    }
+    {hasSnippet && (
+      <button
+        class="snippet-toggle-btn"
+        onclick={`toggleKfSnippet(${index}, this)`}
+        type="button"
+      >
+        <span class="snippet-toggle-label">// {snippetLabel}</span>
+        <span class="snippet-pill">▸ view snippet</span>
+      </button>
+    )}
   </div>
 
-  <!-- SNIPPET BODY — spans full width as third grid child -->
-  {
-    hasSnippet && (
-      <div
-        id={snippetId}
-        style="max-height:0; overflow:hidden; transition:max-height 0.25s ease; grid-column: 1 / -1; order:99;"
+  <!-- SNIPPET DRAWER — spans full grid width -->
+  {hasSnippet && (
+    <div
+      id={snippetId}
+      class="kf-drawer"
+      style="max-height:0; overflow:hidden; transition:max-height 0.25s ease; grid-column: 1 / -1; order:99;"
+    >
+      <CodeSnippet
+        label={snippetLabel!}
+        filename={snippetFilename}
+        lang={snippetLang}
+        code={snippetCode}
       >
-        <div class="code-snippet">
-          <!-- Header bar — always rendered regardless of slot override -->
-          <div class="flex items-center justify-between px-3.5 py-1.75 bg-(--bg-code) border-b border-(--border)">
-            <div class="flex items-center gap-2">
-              <span class="font-mono text-[0.9rem] text-(--text-muted)">
-                // {snippetFilename ?? snippetLabel}
-              </span>
-            </div>
-            <span class="font-mono text-[10px] text-(--border-hi) uppercase tracking-[0.08em]">
-              {snippetLang}
-            </span>
-          </div>
-          <!-- Code body — slot allows HTML-highlighted override, falls back to plain text -->
-          <slot name="snippet-code">
-            <pre
-              class="m-0 px-6 py-5 overflow-x-auto bg-(--bg) text-[0.9rem] leading-relaxed"
-              style="white-space: pre-wrap; word-break: break-word;"
-            ><code class="font-mono text-(--text-dim)">{snippetCode}</code></pre>
-          </slot>
-        </div>
-      </div>
-    )
-  }
+        <!-- Forward any snippet-code slot content straight through -->
+        <slot name="snippet-code" slot="snippet-code" />
+      </CodeSnippet>
+    </div>
+  )}
+
 </div>
 
 <style>
   .kf-row {
-  display: grid;
-  grid-template-columns: 55fr 45fr;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-.kf-row-flip {
-  grid-template-columns: 45fr 55fr;
-}
-.kf-row-flip .kf-media {
-  order: 2;
-}
-.kf-row-flip .kf-content {
-  order: 1;
-}
+    display: grid;
+    grid-template-columns: 55fr 45fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .kf-row-flip {
+    grid-template-columns: 45fr 55fr;
+  }
+  .kf-row-flip .kf-media  { order: 2; }
+  .kf-row-flip .kf-content { order: 1; }
 
   .kf-media {
     border: 1px solid var(--border);
@@ -139,11 +111,93 @@ const hasSnippet = !!(snippetLabel && snippetCode);
     overflow: hidden;
     position: relative;
   }
-  .kf-content {
-    border: 1px solid var(--border);
+  .kf-media-inner {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+  }
+  .kf-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .kf-media-placeholder {
+    position: absolute;
+    inset: 0;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: 'Commit Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .kf-content {
+    border: 1px solid var(--border);
     background: var(--bg-panel);
+    display: flex;
+    flex-direction: column;
+  }
+  .kf-content-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    padding: 1.25rem 1.5rem;
+  }
+  .kf-index {
+    font-family: 'Commit Mono', monospace;
+    font-size: 14px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+  }
+  .kf-title {
+    font-family: 'Commit Mono', monospace;
+    font-size: 1.05rem;
+    color: var(--yellow);
+  }
+  .kf-description {
+    font-family: 'Commit Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    line-height: 1.8;
+    flex: 1;
+    margin: 0;
+  }
+
+  .snippet-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.875rem;
+    background: var(--bg-code);
+    border: none;
+    border-top: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s;
+    text-align: left;
+    width: 100%;
+  }
+  .snippet-toggle-btn:hover { background: var(--bg-code-hover); }
+
+  .snippet-toggle-label {
+    font-family: 'Commit Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+  .snippet-pill {
+    font-family: 'Commit Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--green);
+    border: 1px solid var(--green-dim);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
   }
 </style>
 

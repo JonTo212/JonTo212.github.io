@@ -1,31 +1,93 @@
 ---
+/**
+ * CodeSnippet.astro
+ * Renders a styled code block with a header bar (filename + language tag).
+ *
+ * Slot:
+ *   snippet-code — override the default <pre> with any custom body
+ *                  (syntax-highlighted HTML, a BlueprintBlock, etc.).
+ *                  Falls back to rendering the plain `code` prop if omitted.
+ *
+ * Usage — plain text:
+ *   <CodeSnippet
+ *     label="SuspensionController.cs — spring force"
+ *     filename="SuspensionController.cs"
+ *     lang="csharp"
+ *     code={rawString}
+ *   />
+ *
+ * Usage — syntax-highlighted body:
+ *   <CodeSnippet label="..." filename="..." lang="csharp">
+ *     <pre slot="snippet-code" set:html={highlightedHtml} />
+ *   </CodeSnippet>
+ *
+ * Usage — Blueprint graph:
+ *   <CodeSnippet label="..." filename="BP_Foo" lang="blueprint">
+ *     <BlueprintBlock slot="snippet-code" nodes={...} graphLabel="..." />
+ *   </CodeSnippet>
+ */
+
 interface Props {
-  filename: string;
-  code: string;
+  /** Toggle-button label shown in KeyFeature's footer bar */
+  label: string;
+  /** Filename shown in the header (falls back to label if omitted) */
+  filename?: string;
+  /** Language tag shown top-right of the header */
   lang?: string;
+  /** Plain-text code rendered in the fallback pre block */
+  code?: string;
 }
 
-const { filename, code, lang = "csharp" } = Astro.props;
+const { label, filename, lang = "csharp", code } = Astro.props;
 ---
 
 <div class="code-snippet">
-  <div
-    class="flex items-center justify-between px-3.5 py-1.75 bg-(--bg-code) border-b border-(--border)"
-  >
-    <div class="flex items-center gap-2">
-      <span
-        class="inline-block w-2 h-2 rounded-full bg-(--dot-green) opacity-70"
-      ></span>
-      <span class="font-mono text-[0.9rem] text-(--text-muted)"
-        >// {filename}</span
-      >
-    </div>
-    <span
-      class="font-mono text-[10px] text-(--border-hi) uppercase tracking-[0.08em]"
-      >{lang}</span
-    >
+  <div class="cs-header">
+    <span class="cs-filename">// {filename ?? label}</span>
+    <span class="cs-lang">{lang}</span>
   </div>
-  <pre
-    class="m-0 px-6 py-5 overflow-x-auto bg-(--bg) text-[0.9rem] leading-relaxed"
-    style="white-space: pre-wrap; word-break: break-word;"><code class="font-mono text-(--text-dim)">{code}</code></pre>
+  <slot name="snippet-code">
+    <pre class="cs-pre"><code class="cs-code">{code}</code></pre>
+  </slot>
 </div>
+
+<style>
+  .cs-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.375rem 0.875rem;
+    background: var(--bg-code);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cs-filename {
+    font-family: "Commit Mono", monospace;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .cs-lang {
+    font-family: "Commit Mono", monospace;
+    font-size: 10px;
+    color: var(--border-hi);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .cs-pre {
+    margin: 0;
+    padding: 1.25rem 1.5rem;
+    overflow-x: auto;
+    background: var(--bg);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .cs-code {
+    font-family: "Commit Mono", monospace;
+    color: var(--text-dim);
+  }
+</style>

@@ -6,11 +6,111 @@ import TextBlock from "../../components/layout/TextBlock.astro";
 import ProjectDetails from "../../components/layout/ProjectDetails.astro";
 import ProjectHeader from "../../components/layout/ProjectHeader.astro";
 import KeyFeature from "../../components/layout/KeyFeature.astro";
+import BlueprintBlock from "../../components/layout/BlueprintBlock.astro";
+import type { BPNode } from "../../components/layout/BlueprintBlock.astro";
 import DeepDiveBlock from "../../components/layout/DeepDiveBlock.astro";
 import ProjectFooter from "../../components/layout/ProjectFooter.astro";
 
-const todoSnippetPlain = `// TODO: Add raw code snippet here`;
-const todoSnippetHtml = ``;
+// ── Feature 1: Arcade Physics Suspension ────────────────────────────────────
+const suspensionNodes = [
+  {
+    id: "spring",
+    kind: "pure",
+    title: "Calculate Spring Force",
+    note: "use offset (ride height - contact point) × rate (Hooke's law)",
+    pins: [
+      { dir: "in", type: "float", label: "Offset" },
+      { dir: "in", type: "float", label: "Spring Rate" },
+      { dir: "out", type: "float", label: "Force" },
+    ],
+  },
+  {
+    id: "damper",
+    kind: "pure",
+    title: "Calculate Damper Force",
+    note: "velocity x damper rate, where velocity is the dot product of wheel velocity and spring direction (so it only damps movement along the spring axis)",
+    pins: [
+      { dir: "in", type: "float", label: "dot(Vel, SpringDir)" },
+      { dir: "in", type: "float", label: "Damper Rate" },
+      { dir: "out", type: "float", label: "Force" },
+    ],
+  },
+  {
+    id: "add_force",
+    kind: "function",
+    title: "Add Force at Wheel Location on Chassis",
+    note: "applies resultant force to chassis at wheel contact point",
+    pins: [
+      { dir: "in", type: "float", label: "Spring + Damper" },
+      { dir: "in", type: "vector", label: "SpringDir" },
+      { dir: "in", type: "vector", label: "Wheel Pos" },
+    ],
+  },
+  {
+    id: "get_vel",
+    kind: "function",
+    title: "Update Wheel Position",
+    note: "places the wheel at the contact point with the ground based on offsets and new position",
+    pins: [
+      { dir: "in", type: "vector", label: "Contact Point" },
+      { dir: "in", type: "float", label: "Wheel Radius" },
+      { dir: "out", type: "vector", label: "Wheel Pos" },
+    ],
+  },
+] satisfies BPNode[];
+
+// ── Feature 2: Drift & Paint Rework ─────────────────────────────────────────
+const driftNodes: BPNode[] = [
+  // TODO: replace with nodes from blueprint screenshots
+];
+
+// ── Feature 3: Race Management Backend ──────────────────────────────────────
+const raceManagerNodes = [
+  {
+    id: "spawn_init",
+    kind: "event",
+    title: "Spawn & Initialize Race Actors",
+    note: "spawns player karts, HUDs, and AI karts at start points; populates AI types; kicks off countdown sequence",
+    pins: [
+      { dir: "in", type: "exec", label: "Begin Play" },
+      { dir: "out", type: "object", label: "Kart Roster" },
+      { dir: "out", type: "exec", label: "Countdown" },
+    ],
+  },
+  {
+    id: "track_progress",
+    kind: "function",
+    title: "Track Kart Progress on Course",
+    note: "for each kart, scores progress using position, heading direction, and last passed checkpoint — produces a comparable progress value per kart",
+    pins: [
+      { dir: "in", type: "exec", label: "Event Tick" },
+      { dir: "in", type: "object", label: "Kart Roster" },
+      { dir: "out", type: "int", label: "Progress Array" },
+    ],
+  },
+  {
+    id: "sort_order",
+    kind: "function",
+    title: "Sort Race Order & Check Finish",
+    note: "bubble sorts karts by progress each tick; flags any kart that has crossed the finish — triggers completion branch",
+    pins: [
+      { dir: "in", type: "int", label: "Progress Array" },
+      { dir: "out", type: "int", label: "Sorted Standings" },
+      { dir: "out", type: "bool", label: "Race Complete?" },
+    ],
+  },
+  {
+    id: "race_complete",
+    kind: "function",
+    title: "Handle Race Completion",
+    note: "saves final position for the kart; if it's a player, spawns the leaderboard UI with results",
+    pins: [
+      { dir: "in", type: "bool", label: "Race Complete?" },
+      { dir: "in", type: "int", label: "Sorted Standings" },
+      { dir: "in", type: "object", label: "Finishing Kart" },
+    ],
+  },
+] satisfies BPNode[];
 ---
 
 <BaseLayout title="Paint Rush Racer - Jonathan To">
@@ -22,56 +122,54 @@ const todoSnippetHtml = ``;
 
   <ProjectHeader
     title="Paint Rush Racer"
-    subtitle="TODO: Role · Role · Context"
+    subtitle="Gameplay Programmer · Co-op"
     tags={[
-      { label: "TODO: Tag 1", type: "programming" },
-      { label: "TODO: Tag 2", type: "design" },
-      { label: "TODO: Tag 3", type: "unity" },
+      { label: "Programming", type: "programming" },
+      { label: "Unreal Engine", type: "unreal" },
     ]}
-    description="TODO: A brief description of the project and your core responsibilities."
+    description="A physics-based arcade racer focused on fast-paced drifting and momentum-driven gameplay.
+Worked as a gameplay programmer on the reworked suspension, drift, and paint boost mechanics, while also developing reusable UI templates and backend game lifecycle functionality. Assisted with AI behaviour and implementation throughout development."
   />
 
   <VideoEmbed
-    videoId="TODO_VIDEO_ID"
-    caption="// fig_01 - TODO: Caption for the video · Paint Rush Racer"
+    videoId="ozZJKUA0SN8"
+    caption="// fig_01 - Gameplay Demo · Paint Rush Racer"
     alt="Paint Rush Racer Trailer"
   />
 
   <div class="grid gap-6" style="grid-template-columns: 1fr 260px;">
     <TextBlock
       title="Overview"
-      content="TODO: Provide a comprehensive overview of your work on this project."
+      content="Served as a gameplay programmer on a physics-based arcade racer, joining the project mid-development to refine and expand core gameplay systems. Implemented an arcade-style suspension system, developed reusable UI template blueprints, and created backend game management systems including spawning, race flow, and player ranking logic. Reworked the drift and paint boost mechanics to better capture the feel of modern arcade racers inspired by titles like Mario Kart, while also assisting with AI behaviour and racing logic implementation."
     />
-
     <TextBlock
       title="Contributions"
       content={[
-        "TODO: Contribution bullet point 1",
-        "TODO: Contribution bullet point 2",
-        "TODO: Contribution bullet point 3",
-        "TODO: Contribution bullet point 4",
+        "Arcade-style suspension system for responsive, physics-based vehicle handling and stability",
+        "Reusable UI template Blueprints for race HUDs and gameplay interfaces",
+        "Game management backend including player spawning, race lifecycle flow, and ranking systems",
+        "Reworked drift and paint boost mechanics to create a more polished arcade racing feel, while also assisting with AI racing behaviour and logic",
       ]}
     />
-
     <div style="grid-column:2; grid-row:1/3;">
       <ProjectDetails
         meta={[
-          { key: "status", value: "TODO: complete", highlight: true },
-          { key: "year", value: "TODO: 202X-202X" },
-          { key: "duration", value: "TODO: X months" },
-          { key: "team_size", value: "TODO: X (team)" },
-          { key: "platform", value: "TODO: PC" },
-          { key: "context", value: "TODO: Context" },
+          { key: "status", value: "complete", highlight: true },
+          { key: "year", value: "2025" },
+          { key: "duration", value: "1.5 months" },
+          { key: "team_size", value: "6" },
+          { key: "platform", value: "PC / Controller" },
+          { key: "context", value: "Co-op" },
         ]}
         links={[
           {
-            label: "TODO: Play on itch.io",
-            href: "#",
+            label: "Play on itch.io",
+            href: "https://chromagamesstudio.itch.io/paint-rush",
             icon: "▷",
           },
           {
-            label: "TODO: View on GitHub",
-            href: "#",
+            label: "View on GitHub",
+            href: "https://github.com/TristanChadHafkenscheid/PaintRushKartRacer",
             icon: "◇",
           },
         ]}
@@ -90,82 +188,101 @@ const todoSnippetHtml = ``;
 
     <KeyFeature
       index={1}
-      title="TODO: Feature 1 Title"
-      description="TODO: Feature 1 Description explaining the mechanic and your implementation."
-      snippetLabel="TODO_Filename.cs - feature description"
-      snippetFilename="TODO_Filename.cs"
-      snippetCode={todoSnippetPlain}
+      title="Arcade Physics Suspension"
+      description="A responsive, physics-based suspension system that provides realistic vehicle handling and stability in arcade racing scenarios. Implemented as a modular component that can be easily integrated into different vehicle types, allowing for adjustments to spring stiffness and damping."
+      videoSrc="/videos/arcade-suspension-demo.mp4"
+      snippetLabel="BP_SuspensionController - suspension tick"
+      snippetFilename="BP_SuspensionController"
+      snippetLang="blueprint"
       flip={true}
     >
-      <pre
+      <BlueprintBlock
         slot="snippet-code"
-        style="margin:0; padding:1.25rem 1.5rem; overflow-x:auto; background:var(--bg); font-size:12px; line-height:1.8; white-space:pre-wrap; word-break:break-word;"><code class="font-mono text-(--text-code)" set:html={todoSnippetHtml} /></pre>
+        nodes={suspensionNodes}
+        graphLabel="BP_SuspensionController · Suspension Cast Updated"
+        pseudo
+      />
     </KeyFeature>
 
     <KeyFeature
       index={2}
-      title="TODO: Feature 2 Title"
-      description="TODO: Feature 2 Description."
-      snippetLabel="TODO_Filename.cs - feature description"
-      snippetFilename="TODO_Filename.cs"
-      snippetCode={`// TODO: plug in your snippet here`}
-    />
+      title="Drift & Paint Rework"
+      description="Reworked the drift system from a handling multiplier into a true arcade drift - players slide diagonally through corners Mario Kart-style rather than just turning sharper. Paint boost and slow zones were similarly overhauled from scalar multipliers into discrete pad-triggered effects, giving each zone a punchy, readable response that fits the arcade feel."
+      videoSrc="/videos/drift-paint-rework-demo.mp4"
+      snippetLabel="BP_KartPawn - drift & paint overlap"
+      snippetFilename="BP_KartPawn"
+      snippetLang="blueprint"
+    >
+      <BlueprintBlock
+        slot="snippet-code"
+        nodes={driftNodes}
+        graphLabel="BP_KartPawn · DriftGraph"
+        pseudo
+      />
+    </KeyFeature>
 
     <KeyFeature
       index={3}
-      title="TODO: Feature 3 Title"
-      description="TODO: Feature 3 Description."
-      snippetLabel="TODO_Filename.cs - feature description"
-      snippetFilename="TODO_Filename.cs"
-      snippetCode={`// TODO: plug in your snippet here`}
+      title="Game Lifecycle Backend"
+      description="A centralised game management system handling player spawning, race lifecycle flow, and ranking logic. On Begin Play, the manager locates all spawn points, instantiates kart pawns at each, registers them into the racer roster, and kicks off the race countdown sequence, including HUD initialization."
+      videoSrc="/videos/game-lifecycle-demo.mp4"
+      snippetLabel="BP_RaceManager - begin play & spawn"
+      snippetFilename="BP_RaceManager"
+      snippetLang="blueprint"
       flip={true}
-    />
+    >
+      <BlueprintBlock
+        slot="snippet-code"
+        nodes={raceManagerNodes}
+        graphLabel="BP_RaceManager · EventGraph"
+        pseudo
+      />
+    </KeyFeature>
   </div>
 
   <div style="display:flex; flex-direction:column; gap:2rem;">
     <DeepDiveBlock
-      title="TODO: Deep dive - [Subject]"
+      title="Deep Dive - Reworking Kart Suspension"
       steps={[
         {
           tag: "problem",
           icon: "◎",
-          title: "TODO: Problem statement header",
-          body: "TODO: Explain the context and why the problem existed.",
+          title: "Unstable Physics",
+          body: "The initial kart prototype used a very limited suspension setup, which caused the chassis to frequently collide with terrain during jumps, drops, and uneven elevation changes. Impacts were transferred directly into the body of the kart, causing violent spinning, loss of control, and frequent crashes whenever players drove off ramps or rough terrain.",
         },
         {
           tag: "approach",
           icon: "◈",
-          title: "TODO: Approach statement header",
-          body: "TODO: Explain your iterations and thought process for solving it.",
+          title: "Identifying the Source of Instability",
+          body: "I initially prototyped an entirely new kart controller, but it became clear that fully replacing and refining the vehicle system would take too long within the project's timeline. Instead, I stepped back to analyze why the existing karts were failing. I realized the core issue was the chassis bottoming out against the terrain, so I researched how real vehicles prevent hard impacts and how arcade racers maintain stability during jumps. From there, I implemented a suspension system with spring and damping forces that could absorb impacts before they reached the chassis.",
         },
         {
           tag: "result",
           icon: "▸",
-          title: "TODO: Result statement header",
-          body: "TODO: Explain the final outcome and its impact.",
+          title: "Stable Handling Across Terrain and Large Jumps",
+          body: "The updated suspension system allowed the karts to remain stable over uneven terrain, ramps, and large falls by properly absorbing impact forces instead of translating them directly into the chassis. Spin-outs and crash-heavy behaviour were dramatically reduced, which opened up far more freedom for level design. Designers could now build larger elevation changes, cinematic jumps, and more dynamic terrain features, while mechanics like bounce paint became significantly more reliable and satisfying to use.",
         },
       ]}
       slider={{
-        label: "TODO_visual_label",
+        label: "suspension_rework_before_after",
         beforeSrc: "",
         afterSrc: "",
       }}
     />
-
     <TextBlock
       title="Takeaways"
       content={[
         {
-          heading: "TODO: Takeaway 1",
-          body: "TODO: Body of takeaway 1.",
+          heading: "Show, don't tell",
+          body: "As the co-op student, my say was limited - but I still shared my opinions, backed it with work, and was heard. Demonstrating skill and articulating your reasoning clearly is all you can really do, and sometimes that's enough.",
         },
         {
-          heading: "TODO: Takeaway 2",
-          body: "TODO: Body of takeaway 2.",
+          heading: "Prototype boldly, pivot without ego",
+          body: "The karts were flipping and losing control constantly. I decided to prototype a new kart from scratch - and it was shaping up well, but refinement would've taken too long, so we pivoted to the arcade suspension instead. It wasn't a compromise; it was a decision we could only make after trying the alternatives.",
         },
         {
-          heading: "TODO: Takeaway 3",
-          body: "TODO: Body of takeaway 3.",
+          heading: "Learning by doing",
+          body: "Picking up a new engine, new tools, and being handed responsibility immediately can be overwhelming, but also presents an opportunity. Uncomfortable at first, energising by the end; there's no faster way to grow than being thrown into an unfamiliar codebase mid-development and actually enjoying it.",
         },
       ]}
     />

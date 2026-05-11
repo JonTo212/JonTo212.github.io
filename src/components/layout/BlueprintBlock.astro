@@ -1,0 +1,532 @@
+---
+/**
+ * BlueprintBlock.astro
+ * Renders a pseudo Unreal Engine Blueprint node graph for use
+ * inside the KeyFeature snippet drawer (slot="snippet-code").
+ *
+ * Usage in paint-rush-racer.astro:
+ *
+ *   <BlueprintBlock slot="snippet-code" nodes={suspensionNodes} />
+ *
+ * Each node shape:
+ *   {
+ *     id: string           — unique id for wire routing
+ *     kind: "event" | "function" | "branch" | "pure" | "variable" | "macro"
+ *     title: string        — top label (node type / class name)
+ *     label?: string       — secondary label shown below title
+ *     pins?: {             — optional pin list
+ *       dir: "in" | "out"
+ *       type: "exec" | "bool" | "float" | "vector" | "object" | "int" | "string"
+ *       label: string
+ *     }[]
+ *     connects?: string[]  — ids of nodes whose first IN exec pin this node's OUT exec wires to
+ *   }
+ */
+
+export interface Pin {
+  dir: "in" | "out";
+  type: "exec" | "bool" | "float" | "vector" | "object" | "int" | "string";
+  label: string;
+}
+
+export interface BPNode {
+  id: string;
+  kind: "event" | "function" | "branch" | "pure" | "variable" | "macro";
+  title: string;
+  label?: string;
+  pins?: Pin[];
+  connects?: string[];
+  note?: string;
+}
+
+interface Props {
+  nodes: BPNode[];
+  graphLabel?: string;
+  pseudo?: boolean;
+}
+
+const { nodes, graphLabel = "EventGraph", pseudo = false } = Astro.props;
+
+/* ── colour palette per node kind ── */
+const kindMeta: Record<BPNode["kind"], { header: string; border: string }> = {
+  event:    { header: "#8b2020", border: "#c0392b" },
+  function: { header: "#1a4a6e", border: "#2980b9" },
+  branch:   { header: "#2d4a1e", border: "#27ae60" },
+  pure:     { header: "#1e3a4a", border: "#16a085" },
+  variable: { header: "#2e1f5e", border: "#8e44ad" },
+  macro:    { header: "#3d2b00", border: "#e67e22" },
+};
+
+/* ── pin colour per type ── */
+const pinColor: Record<Pin["type"], string> = {
+  exec:   "#ffffff",
+  bool:   "#e74c3c",
+  float:  "#2ecc71",
+  vector: "#f39c12",
+  object: "#3498db",
+  int:    "#9b59b6",
+  string: "#e91e8c",
+};
+
+/* ── pin shape — exec is an arrow, data is a circle ── */
+function pinShape(type: Pin["type"], dir: "in" | "out"): string {
+  if (type === "exec") {
+    return dir === "in"
+      ? `<polygon points="0,0 8,5 0,10" fill="currentColor"/>`
+      : `<polygon points="0,0 8,5 0,10" fill="currentColor"/>`;
+  }
+  return `<circle cx="5" cy="5" r="4.5" fill="currentColor" stroke="var(--bp-bg)" stroke-width="1"/>`;
+}
+---
+
+<div class="bp-wrap" aria-label={`Blueprint graph: ${graphLabel}`}>
+  <!-- top bar -->
+  <div class="bp-topbar">
+    <span class="bp-tab-icon">◈</span>
+    <span class="bp-tab-label">// {graphLabel}</span>
+    <span class="bp-tab-badge">Blueprint</span>
+  </div>
+
+  {pseudo ? (
+    <!-- pseudo chain mode -->
+    <div class="bp-pseudo-chain">
+      {nodes.map((node, i) => {
+        const { border } = kindMeta[node.kind];
+        const inPins  = node.pins?.filter(p => p.dir === "in"  && p.type !== "exec") ?? [];
+        const outPins = node.pins?.filter(p => p.dir === "out" && p.type !== "exec") ?? [];
+        return (
+          <>
+            <div class="bp-pseudo-node" style={`--node-border:${border};`}>
+              <div class="bp-pseudo-head" style={`background:${kindMeta[node.kind].header};`}>
+                {node.title}
+              </div>
+              <div class="bp-pseudo-body">
+                {inPins.map(pin => (
+                  <div class="bp-pseudo-pin bp-pseudo-pin-in">
+                    <span class="bp-pseudo-dot" style={`background:${pinColor[pin.type]};`}></span>
+                    <span class="bp-pseudo-pin-label">{pin.label}</span>
+                  </div>
+                ))}
+                {outPins.map(pin => (
+                  <div class="bp-pseudo-pin bp-pseudo-pin-out">
+                    <span class="bp-pseudo-pin-label">{pin.label}</span>
+                    <span class="bp-pseudo-dot" style={`background:${pinColor[pin.type]};`}></span>
+                  </div>
+                ))}
+              </div>
+              {node.note && <div class="bp-pseudo-note">{node.note}</div>}
+            </div>
+            {i < nodes.length - 1 && (
+              <div class="bp-pseudo-wire" aria-hidden="true">
+                <svg width="44" height="24" viewBox="0 0 44 24" fill="none">
+                  <line x1="0" y1="12" x2="34" y2="12" stroke="white" stroke-width="1.5" opacity="0.6"/>
+                  <polygon points="30,8 44,12 30,16" fill="white" opacity="0.6"/>
+                </svg>
+              </div>
+            )}
+          </>
+        );
+      })}
+    </div>
+  ) : (
+  <!-- scrollable graph canvas -->
+  <div class="bp-canvas">
+    <div class="bp-grid-bg" aria-hidden="true"></div>
+    <div class="bp-nodes">
+      {nodes.map((node) => {
+        const { header, border } = kindMeta[node.kind];
+        const inPins  = node.pins?.filter(p => p.dir === "in")  ?? [];
+        const outPins = node.pins?.filter(p => p.dir === "out") ?? [];
+        const maxRows = Math.max(inPins.length, outPins.length, 1);
+
+        return (
+          <div
+            class="bp-node"
+            data-id={node.id}
+            data-kind={node.kind}
+            data-connects={node.connects?.join(",") ?? ""}
+            style={`--node-header:${header}; --node-border:${border};`}
+          >
+            <!-- node header -->
+            <div class="bp-node-header">
+              <span class="bp-node-kind-dot" style={`background:${border};`}></span>
+              <span class="bp-node-title">{node.title}</span>
+            </div>
+            {node.label && (
+              <div class="bp-node-sublabel">{node.label}</div>
+            )}
+
+            <!-- pin rows -->
+            <div class="bp-pin-area" style={`--rows:${maxRows};`}>
+              <!-- IN column -->
+              <div class="bp-pin-col bp-pin-col-in">
+                {inPins.map(pin => (
+                  <div class="bp-pin" data-dir="in" data-type={pin.type}>
+                    <span
+                      class="bp-pin-dot"
+                      style={`color:${pinColor[pin.type]};`}
+                      set:html={pinShape(pin.type, "in")}
+                    />
+                    <span class="bp-pin-label">{pin.label}</span>
+                  </div>
+                ))}
+              </div>
+              <!-- OUT column -->
+              <div class="bp-pin-col bp-pin-col-out">
+                {outPins.map(pin => (
+                  <div class="bp-pin" data-dir="out" data-type={pin.type}>
+                    <span class="bp-pin-label">{pin.label}</span>
+                    <span
+                      class="bp-pin-dot"
+                      style={`color:${pinColor[pin.type]};`}
+                      set:html={pinShape(pin.type, "out")}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+
+      <!-- SVG wire layer drawn by client script -->
+      <svg class="bp-wires" aria-hidden="true"></svg>
+    </div>
+  </div>
+  )}
+  <!-- legend -->
+  <div class="bp-legend" aria-hidden="true">
+    {(["exec","float","vector","bool","object"] as Pin["type"][]).map(t => (
+      <span class="bp-legend-item">
+        <span class="bp-legend-dot" style={`background:${pinColor[t]};`}></span>
+        <span>{t}</span>
+      </span>
+    ))}
+  </div>
+</div>
+
+<style>
+
+  /* ── pseudo chain mode ── */
+  .bp-pseudo-chain {
+    display: flex;
+    align-items: flex-start;
+    padding: 20px 24px;
+    gap: 0;
+  }
+  .bp-pseudo-node {
+    background: #1e1e1e;
+    border: 1px solid var(--node-border);
+    border-radius: 5px;
+    flex: 1;
+    min-width: 0;
+  }
+  .bp-pseudo-head {
+    padding: 10px 14px 8px;
+    border-radius: 4px 4px 0 0;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.35;
+    color: #e8eaf0;
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+  }
+  .bp-pseudo-body {
+    padding: 10px 14px 12px;
+  }
+  .bp-pseudo-pin {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: #888;
+    margin: 4px 0;
+  }
+  .bp-pseudo-pin-out { justify-content: flex-end; }
+  .bp-pseudo-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .bp-pseudo-pin-label { white-space: nowrap; }
+  .bp-pseudo-note {
+    font-size: 11px;
+    color: #505050;
+    padding: 6px 14px 12px;
+    line-height: 1.5;
+    font-style: italic;
+    border-top: 1px solid #2a2a2a;
+  }
+  .bp-pseudo-wire {
+    display: flex;
+    align-items: center;
+    width: 44px;
+    flex-shrink: 0;
+    padding-top: 18px;
+  }
+  /* ── tokens ── */
+  .bp-wrap {
+    --bp-bg:        #0e0e10;
+    --bp-grid:      #1a1a1f;
+    --bp-dot:       #2a2a32;
+    --bp-text:      #c8ccd4;
+    --bp-text-dim:  #666c7a;
+    --bp-bar:       #16161a;
+    --bp-radius:    6px;
+    font-family: 'Commit Mono', 'Fira Code', monospace;
+  }
+
+  /* ── outer wrapper ── */
+  .bp-wrap {
+    background: var(--bp-bg);
+    overflow: hidden;
+  }
+
+  /* ── top bar ── */
+  .bp-topbar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 6px 14px;
+    background: var(--bp-bar);
+    border-bottom: 1px solid #28282f;
+  }
+  .bp-tab-icon { color: #4a4a6a; font-size: 12px; }
+  .bp-tab-label { font-size: 11px; color: var(--bp-text-dim); flex: 1; }
+  .bp-tab-badge {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #3a5a8a;
+    border: 1px solid #243448;
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+
+  /* ── canvas ── */
+  .bp-canvas {
+    position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+    min-height: 200px;
+    padding: 24px 28px 20px;
+  }
+
+  /* dot-grid background */
+  .bp-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle, var(--bp-dot) 1px, transparent 1px);
+    background-size: 22px 22px;
+    pointer-events: none;
+    opacity: 0.55;
+  }
+
+  /* ── node container ── */
+  .bp-nodes {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 40px;
+    align-items: flex-start;
+    width: max-content;
+    min-width: 100%;
+  }
+
+  /* ── individual node ── */
+  .bp-node {
+    position: relative;
+    background: #141418;
+    border: 1.5px solid var(--node-border);
+    border-radius: var(--bp-radius);
+    min-width: 170px;
+    max-width: 240px;
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,0.6),
+      0 4px 18px rgba(0,0,0,0.55),
+      inset 0 1px 0 rgba(255,255,255,0.04);
+    flex-shrink: 0;
+    z-index: 1;
+  }
+
+  .bp-node-header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 10px 6px;
+    background: var(--node-header);
+    border-radius: calc(var(--bp-radius) - 1px) calc(var(--bp-radius) - 1px) 0 0;
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+  }
+  .bp-node-kind-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    opacity: 0.85;
+  }
+  .bp-node-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #e8eaf0;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .bp-node-sublabel {
+    font-size: 9.5px;
+    color: var(--bp-text-dim);
+    padding: 3px 10px 2px;
+    background: rgba(0,0,0,0.25);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ── pin area ── */
+  .bp-pin-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 6px 0 8px;
+    gap: 0;
+  }
+  .bp-pin-col {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .bp-pin-col-in  { padding-left: 0; }
+  .bp-pin-col-out { padding-right: 0; }
+
+  .bp-pin {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 8px;
+    min-height: 20px;
+  }
+  .bp-pin-col-out .bp-pin { justify-content: flex-end; }
+
+  .bp-pin-dot {
+    width: 10px; height: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .bp-pin-dot svg,
+  .bp-pin-dot > * { width: 10px; height: 10px; display: block; }
+
+  .bp-pin-label {
+    font-size: 9.5px;
+    color: var(--bp-text);
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── wire SVG ── */
+  .bp-wires {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+    z-index: 0;
+  }
+
+  /* ── legend ── */
+  .bp-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+    padding: 7px 14px;
+    background: var(--bp-bar);
+    border-top: 1px solid #20202a;
+  }
+  .bp-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 9px;
+    color: var(--bp-text-dim);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .bp-legend-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+</style>
+
+<script>
+  /* Draw bezier wires between OUT exec pins and IN exec pins of connected nodes. */
+  function drawWires(graph: HTMLElement) {
+    const svg = graph.querySelector<SVGSVGElement>(".bp-wires");
+    if (!svg) return;
+
+    const canvasEl = graph.querySelector<HTMLElement>(".bp-canvas")!;
+    if (!canvasEl) return;
+
+    const nodeEls: Record<string, HTMLElement> = {};
+    graph.querySelectorAll<HTMLElement>(".bp-node[data-id]").forEach(el => {
+      nodeEls[el.dataset.id!] = el;
+    });
+
+    const canvasRect = canvasEl.getBoundingClientRect();
+
+    function pinCenter(node: HTMLElement, dir: "in" | "out", index: number): { x: number; y: number } | null {
+      const pins = node.querySelectorAll<HTMLElement>(`.bp-pin[data-dir="${dir}"]`);
+      const pin = pins[index];
+      if (!pin) return null;
+      const dot = pin.querySelector<HTMLElement>(".bp-pin-dot");
+      if (!dot) return null;
+      const r = dot.getBoundingClientRect();
+      return {
+        x: r.left + r.width  / 2 - canvasRect.left + canvasEl.scrollLeft,
+        y: r.top  + r.height / 2 - canvasRect.top,
+      };
+    }
+
+    const outExecUsed: Record<string, number> = {};
+    const inExecUsed:  Record<string, number> = {};
+
+    graph.querySelectorAll<HTMLElement>(".bp-node[data-connects]").forEach(srcEl => {
+      const srcId = srcEl.dataset.id!;
+      const targets = (srcEl.dataset.connects ?? "").split(",").filter(Boolean);
+
+      targets.forEach(tgtId => {
+        const tgtEl = nodeEls[tgtId];
+        if (!tgtEl) return;
+
+        const outIdx = outExecUsed[srcId] ?? 0;
+        const inIdx  = inExecUsed[tgtId]  ?? 0;
+
+        const from = pinCenter(srcEl, "out", outIdx);
+        const to   = pinCenter(tgtEl, "in",  inIdx);
+        if (!from || !to) return;
+
+        outExecUsed[srcId] = outIdx + 1;
+        inExecUsed[tgtId]  = inIdx  + 1;
+
+        const dx = Math.abs(to.x - from.x) * 0.55;
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d",
+          `M ${from.x} ${from.y} C ${from.x + dx} ${from.y}, ${to.x - dx} ${to.y}, ${to.x} ${to.y}`
+        );
+        path.setAttribute("stroke", "#ffffff");
+        path.setAttribute("stroke-width", "1.5");
+        path.setAttribute("fill", "none");
+        path.setAttribute("opacity", "0.55");
+        svg.appendChild(path);
+      });
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>(".bp-nodes").forEach(graph => {
+    requestAnimationFrame(() => drawWires(graph));
+  });
+</script>

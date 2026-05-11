@@ -30,7 +30,7 @@ const isList = Array.isArray(content) && !isTable;
 <div class="border border-(--border) bg-(--bg-panel) w-full">
   <!-- Panel header -->
   <div
-    class="flex items-center gap-2 px-4 py-2.5 border-b border-(--border) bg-(--bg-card) font-mono text-[1.1rem] text-(--green-dim)"
+    class="flex items-center gap-2 px-4 py-2.5 border-b border-(--border) bg-(--bg-card) font-mono text-[1.05rem] text-(--green-dim)"
   >
     <div class="w-1.5 h-1.5"></div>
     // {title}
@@ -40,7 +40,7 @@ const isList = Array.isArray(content) && !isTable;
   <div class="px-6 py-5">
     {
       typeof content === "string" && (
-        <p class="font-mono text-[1rem] text-(--text-dim) leading-[1.8]">
+        <p class="font-mono text-[0.9rem] text-(--text-dim) leading-[1.8]">
           {content}
         </p>
       )
@@ -64,11 +64,11 @@ const isList = Array.isArray(content) && !isTable;
         <div class="takeaways-cols">
           {(content as TextBlockTable[]).map((item) => (
             <div class="rt-takeaway flex gap-3 items-start">
-              <span class="font-mono text-[12px] text-(--yellow) mt-px shrink-0">
+              <span class="font-mono text-[0.9rem] text-(--yellow) mt-px shrink-0">
                 ▸
               </span>
-              <div class="text-[14px] text-(--text-dim) leading-[1.6]">
-                <div class="font-mono text-[14px] text-(--text-muted) uppercase tracking-[0.08em] mb-0.5">
+              <div class="text-[0.9rem] text-(--text-dim) leading-[1.6]">
+                <div class="font-mono text-[0.9rem] text-(--text-muted) uppercase tracking-[0.08em] mb-0.5">
                   {item.heading}
                 </div>
                 {item.body}
