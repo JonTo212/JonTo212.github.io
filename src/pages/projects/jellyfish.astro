@@ -11,6 +11,200 @@ import ProjectFooter from "../../components/layout/ProjectFooter.astro";
 
 const todoSnippetPlain = `// TODO: Add raw code snippet here`;
 const todoSnippetHtml = ``;
+
+const playerSnippetPlain = `[ServerRpc(RequireOwnership = false)]
+public void ApplyKnockback(Vector3 force, float duration)
+{
+    hitCoroutine = StartCoroutine(KnockbackCoroutine(force, duration));
+}
+
+private IEnumerator KnockbackCoroutine(Vector3 force, float duration)
+{
+    var timer = 0f;
+    isHit.Value = true;
+
+    while (timer < duration)
+    {
+        timer += deltaTime;
+        var progress = timer / duration;
+
+        var horizontalFalloff = knockbackCurve.Evaluate(progress);
+        var horizontal = force * horizontalFalloff;
+
+        var verticalArc = 3f * (1.5f - 3f * progress);
+        var vertical = 2f * Vector3.up * verticalArc;
+
+        _knockbackForce.Value = horizontal + vertical;
+
+        yield return null;
+    }
+
+    _knockbackForce.Value = Vector3.zero;
+    isHit.Value = false;
+}`;
+
+const playerSnippetHtml = `[<span class="tok-type">ServerRpc</span>(<span class="tok-param">RequireOwnership</span> = <span class="tok-bool">false</span>)]
+<span class="tok-keyword">public</span> <span class="tok-keyword">void</span> <span class="tok-method">ApplyKnockback</span>(<span class="tok-type">Vector3</span> <span class="tok-param">force</span>, <span class="tok-keyword">float</span> <span class="tok-param">duration</span>)
+{
+    <span class="tok-param">hitCoroutine</span> = <span class="tok-method">StartCoroutine</span>(<span class="tok-method">KnockbackCoroutine</span>(<span class="tok-param">force</span>, <span class="tok-param">duration</span>));
+}
+
+<span class="tok-keyword">private</span> <span class="tok-type">IEnumerator</span> <span class="tok-method">KnockbackCoroutine</span>(<span class="tok-type">Vector3</span> <span class="tok-param">force</span>, <span class="tok-keyword">float</span> <span class="tok-param">duration</span>)
+{
+    <span class="tok-keyword">var</span> <span class="tok-param">timer</span> = <span class="tok-num">0f</span>;
+    <span class="tok-param">isHit</span>.Value = <span class="tok-bool">true</span>;
+
+    <span class="tok-keyword">while</span> (<span class="tok-param">timer</span> &lt; <span class="tok-param">duration</span>)
+    {
+        <span class="tok-param">timer</span> += <span class="tok-param">deltaTime</span>;
+        <span class="tok-keyword">var</span> <span class="tok-param">progress</span> = <span class="tok-param">timer</span> / <span class="tok-param">duration</span>;
+
+        <span class="tok-keyword">var</span> <span class="tok-param">horizontalFalloff</span> = <span class="tok-param">knockbackCurve</span>.<span class="tok-method">Evaluate</span>(<span class="tok-param">progress</span>);
+        <span class="tok-keyword">var</span> <span class="tok-param">horizontal</span> = <span class="tok-param">force</span> * <span class="tok-param">horizontalFalloff</span>;
+
+        <span class="tok-keyword">var</span> <span class="tok-param">verticalArc</span> = <span class="tok-num">3f</span> * (<span class="tok-num">1.5f</span> - <span class="tok-num">3f</span> * <span class="tok-param">progress</span>);
+        <span class="tok-keyword">var</span> <span class="tok-param">vertical</span> = <span class="tok-num">2f</span> * <span class="tok-type">Vector3</span>.up * <span class="tok-param">verticalArc</span>;
+
+        <span class="tok-param">_knockbackForce</span>.Value = <span class="tok-param">horizontal</span> + <span class="tok-param">vertical</span>;
+
+        <span class="tok-keyword">yield return null</span>;
+    }
+
+    <span class="tok-param">_knockbackForce</span>.Value = <span class="tok-type">Vector3</span>.zero;
+    <span class="tok-param">isHit</span>.Value = <span class="tok-bool">false</span>;
+}`;
+
+const deviceSnippetPlain = `[ServerRpc(RequireOwnership = false)]
+private void ToggleStatus()
+{
+    if (activated.Value) return;
+    if (currentPlayer != null && currentPlayer.TryGetComponent(out PlayerMovementCC player))
+        if (!player.enableInput.Value)
+        {
+            player.uiManager.ActivateInteractPrompt(false);
+            return;
+        }
+
+    // switch device status on the server side
+    deviceStatus.Value = !deviceStatus.Value;
+
+    if (connectedButtons != null)
+        foreach (var buttons in connectedButtons)
+            buttons.deviceStatus.Value = !buttons.deviceStatus.Value;
+
+    if (currentPlayer != null && currentPlayer.TryGetComponent(out PlayerMovementCC player1))
+        player1.uiManager.ActivateInteractPrompt(false);
+
+    StartCoroutine(InteractCooldown());
+
+    PlaySwitchSound();
+    OnSwitchStateChanged?.Invoke();
+}`;
+
+const lobbySnippetPlain = `public void AddPlayer(ulong steamId, NetworkConnection connection)
+{
+    // public entry point - routes to direct call or ServerRpc depending on caller
+    if (IsServerStarted)
+    {
+        AddPlayerInternal(steamId, connection, true);
+    }
+    else if (IsClientStarted)
+    {
+        ServerAddPlayer(steamId, connection);
+    }
+}
+
+private void AddPlayerInternal(ulong steamId, NetworkConnection conn, bool ready)
+{
+    // add player to lobby, assign team, set ready status
+    int jellyTeamCount = lobbyPlayers.Count(p => p.playerTeam == TeamType.Gelava);
+    int fishTeamCount = lobbyPlayers.Count(p => p.playerTeam == TeamType.Koizo);
+
+    TeamType team = (jellyTeamCount <= fishTeamCount) ? TeamType.Gelava : TeamType.Koizo;
+    int teamIndex = (team == TeamType.Gelava) ? jellyTeamCount : fishTeamCount;
+    int playerIndexInLobby = lobbyPlayers.Count;
+
+    LobbyPlayer newPlayer = new LobbyPlayer
+    {
+        steamID = steamId,
+        playerTeam = team,
+        playerIndex = playerIndexInLobby,
+        playerIndexInTeam = teamIndex,
+        isReady = ready,
+        conn = conn,
+        loadedIntoGameScene = false,
+        leftScene = false
+    };
+
+    lobbyPlayers.Add(newPlayer);
+    CheckIfAllReady();
+}`;
+
+const lobbySnippetHtml = `<span class="tok-keyword">public</span> <span class="tok-keyword">void</span> <span class="tok-method">AddPlayer</span>(<span class="tok-keyword">ulong</span> <span class="tok-param">steamId</span>, <span class="tok-type">NetworkConnection</span> <span class="tok-param">connection</span>)
+{
+    <span class="tok-comment">// public entry point - routes to direct call or ServerRpc depending on caller</span>
+    <span class="tok-keyword">if</span> (<span class="tok-param">IsServerStarted</span>)
+    {
+        <span class="tok-method">AddPlayerInternal</span>(<span class="tok-param">steamId</span>, <span class="tok-param">connection</span>, <span class="tok-bool">true</span>);
+    }
+    <span class="tok-keyword">else if</span> (<span class="tok-param">IsClientStarted</span>)
+    {
+        <span class="tok-method">ServerAddPlayer</span>(<span class="tok-param">steamId</span>, <span class="tok-param">connection</span>);
+    }
+}
+
+<span class="tok-keyword">private</span> <span class="tok-keyword">void</span> <span class="tok-method">AddPlayerInternal</span>(<span class="tok-keyword">ulong</span> <span class="tok-param">steamId</span>, <span class="tok-type">NetworkConnection</span> <span class="tok-param">conn</span>, <span class="tok-keyword">bool</span> <span class="tok-param">ready</span>)
+{
+    <span class="tok-comment">// add player to lobby, assign team, set ready status</span>
+    <span class="tok-keyword">int</span> <span class="tok-param">jellyTeamCount</span> = <span class="tok-param">lobbyPlayers</span>.<span class="tok-method">Count</span>(<span class="tok-param">p</span> =&gt; <span class="tok-param">p</span>.<span class="tok-param">playerTeam</span> == <span class="tok-type">TeamType</span>.<span class="tok-param">Gelava</span>);
+    <span class="tok-keyword">int</span> <span class="tok-param">fishTeamCount</span> = <span class="tok-param">lobbyPlayers</span>.<span class="tok-method">Count</span>(<span class="tok-param">p</span> =&gt; <span class="tok-param">p</span>.<span class="tok-param">playerTeam</span> == <span class="tok-type">TeamType</span>.<span class="tok-param">Koizo</span>);
+
+    <span class="tok-type">TeamType</span> <span class="tok-param">team</span> = (<span class="tok-param">jellyTeamCount</span> &lt;= <span class="tok-param">fishTeamCount</span>) ? <span class="tok-type">TeamType</span>.<span class="tok-param">Gelava</span> : <span class="tok-type">TeamType</span>.<span class="tok-param">Koizo</span>;
+    <span class="tok-keyword">int</span> <span class="tok-param">teamIndex</span> = (<span class="tok-param">team</span> == <span class="tok-type">TeamType</span>.<span class="tok-param">Gelava</span>) ? <span class="tok-param">jellyTeamCount</span> : <span class="tok-param">fishTeamCount</span>;
+    <span class="tok-keyword">int</span> <span class="tok-param">playerIndexInLobby</span> = <span class="tok-param">lobbyPlayers</span>.Count;
+
+    <span class="tok-type">LobbyPlayer</span> <span class="tok-param">newPlayer</span> = <span class="tok-keyword">new</span> <span class="tok-type">LobbyPlayer</span>
+    {
+        <span class="tok-param">steamID</span> = <span class="tok-param">steamId</span>,
+        <span class="tok-param">playerTeam</span> = <span class="tok-param">team</span>,
+        <span class="tok-param">playerIndex</span> = <span class="tok-param">playerIndexInLobby</span>,
+        <span class="tok-param">playerIndexInTeam</span> = <span class="tok-param">teamIndex</span>,
+        <span class="tok-param">isReady</span> = <span class="tok-param">ready</span>,
+        <span class="tok-param">conn</span> = <span class="tok-param">conn</span>,
+        <span class="tok-param">loadedIntoGameScene</span> = <span class="tok-bool">false</span>,
+        <span class="tok-param">leftScene</span> = <span class="tok-bool">false</span>
+    };
+
+    <span class="tok-param">lobbyPlayers</span>.<span class="tok-method">Add</span>(<span class="tok-param">newPlayer</span>);
+    <span class="tok-method">CheckIfAllReady</span>();
+}`;
+
+const deviceSnippetHtml = `[<span class="tok-type">ServerRpc</span>(<span class="tok-param">RequireOwnership</span> = <span class="tok-bool">false</span>)]
+<span class="tok-keyword">private</span> <span class="tok-keyword">void</span> <span class="tok-method">ToggleStatus</span>()
+{
+    <span class="tok-keyword">if</span> (<span class="tok-param">activated</span>.Value) <span class="tok-keyword">return</span>;
+    <span class="tok-keyword">if</span> (<span class="tok-param">currentPlayer</span> != <span class="tok-keyword">null</span> &amp;&amp; <span class="tok-param">currentPlayer</span>.<span class="tok-method">TryGetComponent</span>(<span class="tok-keyword">out</span> <span class="tok-type">PlayerMovementCC</span> <span class="tok-param">player</span>))
+        <span class="tok-keyword">if</span> (!<span class="tok-param">player</span>.<span class="tok-param">enableInput</span>.Value)
+        {
+            <span class="tok-param">player</span>.<span class="tok-param">uiManager</span>.<span class="tok-method">ActivateInteractPrompt</span>(<span class="tok-bool">false</span>);
+            <span class="tok-keyword">return</span>;
+        }
+
+    <span class="tok-comment">// switch device status on the server side</span>
+    <span class="tok-param">deviceStatus</span>.Value = !<span class="tok-param">deviceStatus</span>.Value;
+
+    <span class="tok-keyword">if</span> (<span class="tok-param">connectedButtons</span> != <span class="tok-keyword">null</span>)
+        <span class="tok-keyword">foreach</span> (<span class="tok-keyword">var</span> <span class="tok-param">buttons</span> <span class="tok-keyword">in</span> <span class="tok-param">connectedButtons</span>)
+            <span class="tok-param">buttons</span>.<span class="tok-param">deviceStatus</span>.Value = !<span class="tok-param">buttons</span>.<span class="tok-param">deviceStatus</span>.Value;
+
+    <span class="tok-keyword">if</span> (<span class="tok-param">currentPlayer</span> != <span class="tok-keyword">null</span> &amp;&amp; <span class="tok-param">currentPlayer</span>.<span class="tok-method">TryGetComponent</span>(<span class="tok-keyword">out</span> <span class="tok-type">PlayerMovementCC</span> <span class="tok-param">player1</span>))
+        <span class="tok-param">player1</span>.<span class="tok-param">uiManager</span>.<span class="tok-method">ActivateInteractPrompt</span>(<span class="tok-bool">false</span>);
+
+    <span class="tok-method">StartCoroutine</span>(<span class="tok-method">InteractCooldown</span>());
+
+    <span class="tok-method">PlaySwitchSound</span>();
+    <span class="tok-param">OnSwitchStateChanged</span>?.<span class="tok-method">Invoke</span>();
+}`;
 ---
 
 <BaseLayout title="JellyFish - Jonathan To">
@@ -31,15 +225,15 @@ const todoSnippetHtml = ``;
   />
 
   <VideoEmbed
-    videoId="rCs9Q9dPeNc"
-    caption="// fig_01 - Gameplay Trailer · JellyFish"
+    videoId="TODO_VIDEO_ID"
+    caption="// fig_01 - Main gameplay screenshot · JellyFish"
     alt="JellyFish Trailer"
   />
 
   <div class="grid gap-6" style="grid-template-columns: 1fr 260px;">
     <TextBlock
       title="Overview"
-      content="Joined as the primary network programmer on a Steam party game already in development - picking up FishNet and the Steam SDK from scratch in under two months. Owned the full networking stack: replication architecture, Steam lobby integration, the player controller, and all networked world devices. Shipped to Steam."
+      content="Joined as the sole network programmer on a Steam party game already in development - picking up FishNet and the Steam SDK from scratch in under two months. Owned the full networking stack: replication architecture, Steam lobby integration, the player controller, and all networked world devices. Shipped to Steam."
     />
 
     <TextBlock
@@ -91,37 +285,42 @@ const todoSnippetHtml = ``;
       index={1}
       title="Steam Lobby System"
       description="Custom lobby built on the Steamworks API - players create or join sessions via a generated lobby code, with Steam display names pulled and shown automatically. Lobby UI stays synchronized across all clients, with map selection for the host. On confirm, the host initiates a Steam-based connection and triggers networked scene loading via FishNet to transition all clients into the game simultaneously."
-      videoSrc="/videos/jellyfish-lobby-loading-demo.mp4"
-      snippetLabel="TODO_Filename.cs - lobby system"
-      snippetFilename="TODO_Filename.cs"
-      snippetCode={todoSnippetPlain}
+      snippetLabel="LobbyManager.cs - player registration"
+      snippetFilename="LobbyManager.cs"
+      snippetCode={lobbySnippetPlain}
       flip={true}
     >
       <pre
         slot="snippet-code"
-        style="margin:0; padding:1.25rem 1.5rem; overflow-x:auto; background:var(--bg); font-size:12px; line-height:1.8; white-space:pre-wrap; word-break:break-word;"><code class="font-mono text-(--text-code)" set:html={todoSnippetHtml} /></pre>
+        style="margin:0; padding:1.25rem 1.5rem; overflow-x:auto; background:var(--bg); font-size:12px; line-height:1.8; white-space:pre-wrap; word-break:break-word;"><code class="font-mono text-(--text-code)" set:html={lobbySnippetHtml} /></pre>
     </KeyFeature>
 
     <KeyFeature
       index={2}
       title="Player Controller"
       description="Server-authoritative CharacterController-based movement using accumulated simulated forces to mimic rigidbody behaviour for consistency and predictability across clients. State is replicated to all clients each tick. Includes moving platform synchronization to prevent drift, and a punch mechanic that applies directional knockback force to other networked players."
-      videoSrc="/videos/jellyfish-player-controller-demo.mp4"
-      snippetLabel="TODO_Filename.cs - player controller"
-      snippetFilename="TODO_Filename.cs"
-      snippetCode={`// TODO: plug in your snippet here`}
-    />
+      snippetLabel="PlayerMovementCC.cs - knockback ServerRpc"
+      snippetFilename="PlayerMovementCC.cs"
+      snippetCode={playerSnippetPlain}
+    >
+      <pre
+        slot="snippet-code"
+        style="margin:0; padding:1.25rem 1.5rem; overflow-x:auto; background:var(--bg); font-size:12px; line-height:1.8; white-space:pre-wrap; word-break:break-word;"><code class="font-mono text-(--text-code)" set:html={playerSnippetHtml} /></pre>
+    </KeyFeature>
 
     <KeyFeature
       index={3}
       title="Networked World Devices"
       description="Moving level elements - elevators, bridges, fans, and other interactables - run authoritatively on the server and replicate position and state to all clients. Designed as a reusable backend so level designers could place and configure devices without writing networking code."
-      videoSrc="/videos/networked-devices-demo.mp4"
-      snippetLabel="TODO_Filename.cs - networked devices"
-      snippetFilename="TODO_Filename.cs"
-      snippetCode={`// TODO: plug in your snippet here`}
+      snippetLabel="NetworkedButton.cs - ServerRpc toggle"
+      snippetFilename="NetworkedButton.cs"
+      snippetCode={deviceSnippetPlain}
       flip={true}
-    />
+    >
+      <pre
+        slot="snippet-code"
+        style="margin:0; padding:1.25rem 1.5rem; overflow-x:auto; background:var(--bg); font-size:12px; line-height:1.8; white-space:pre-wrap; word-break:break-word;"><code class="font-mono text-(--text-code)" set:html={deviceSnippetHtml} /></pre>
+    </KeyFeature>
   </div>
 
   <div style="display:flex; flex-direction:column; gap:2rem;">
