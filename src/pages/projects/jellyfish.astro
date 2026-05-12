@@ -22,56 +22,55 @@ const todoSnippetHtml = ``;
 
   <ProjectHeader
     title="JellyFish"
-    subtitle="TODO: Role · Role · Context"
+    subtitle="Network Programmer · Co-op"
     tags={[
-      { label: "TODO: Tag 1", type: "programming" },
-      { label: "TODO: Tag 2", type: "design" },
-      { label: "TODO: Tag 3", type: "unity" },
+      { label: "Programming", type: "programming" },
+      { label: "Unity", type: "unity" },
     ]}
-    description="TODO: A brief description of the project and your core responsibilities."
+    description="An online party game built for Steam with a custom lobby system. Served as the network programmer, rapidly learning multiplayer foundations in under two months. Implemented gameplay systems, networking infrastructure, and Steam features such as lobby management, hosting, and code-based invites."
   />
 
   <VideoEmbed
-    videoId="TODO_VIDEO_ID"
-    caption="// fig_01 - TODO: Caption for the video · JellyFish"
+    videoId="rCs9Q9dPeNc"
+    caption="// fig_01 - Gameplay Trailer · JellyFish"
     alt="JellyFish Trailer"
   />
 
   <div class="grid gap-6" style="grid-template-columns: 1fr 260px;">
     <TextBlock
       title="Overview"
-      content="TODO: Provide a comprehensive overview of your work on this project."
+      content="Joined as the primary network programmer on a Steam party game already in development - picking up FishNet and the Steam SDK from scratch in under two months. Owned the full networking stack: replication architecture, Steam lobby integration, the player controller, and all networked world devices. Shipped to Steam."
     />
 
     <TextBlock
       title="Contributions"
       content={[
-        "TODO: Contribution bullet point 1",
-        "TODO: Contribution bullet point 2",
-        "TODO: Contribution bullet point 3",
-        "TODO: Contribution bullet point 4",
+        "FishNet networking backend, including scene loading, server-authoritative replication, and Steam-based hosting",
+        "Custom lobby system with Steam codes, display names, synchronized UI, and host map select",
+        "Networked player controller with simulated forces, moving platform sync, and punch knockback",
+        "Replicated world devices - elevators, bridges, and other dynamic interactables",
       ]}
     />
 
     <div style="grid-column:2; grid-row:1/3;">
       <ProjectDetails
         meta={[
-          { key: "status", value: "TODO: complete", highlight: true },
-          { key: "year", value: "TODO: 202X-202X" },
-          { key: "duration", value: "TODO: X months" },
-          { key: "team_size", value: "TODO: X (team)" },
-          { key: "platform", value: "TODO: PC" },
-          { key: "context", value: "TODO: Context" },
+          { key: "status", value: "complete", highlight: true },
+          { key: "year", value: "2025" },
+          { key: "duration", value: "1.5 months" },
+          { key: "team_size", value: "4" },
+          { key: "platform", value: "PC (Steam)" },
+          { key: "context", value: "Co-op" },
         ]}
         links={[
           {
-            label: "TODO: Play on itch.io",
-            href: "#",
+            label: "Play on Steam",
+            href: "https://store.steampowered.com/app/3887710/JellyFish/",
             icon: "▷",
           },
           {
-            label: "TODO: View on GitHub",
-            href: "#",
+            label: "View on GitHub",
+            href: "https://github.com/JonTo212/JellyFishNetworkingRebuild",
             icon: "◇",
           },
         ]}
@@ -84,15 +83,16 @@ const todoSnippetHtml = ``;
       <div
         style="padding:10px 16px; background:var(--bg-card); border-bottom:1px solid var(--border); font-family:'Commit Mono',monospace; font-size:1.1rem; color:var(--green-dim);"
       >
-        // Key Features
+        // key_features[]
       </div>
     </div>
 
     <KeyFeature
       index={1}
-      title="TODO: Feature 1 Title"
-      description="TODO: Feature 1 Description explaining the mechanic and your implementation."
-      snippetLabel="TODO_Filename.cs - feature description"
+      title="Steam Lobby System"
+      description="Custom lobby built on the Steamworks API - players create or join sessions via a generated lobby code, with Steam display names pulled and shown automatically. Lobby UI stays synchronized across all clients, with map selection for the host. On confirm, the host initiates a Steam-based connection and triggers networked scene loading via FishNet to transition all clients into the game simultaneously."
+      videoSrc="/videos/jellyfish-lobby-loading-demo.mp4"
+      snippetLabel="TODO_Filename.cs - lobby system"
       snippetFilename="TODO_Filename.cs"
       snippetCode={todoSnippetPlain}
       flip={true}
@@ -104,18 +104,20 @@ const todoSnippetHtml = ``;
 
     <KeyFeature
       index={2}
-      title="TODO: Feature 2 Title"
-      description="TODO: Feature 2 Description."
-      snippetLabel="TODO_Filename.cs - feature description"
+      title="Player Controller"
+      description="Server-authoritative CharacterController-based movement using accumulated simulated forces to mimic rigidbody behaviour for consistency and predictability across clients. State is replicated to all clients each tick. Includes moving platform synchronization to prevent drift, and a punch mechanic that applies directional knockback force to other networked players."
+      videoSrc="/videos/jellyfish-player-controller-demo.mp4"
+      snippetLabel="TODO_Filename.cs - player controller"
       snippetFilename="TODO_Filename.cs"
       snippetCode={`// TODO: plug in your snippet here`}
     />
 
     <KeyFeature
       index={3}
-      title="TODO: Feature 3 Title"
-      description="TODO: Feature 3 Description."
-      snippetLabel="TODO_Filename.cs - feature description"
+      title="Networked World Devices"
+      description="Moving level elements - elevators, bridges, fans, and other interactables - run authoritatively on the server and replicate position and state to all clients. Designed as a reusable backend so level designers could place and configure devices without writing networking code."
+      videoSrc="/videos/networked-devices-demo.mp4"
+      snippetLabel="TODO_Filename.cs - networked devices"
       snippetFilename="TODO_Filename.cs"
       snippetCode={`// TODO: plug in your snippet here`}
       flip={true}
@@ -124,25 +126,28 @@ const todoSnippetHtml = ``;
 
   <div style="display:flex; flex-direction:column; gap:2rem;">
     <DeepDiveBlock
-      title="TODO: Deep dive - [Subject]"
+      title="Deep dive - replicating player forces"
       steps={[
         {
           tag: "problem",
           icon: "◎",
-          title: "TODO: Problem statement header",
-          body: "TODO: Explain the context and why the problem existed.",
+          title:
+            "Rigidbody movement was unpredictable across clients - and got worse on moving platforms",
+          body: "The initial player controller used Unity's Rigidbody. In a single-player context that's fine; in a networked one, physics simulation diverges between host and clients, producing jitter, tunnelling, and inconsistent interactions with dynamic world elements. Moving platforms were especially bad - players would slip off or teleport as the platform's physics state and the player's didn't agree.",
         },
         {
           tag: "approach",
           icon: "◈",
-          title: "TODO: Approach statement header",
-          body: "TODO: Explain your iterations and thought process for solving it.",
+          title:
+            "Scrapped the Rigidbody - switched to a CharacterController with manually accumulated forces",
+          body: "I moved to a CharacterController and accumulated all forces explicitly each frame - gravity, jump impulse, knockback, platform delta - then resolved them through a single Move() call. The server owns this calculation authoritatively and replicates the resulting position and velocity to clients. No physics engine involved, no divergence to reconcile. Platform sync worked by sampling the platform's world-space delta each tick and folding it directly into the move.",
         },
         {
           tag: "result",
           icon: "▸",
-          title: "TODO: Result statement header",
-          body: "TODO: Explain the final outcome and its impact.",
+          title:
+            "Predictable movement, reliable platform sticking, and a clean replication model",
+          body: "Movement became stable and consistent across all clients. Knockback and jump forces behaved the same regardless of frame timing. Players stuck to moving platforms without drifting. The explicit force accumulation model also made it easy to add new force types - punch knockback, fans, launch pads - without touching the replication layer.",
         },
       ]}
       slider={{
@@ -156,16 +161,16 @@ const todoSnippetHtml = ``;
       title="Takeaways"
       content={[
         {
-          heading: "TODO: Takeaway 1",
-          body: "TODO: Body of takeaway 1.",
+          heading: "Networking from zero",
+          body: "I had no multiplayer experience coming in. No networking framework, no mental model for replication, nothing. Owning the full stack under a tight deadline forced a fast and thorough understanding of server-authoritative architecture. It's a domain I didn't know at all six weeks prior, and left feeling comfortable in.",
         },
         {
-          heading: "TODO: Takeaway 2",
-          body: "TODO: Body of takeaway 2.",
+          heading: "Steam & server types",
+          body: "Shipping on Steam taught me how hosting actually works in practice - how Steam relays connections, what lobby codes map to under the hood, and the real tradeoffs between listen servers and dedicated servers. There's a lot Steam gives you, and a lot it doesn't. Knowing the line matters when you're building the whole thing yourself.",
         },
         {
-          heading: "TODO: Takeaway 3",
-          body: "TODO: Body of takeaway 3.",
+          heading: "Simulating forces beats borrowing physics",
+          body: "Getting platform sync right - and debugging why a Rigidbody falls apart across clients - built a clear intuition for why so many multiplayer games don't use physics engines for player movement. Manually accumulating forces is more work upfront, but the determinism is worth it.",
         },
       ]}
     />
