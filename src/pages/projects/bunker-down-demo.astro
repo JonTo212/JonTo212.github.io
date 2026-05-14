@@ -1,5 +1,5 @@
 ---
-// src/pages/portfolio/Bunker Down! Demo/index.astro
+// src/pages/portfolio/bunker-down-demo/index.astro
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import VideoEmbed from "../../components/layout/VideoEmbed.astro";
 import TextBlock from "../../components/layout/TextBlock.astro";
@@ -17,62 +17,72 @@ const todoSnippetHtml = ``;
   <div slot="breadcrumb" class="breadcrumb-bar">
     <a href="/portfolio/">Portfolio()</a>
     <span class="breadcrumb-sep">/</span>
-    <span class="breadcrumb-current">Bunker Down! Demo.cs</span>
+    <span class="breadcrumb-current">BunkerDownDemo.cs</span>
   </div>
 
   <ProjectHeader
     title="Bunker Down! Demo"
-    subtitle="TODO: Role · Role · Context"
+    subtitle="Gameplay Programmer · Contract"
     tags={[
-      { label: "TODO: Tag 1", type: "programming" },
-      { label: "TODO: Tag 2", type: "design" },
-      { label: "TODO: Tag 3", type: "unity" },
+      { label: "Programming", type: "programming" },
+      { label: "Unity", type: "unity" },
     ]}
-    description="TODO: A brief description of the project and your core responsibilities."
+    description="A virtual demo of the physical board game, Bunker Down!, created as a marketing tool
+      for our client's Kickstarter campaign. Worked as programmer on the card and deck systems, game
+      phase manager, animated UI board, and co-developed a suite of NPC opponents with distinct
+      decision-making behaviours."
   />
 
   <VideoEmbed
-    videoId="TODO_VIDEO_ID"
-    caption="// fig_01 - TODO: Caption for the video · Bunker Down! Demo"
-    alt="Bunker Down! Demo Trailer"
+    videoId="sWID9_jK4Co"
+    caption="// fig_01 - Gameplay Demo · Bunker Down! Demo"
+    alt="Bunker Down! Demo Gameplay"
   />
 
   <div class="grid gap-6" style="grid-template-columns: 1fr 260px;">
     <TextBlock
       title="Overview"
-      content="TODO: Provide a comprehensive overview of your work on this project."
+      content="Served as the primary systems programmer - responsible for the card and deck architecture,
+        the phase-driven game manager, and the UI board that serves as the player's sole interaction layer.
+        Co-developed four NPC opponents, each with distinct behavioural profiles built on top of shared
+        game systems."
     />
 
     <TextBlock
       title="Contributions"
       content={[
-        "TODO: Contribution bullet point 1",
-        "TODO: Contribution bullet point 2",
-        "TODO: Contribution bullet point 3",
-        "TODO: Contribution bullet point 4",
+        "Scriptable object-based card and deck system, including card data architecture and runtime deck management",
+        "Game manager handling turn structure and phase sequencing across all game states",
+        "Animated UI game board, with all player interaction routed through physical-style board buttons",
+        "Co-developed four NPC opponents with distinct resource and card-play behaviours",
       ]}
     />
 
     <div style="grid-column:2; grid-row:1/3;">
       <ProjectDetails
         meta={[
-          { key: "status", value: "TODO: complete", highlight: true },
-          { key: "year", value: "TODO: 202X-202X" },
-          { key: "duration", value: "TODO: X months" },
-          { key: "team_size", value: "TODO: X (team)" },
-          { key: "platform", value: "TODO: PC" },
-          { key: "context", value: "TODO: Context" },
+          { key: "status", value: "complete", highlight: true },
+          { key: "year", value: "2023" },
+          { key: "duration", value: "4 months" },
+          { key: "team_size", value: "2 (team)" },
+          { key: "platform", value: "PC / WebGL" },
+          { key: "context", value: "Contract" },
         ]}
         links={[
           {
-            label: "TODO: Play on itch.io",
+            label: "Play on itch.io",
             href: "#",
             icon: "▷",
           },
           {
-            label: "TODO: View on GitHub",
+            label: "View on GitHub",
             href: "#",
             icon: "◇",
+          },
+          {
+            label: "Kickstarter Campaign",
+            href: "#",
+            icon: "□",
           },
         ]}
       />
@@ -90,10 +100,12 @@ const todoSnippetHtml = ``;
 
     <KeyFeature
       index={1}
-      title="TODO: Feature 1 Title"
-      description="TODO: Feature 1 Description explaining the mechanic and your implementation."
-      snippetLabel="TODO_Filename.cs - feature description"
-      snippetFilename="TODO_Filename.cs"
+      title="Card & Deck System"
+      description="Scriptable object-based card architecture with runtime deck management.
+        Cards define their own data, allowing decks to be authored and modified
+        without code changes - designed for extensibility across card types and game modes."
+      snippetLabel="CardData.cs - Scriptable object card definition"
+      snippetFilename="CardData.cs"
       snippetCode={todoSnippetPlain}
       flip={true}
     >
@@ -104,19 +116,23 @@ const todoSnippetHtml = ``;
 
     <KeyFeature
       index={2}
-      title="TODO: Feature 2 Title"
-      description="TODO: Feature 2 Description."
-      snippetLabel="TODO_Filename.cs - feature description"
-      snippetFilename="TODO_Filename.cs"
+      title="Game Phase Manager"
+      description="Centralised game manager driving turn structure and phase sequencing.
+        Coordinates state transitions across draw, play, and resolution phases,
+        with hooks for NPC turns and win condition evaluation."
+      snippetLabel="GameManager.cs - Phase sequencing"
+      snippetFilename="GameManager.cs"
       snippetCode={`// TODO: plug in your snippet here`}
     />
 
     <KeyFeature
       index={3}
-      title="TODO: Feature 3 Title"
-      description="TODO: Feature 3 Description."
-      snippetLabel="TODO_Filename.cs - feature description"
-      snippetFilename="TODO_Filename.cs"
+      title="Animated UI Game Board"
+      description="All player interaction delivered through a single physical-style button board,
+        emulating the tactile feel of a tabletop game. UI state and transitions driven
+        entirely by tweens, with board layout reflecting current game phase."
+      snippetLabel="UIBoard.cs - Tween-driven state transitions"
+      snippetFilename="UIBoard.cs"
       snippetCode={`// TODO: plug in your snippet here`}
       flip={true}
     />
@@ -124,29 +140,30 @@ const todoSnippetHtml = ``;
 
   <div style="display:flex; flex-direction:column; gap:2rem;">
     <DeepDiveBlock
-      title="TODO: Deep dive - [Subject]"
+      title="Deep dive - designing a framework without a complete ruleset"
       steps={[
         {
           tag: "problem",
           icon: "◎",
-          title: "TODO: Problem statement header",
-          body: "TODO: Explain the context and why the problem existed.",
+          title: "Building a system before we knew what it needed to contain",
+          body: "We didn't have complete card content or finalised rules at the start of production. The client was still shaping the game's design while we were building - which meant a rigid, content-coupled architecture would have required constant rework as requirements shifted.",
         },
         {
           tag: "approach",
           icon: "◈",
-          title: "TODO: Approach statement header",
-          body: "TODO: Explain your iterations and thought process for solving it.",
+          title: "Scriptable objects as a contract between design and code",
+          body: "The solution was to build around Unity's ScriptableObject system: cards became data assets that defined their own properties and behaviour hooks, with dynamic functionality (such as onClick handlers) registered at runtime rather than hardcoded per card type. The game manager and deck system treated cards as opaque data containers - meaning new card types, effects, and rules could be introduced by authoring assets rather than modifying core systems. The aim was a framework loose enough to grow with the design, without sacrificing the structure needed to keep state consistent.",
         },
         {
           tag: "result",
           icon: "▸",
-          title: "TODO: Result statement header",
-          body: "TODO: Explain the final outcome and its impact.",
+          title:
+            "A system that absorbed scope changes without structural rewrites",
+          body: "When card rules and content shifted mid-production - as they did several times - the changes were largely contained to asset configuration rather than code. The separation between data and logic held up under real production pressure. The main limitation was that sufficiently complex card interactions still required code-side handling; a more expressive data layer (something closer to a command pattern per effect) would have pushed more flexibility into the assets themselves.",
         },
       ]}
       slider={{
-        label: "TODO_visual_label",
+        label: "deep_dive_visual",
         beforeSrc: "",
         afterSrc: "",
       }}
@@ -156,16 +173,16 @@ const todoSnippetHtml = ``;
       title="Takeaways"
       content={[
         {
-          heading: "TODO: Takeaway 1",
-          body: "TODO: Body of takeaway 1.",
+          heading: "Scope isn't yours to protect",
+          body: "Working under a publisher means executing someone else's vision - design decisions, timelines, and priorities are handed down, not negotiated. Learning to do good work within those constraints, rather than against them, was the job.",
         },
         {
-          heading: "TODO: Takeaway 2",
-          body: "TODO: Body of takeaway 2.",
+          heading: "Know when to say no",
+          body: "The client kept expanding scope with no change in compensation. We wanted to deliver, and for a while that instinct overrode our better judgment. Eventually we had to draw a line - and respecting our own time turned out to be better for the working relationship, not worse.",
         },
         {
-          heading: "TODO: Takeaway 3",
-          body: "TODO: Body of takeaway 3.",
+          heading: "Visibility is part of the work",
+          body: "The hardest meetings were the ones where backend progress had nothing visual to show. Learning to clearly articulate what had been built - and why it mattered - was as important as building it. Trust with a non-technical producer doesn't maintain itself.",
         },
       ]}
     />

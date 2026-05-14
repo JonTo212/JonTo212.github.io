@@ -12,19 +12,21 @@ const textHex = accentColor === "green" ? "text-[#7ec87e]" : "text-[#c8b97e]";
 ---
 
 <header
-  class="relative overflow-hidden border border-[#3a3a3a] bg-[#222222] px-10 py-8"
+  class="relative overflow-hidden border border-[#3a3a3a] bg-[#222222] px-10 pb-10 pt-12"
 >
-  <div class={`absolute inset-x-0 top-0 h-0.5 opacity-60 ${accentHex}`}></div>
+  <div class={`absolute inset-x-0 top-0 h-[2px] opacity-60 ${accentHex}`}></div>
   <span
-    class="mb-4 block text-xs tracking-wider text-[#4a7a4a] leading-[1.9]"
+    class="mb-6 block text-xs tracking-wider text-[#4a7a4a] leading-[1.9]"
     set:html={comment}
   />
-  <h1 class={`mb-2 text-3xl font-bold tracking-tight leading-tight ${textHex}`}>
+  <h1
+    class={`mb-2 text-5xl font-bold tracking-tight leading-[1.05] ${textHex}`}
+  >
     {title}
   </h1>
   {
     subtitle && (
-      <p class="text-xs text-[#888888] leading-relaxed before:content-['//_'] before:text-[#4a7a4a]">
+      <p class="mt-1.5 text-[13px] text-[#888888] leading-[1.85] before:content-['//_'] before:text-[#4a7a4a]">
         {subtitle}
       </p>
     )

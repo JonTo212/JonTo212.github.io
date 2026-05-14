@@ -1,5 +1,5 @@
 ---
-// src/pages/personal-projects/WFC Generator/index.astro
+// src/pages/personal-projects/wfc-generator/index.astro
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import VideoEmbed from "../../components/layout/VideoEmbed.astro";
 import TextBlock from "../../components/layout/TextBlock.astro";
@@ -17,61 +17,68 @@ const todoSnippetHtml = ``;
   <div slot="breadcrumb" class="breadcrumb-bar">
     <a href="/personal-projects/">PersonalProjects()</a>
     <span class="breadcrumb-sep">/</span>
-    <span class="breadcrumb-current">WFC Generator.cs</span>
+    <span class="breadcrumb-current">WFCGenerator.cs</span>
   </div>
 
   <ProjectHeader
     title="WFC Generator"
-    subtitle="TODO: Role · Role · Context"
+    subtitle="Procedural Generation · Pathfinding (BFS + DFS)"
     tags={[
-      { label: "TODO: Tag 1", type: "programming" },
-      { label: "TODO: Tag 2", type: "design" },
-      { label: "TODO: Tag 3", type: "unity" },
+      { label: "Programming", type: "programming" },
+      { label: "Unity (C#)", type: "unity" },
     ]}
-    description="TODO: A brief description of the project and your core responsibilities."
+    description="A procedural 2D map generator using Wave Function Collapse, with optional pathfinding support."
   />
 
-  <VideoEmbed
-    videoId="TODO_VIDEO_ID"
-    caption="// fig_01 - TODO: Caption for the video · WFC Generator"
-    alt="WFC Generator Trailer"
-  />
+  <!-- No video for this project; hero image used instead -->
+  <div
+    style="border:1px solid var(--border); background:var(--bg-card); overflow:hidden;"
+  >
+    <img
+      src="/images/wfc-hero.png"
+      alt="2D map generator using WFC, BFS and DFS with randomization to create multiple paths"
+      style="width:100%; display:block;"
+    />
+    <div
+      style="font-family:'Commit Mono',monospace; font-size:11px; color:var(--text-muted); padding:8px 12px; border-top:1px solid var(--border); background:var(--bg-panel);"
+    >
+      // fig_01 - 2D map generator using WFC, BFS and DFS with randomization to
+      create multiple paths
+    </div>
+  </div>
 
   <div class="grid gap-6" style="grid-template-columns: 1fr 260px;">
     <TextBlock
       title="Overview"
-      content="TODO: Provide a comprehensive overview of your work on this project."
+      content="A solo personal project exploring procedural generation and pathfinding. The generator uses
+        Wave Function Collapse to produce valid, constraint-satisfying 2D tile maps, with an optional
+        pathfinding layer - supporting both BFS and DFS - that can overlay single or multiple paths
+        across the generated output."
     />
 
     <TextBlock
       title="Contributions"
       content={[
-        "TODO: Contribution bullet point 1",
-        "TODO: Contribution bullet point 2",
-        "TODO: Contribution bullet point 3",
-        "TODO: Contribution bullet point 4",
+        "Wave Function Collapse system - tile architecture built on ScriptableObjects and enum-defined face rules, with weighted randomness for tile selection",
+        "Flexible pathfinding layer - integrated BFS and DFS algorithms with added randomization to produce natural, varied paths",
+        "Multi-path support - extended pathfinding to handle multiple overlapping paths across a single generated map, enabling more complex interconnected layouts",
       ]}
     />
 
     <div style="grid-column:2; grid-row:1/3;">
       <ProjectDetails
         meta={[
-          { key: "status", value: "TODO: complete", highlight: true },
-          { key: "year", value: "TODO: 202X-202X" },
-          { key: "duration", value: "TODO: X months" },
-          { key: "team_size", value: "TODO: X (team)" },
-          { key: "platform", value: "TODO: PC" },
-          { key: "context", value: "TODO: Context" },
+          { key: "status", value: "complete", highlight: true },
+          { key: "year", value: "2024" },
+          { key: "duration", value: "3 months" },
+          { key: "team_size", value: "1 (solo)" },
+          { key: "platform", value: "PC" },
+          { key: "context", value: "Personal / Educational" },
         ]}
         links={[
           {
-            label: "TODO: Play on itch.io",
-            href: "#",
-            icon: "▷",
-          },
-          {
-            label: "TODO: View on GitHub",
-            href: "#",
+            label: "View on GitHub",
+            href: "https://github.com/JonTo212/Wave-Function-Collapse-Generator",
             icon: "◇",
           },
         ]}
@@ -90,10 +97,15 @@ const todoSnippetHtml = ``;
 
     <KeyFeature
       index={1}
-      title="TODO: Feature 1 Title"
-      description="TODO: Feature 1 Description explaining the mechanic and your implementation."
-      snippetLabel="TODO_Filename.cs - feature description"
-      snippetFilename="TODO_Filename.cs"
+      title="Wave Function Collapse"
+      description="A constraint-based WFC system that builds maps by progressively reducing possibilities across a grid.
+        Every cell starts with a full set of valid tiles; the generator collapses the lowest-entropy cell first,
+        then propagates adjacency constraints through a queue until the entire grid resolves.
+        Tile data and adjacency rules are defined via ScriptableObjects with directional face enums, keeping
+        the system scalable and easy to extend. Tile selection supports weighted randomness, allowing
+        certain tiles to appear more frequently while preserving procedural variety."
+      snippetLabel="WFCGenerator.cs - Collapse & propagation"
+      snippetFilename="WFCGenerator.cs"
       snippetCode={todoSnippetPlain}
       flip={true}
     >
@@ -104,19 +116,27 @@ const todoSnippetHtml = ``;
 
     <KeyFeature
       index={2}
-      title="TODO: Feature 2 Title"
-      description="TODO: Feature 2 Description."
-      snippetLabel="TODO_Filename.cs - feature description"
-      snippetFilename="TODO_Filename.cs"
+      title="Breadth-First Search"
+      description="Grid-based BFS pathfinding that guarantees the shortest path in an unweighted space.
+        Uses a FIFO queue to explore tiles level-by-level, ensuring all possible routes are checked
+        in increasing distance from the start. Neighbours are sorted by squared magnitude distance
+        to the target before queuing, so the closest direction is always explored first - producing
+        the absolute shortest valid path."
+      snippetLabel="BFSPathfinder.cs - Queue & neighbour sort"
+      snippetFilename="BFSPathfinder.cs"
       snippetCode={`// TODO: plug in your snippet here`}
     />
 
     <KeyFeature
       index={3}
-      title="TODO: Feature 3 Title"
-      description="TODO: Feature 3 Description."
-      snippetLabel="TODO_Filename.cs - feature description"
-      snippetFilename="TODO_Filename.cs"
+      title="Depth-First Search"
+      description="DFS pathfinding with randomization, using a LIFO stack so the most recently discovered
+        direction is always explored next - producing long, continuous paths before the algorithm branches.
+        Neighbour order is randomized before each push, which varies the search direction each run
+        and produces more organic-looking routes instead of predictable snaking patterns caused by
+        fixed directional bias."
+      snippetLabel="DFSPathfinder.cs - Randomized neighbour push"
+      snippetFilename="DFSPathfinder.cs"
       snippetCode={`// TODO: plug in your snippet here`}
       flip={true}
     />
@@ -124,29 +144,29 @@ const todoSnippetHtml = ``;
 
   <div style="display:flex; flex-direction:column; gap:2rem;">
     <DeepDiveBlock
-      title="TODO: Deep dive - [Subject]"
+      title="Deep dive - adding pathfinding with multiple path support"
       steps={[
         {
           tag: "problem",
           icon: "◎",
-          title: "TODO: Problem statement header",
-          body: "TODO: Explain the context and why the problem existed.",
+          title: "Path lists don't cleanly connect",
+          body: "The end of one path and the start of the next were often more than 1 unit apart. The collapse function expects every neighbour to be exactly 1 unit away, so any larger gap left a tile with no valid solution - resulting in a broken, uncollapsable tile at the junction.",
         },
         {
           tag: "approach",
           icon: "◈",
-          title: "TODO: Approach statement header",
-          body: "TODO: Explain your iterations and thought process for solving it.",
+          title: "Adding an additional validation layer",
+          body: "Instead of collapsing path lists directly, I first build a dictionary of every grid point and its valid connections. IsFaceNeighbour validates that each tile is exactly 1 unit from its neighbours before it gets added. AddConnections then loops through all paths to populate the dictionary, using a HashSet per entry to avoid duplicate connections. Only then does the collapse run, using each tile's connection count to select the correct tile type.",
         },
         {
           tag: "result",
           icon: "▸",
-          title: "TODO: Result statement header",
-          body: "TODO: Explain the final outcome and its impact.",
+          title: "Validated junction resolution",
+          body: "Paths of any count can now be combined and collapsed without broken junctions. Each tile resolves based on its connection count - tiles with one connection become ends, two form straight segments, and three or more create junctions. Overlapping paths emerge naturally without any hardcoded rules.",
         },
       ]}
       slider={{
-        label: "TODO_visual_label",
+        label: "path_junction_fix",
         beforeSrc: "",
         afterSrc: "",
       }}
@@ -156,23 +176,23 @@ const todoSnippetHtml = ``;
       title="Takeaways"
       content={[
         {
-          heading: "TODO: Takeaway 1",
-          body: "TODO: Body of takeaway 1.",
+          heading: "Deeper learning through integration",
+          body: "Working with multiple algorithms together, rather than studying each in isolation, forced a deeper understanding of how each works - the modifications required for them to operate in tandem surfaced edge cases that studying them separately never would have.",
         },
         {
-          heading: "TODO: Takeaway 2",
-          body: "TODO: Body of takeaway 2.",
+          heading: "The power of constraints",
+          body: "Just like in game design, a small set of well-defined rules can produce a huge range of outcomes. Procedural generation takes that idea and runs with it - simple adjacency constraints scaling into a genuinely varied map generator.",
         },
         {
-          heading: "TODO: Takeaway 3",
-          body: "TODO: Body of takeaway 3.",
+          heading: "A worthwhile investment",
+          body: "There's a steep learning curve getting into algorithmic thinking, but the payoff is real. This project made clear that algorithms aren't single-purpose solutions - they have the potential to produce a wide variety of results depending on how they're applied.",
         },
       ]}
     />
   </div>
 
   <ProjectFooter
-    prev={{ label: "Cosmic Ranger V", href: "../cosmic-ranger-v/" }}
+    prev={{ label: "TODO: Prev Project", href: "#" }}
     next={{ label: "TODO: Next Project", href: "#" }}
     author="Jonathan To · Gameplay Programmer & Game Designer"
     year={2026}

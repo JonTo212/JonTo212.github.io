@@ -22,46 +22,45 @@ const todoSnippetHtml = ``;
 
   <ProjectHeader
     title="Ronin Run"
-    subtitle="TODO: Role · Role · Context"
+    subtitle="Programmer · Designer · Solo"
     tags={[
-      { label: "TODO: Tag 1", type: "programming" },
-      { label: "TODO: Tag 2", type: "design" },
-      { label: "TODO: Tag 3", type: "unity" },
+      { label: "C#", type: "programming" },
+      { label: "Game Design", type: "design" },
+      { label: "Unity", type: "unity" },
     ]}
-    description="TODO: A brief description of the project and your core responsibilities."
+    description="A 3D movement game built around Source-engine-style movement - air strafing, bunny hopping - extended with a shuriken toolkit that adds distinct traversal abilities. My first Unity project, and an ongoing exercise in turning a tech demo into an actual game."
   />
 
   <VideoEmbed
     videoId="TODO_VIDEO_ID"
-    caption="// fig_01 - TODO: Caption for the video · Ronin Run"
+    caption="// fig_01 - Source-style movement + shuriken traversal · Ronin Run"
     alt="Ronin Run Trailer"
   />
 
   <div class="grid gap-6" style="grid-template-columns: 1fr 260px;">
     <TextBlock
       title="Overview"
-      content="TODO: Provide a comprehensive overview of your work on this project."
+      content="Ronin Run started as a movement system - a personal project to learn Unity by implementing Source-engine-style physics movement in 3D. Over time it grew into a broader design exploration: how do you build a game around movement as the core loop? The shuriken system was the answer - a modular set of throwable abilities, each one a different traversal verb, designed to expand the space the player can reach and how they get there."
     />
 
     <TextBlock
       title="Contributions"
       content={[
-        "TODO: Contribution bullet point 1",
-        "TODO: Contribution bullet point 2",
-        "TODO: Contribution bullet point 3",
-        "TODO: Contribution bullet point 4",
+        "Programmed Source-style movement system (air strafing, bunny hopping) from scratch in Unity",
+        "Designed and programmed the full shuriken toolkit - platform, teleport, slingshot, grapple, and explosion variants",
+        "Authored the GDD: defined gameplay goals, documented the design process, and scoped the project from tech demo to game",
       ]}
     />
 
     <div style="grid-column:2; grid-row:1/3;">
       <ProjectDetails
         meta={[
-          { key: "status", value: "TODO: complete", highlight: true },
-          { key: "year", value: "TODO: 202X-202X" },
-          { key: "duration", value: "TODO: X months" },
-          { key: "team_size", value: "TODO: X (team)" },
-          { key: "platform", value: "TODO: PC" },
-          { key: "context", value: "TODO: Context" },
+          { key: "status", value: "WIP", highlight: true },
+          { key: "year", value: "2022–present" },
+          { key: "duration", value: "4 months / ongoing" },
+          { key: "team_size", value: "1 (solo)" },
+          { key: "platform", value: "PC" },
+          { key: "context", value: "Tech demo · Self-learning" },
         ]}
         links={[
           {
@@ -90,10 +89,10 @@ const todoSnippetHtml = ``;
 
     <KeyFeature
       index={1}
-      title="TODO: Feature 1 Title"
-      description="TODO: Feature 1 Description explaining the mechanic and your implementation."
-      snippetLabel="TODO_Filename.cs - feature description"
-      snippetFilename="TODO_Filename.cs"
+      title="Source-Style Movement"
+      description="3D movement system modelled after Source-engine physics - air strafing, bunny hopping, and momentum preservation. Wish-direction input is projected against the current velocity to allow mid-air direction control without breaking speed, replicating the feel of classic movement shooters in Unity's physics environment."
+      snippetLabel="PlayerController.cs - air strafe"
+      snippetFilename="PlayerController.cs"
       snippetCode={todoSnippetPlain}
       flip={true}
     >
@@ -104,49 +103,39 @@ const todoSnippetHtml = ``;
 
     <KeyFeature
       index={2}
-      title="TODO: Feature 2 Title"
-      description="TODO: Feature 2 Description."
-      snippetLabel="TODO_Filename.cs - feature description"
-      snippetFilename="TODO_Filename.cs"
+      title="Shuriken Toolkit"
+      description="A set of throwable abilities, each one a distinct traversal mechanic: a platform shuriken that spawns a jumpable surface mid-air, a teleport shuriken that snaps the player to impact point, slingshot and grapple shurikens for momentum-based traversal, and an explosion shuriken that functions as a blast jump. Each variant shares a common projectile base with a pluggable on-land behaviour."
+      snippetLabel="Shuriken.cs - on-land dispatch"
+      snippetFilename="Shuriken.cs"
       snippetCode={`// TODO: plug in your snippet here`}
-    />
-
-    <KeyFeature
-      index={3}
-      title="TODO: Feature 3 Title"
-      description="TODO: Feature 3 Description."
-      snippetLabel="TODO_Filename.cs - feature description"
-      snippetFilename="TODO_Filename.cs"
-      snippetCode={`// TODO: plug in your snippet here`}
-      flip={true}
     />
   </div>
 
   <div style="display:flex; flex-direction:column; gap:2rem;">
     <DeepDiveBlock
-      title="TODO: Deep dive - [Subject]"
+      title="Deep dive - from movement system to game"
       steps={[
         {
           tag: "problem",
           icon: "◎",
-          title: "TODO: Problem statement header",
-          body: "TODO: Explain the context and why the problem existed.",
+          title: "A tech demo with no destination",
+          body: "Ronin Run started as exactly that - a movement system and nothing more. The mechanics worked, but there was no direction: no defined goals, no player purpose, no reason to engage beyond the feel of the movement itself. Getting from A to B isn't a game.",
         },
         {
           tag: "approach",
           icon: "◈",
-          title: "TODO: Approach statement header",
-          body: "TODO: Explain your iterations and thought process for solving it.",
+          title: "Back to basics - defining the game through documentation",
+          body: "The answer was to step away from the engine and go back to fundamentals: writing a GDD, defining a theme, articulating what the gameplay should feel like and why. Ideation and documentation forced hard questions about purpose - what are the shurikens for, what does the player want to reach, what makes movement meaningful in this context.",
         },
         {
           tag: "result",
           icon: "▸",
-          title: "TODO: Result statement header",
-          body: "TODO: Explain the final outcome and its impact.",
+          title: "Still a WIP - but one with a direction",
+          body: "The project is ongoing, but it's no longer just a tech demo. The shurikens have defined roles, the movement has a context to exist in, and there's a design document anchoring decisions. The work left is refinement: the shurikens need to serve exploration and traversal more clearly before the game can be called done.",
         },
       ]}
       slider={{
-        label: "TODO_visual_label",
+        label: "ronin_run_design_visual",
         beforeSrc: "",
         afterSrc: "",
       }}
@@ -156,16 +145,16 @@ const todoSnippetHtml = ``;
       title="Takeaways"
       content={[
         {
-          heading: "TODO: Takeaway 1",
-          body: "TODO: Body of takeaway 1.",
+          heading: "Simple is good",
+          body: "More mechanics don't make a better game. The movement system worked on its own - adding the shuriken toolkit without a clear design goal for each one led to scope creep that the project is still recovering from.",
         },
         {
-          heading: "TODO: Takeaway 2",
-          body: "TODO: Body of takeaway 2.",
+          heading: "Document before you build",
+          body: "Jumping straight into implementation is fast until it isn't. Writing the GDD - defining gameplay goals, player purpose, and mechanic roles - was what finally gave the project a foundation to build on rather than away from.",
         },
         {
-          heading: "TODO: Takeaway 3",
-          body: "TODO: Body of takeaway 3.",
+          heading: "Tech demos are valid - and so is moving past them",
+          body: "There's nothing wrong with a project that exists to learn something. Ronin Run taught Unity, taught Source-movement physics, and taught what happens when you scale without a plan. Knowing when a tech demo has earned the right to become a game is its own skill.",
         },
       ]}
     />

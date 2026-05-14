@@ -22,46 +22,46 @@ const todoSnippetHtml = ``;
 
   <ProjectHeader
     title="Jungle Gym"
-    subtitle="TODO: Role · Role · Context"
+    subtitle="Programmer · Designer · 2nd Year Design Practice"
     tags={[
-      { label: "TODO: Tag 1", type: "programming" },
-      { label: "TODO: Tag 2", type: "design" },
-      { label: "TODO: Tag 3", type: "unity" },
+      { label: "C#", type: "programming" },
+      { label: "Game Design", type: "design" },
+      { label: "Unity", type: "unity" },
     ]}
-    description="TODO: A brief description of the project and your core responsibilities."
+    description="A whimsical 3D platformer where you play as a monkey inspecting jungle gym attractions for safety. My first team project - I designed and programmed the player controller, the marble roll and hover mechanics, and an in-world rope feature, while adapting mid-project when a team member departed."
   />
 
   <VideoEmbed
     videoId="TODO_VIDEO_ID"
-    caption="// fig_01 - TODO: Caption for the video · Jungle Gym"
+    caption="// fig_01 - Jungle Gym trailer · Jungle Gym"
     alt="Jungle Gym Trailer"
   />
 
   <div class="grid gap-6" style="grid-template-columns: 1fr 260px;">
     <TextBlock
       title="Overview"
-      content="TODO: Provide a comprehensive overview of your work on this project."
+      content="Jungle Gym is a whimsical 3D platformer built around the premise of a monkey inspector making sure jungle gym attractions are safe to play on. My first experience working in a team, and one where I had to adapt when a member left partway through - absorbing their scope and keeping the project on track. I owned the player controller end-to-end: design and implementation of the base movement, the marble roll mode, the hover mechanic, and the rope environmental feature."
     />
 
     <TextBlock
       title="Contributions"
       content={[
-        "TODO: Contribution bullet point 1",
-        "TODO: Contribution bullet point 2",
-        "TODO: Contribution bullet point 3",
-        "TODO: Contribution bullet point 4",
+        "Built the player controller - parametric movement using apex time/height, time-to-max-speed, and slope handling calculations",
+        "Implemented the marble roll and hover mechanics",
+        "Analyzed playtest telemetry in Excel to identify pain points in player movement and input behaviour",
+        "Iterated the rope feature from 360° swing to single-plane based on telemetry findings",
       ]}
     />
 
     <div style="grid-column:2; grid-row:1/3;">
       <ProjectDetails
         meta={[
-          { key: "status", value: "TODO: complete", highlight: true },
-          { key: "year", value: "TODO: 202X-202X" },
-          { key: "duration", value: "TODO: X months" },
-          { key: "team_size", value: "TODO: X (team)" },
-          { key: "platform", value: "TODO: PC" },
-          { key: "context", value: "TODO: Context" },
+          { key: "status", value: "complete", highlight: true },
+          { key: "year", value: "2023–2024" },
+          { key: "duration", value: "4 months" },
+          { key: "team_size", value: "4 (team)" },
+          { key: "platform", value: "PC" },
+          { key: "context", value: "Academic" },
         ]}
         links={[
           {
@@ -90,10 +90,10 @@ const todoSnippetHtml = ``;
 
     <KeyFeature
       index={1}
-      title="TODO: Feature 1 Title"
-      description="TODO: Feature 1 Description explaining the mechanic and your implementation."
-      snippetLabel="TODO_Filename.cs - feature description"
-      snippetFilename="TODO_Filename.cs"
+      title="Player Controller"
+      description="Rigidbody-based character controller built around parametric movement tuning - jump arc defined by apex height and apex time, ground acceleration defined by time-to-max-speed, and slope handling via surface normal projection. My first time working with these derivations directly; having explicit control over the feel of the movement rather than tweaking raw forces made iteration significantly faster."
+      snippetLabel="PlayerController.cs - jump arc derivation"
+      snippetFilename="PlayerController.cs"
       snippetCode={todoSnippetPlain}
       flip={true}
     >
@@ -104,19 +104,19 @@ const todoSnippetHtml = ``;
 
     <KeyFeature
       index={2}
-      title="TODO: Feature 2 Title"
-      description="TODO: Feature 2 Description."
-      snippetLabel="TODO_Filename.cs - feature description"
-      snippetFilename="TODO_Filename.cs"
+      title="Marble Roll"
+      description="A distinct movement mode that shifts the controller into terrain-following acceleration - the player rolls across surfaces with momentum-driven speed buildup and reduced directional control, giving it a slippery, weighty feel that fits the whimsical tone of the game. Surface normals are used to align the roll direction to the terrain, keeping movement grounded through slopes and curved geometry."
+      snippetLabel="MarbleRoll.cs - terrain-following acceleration"
+      snippetFilename="MarbleRoll.cs"
       snippetCode={`// TODO: plug in your snippet here`}
     />
 
     <KeyFeature
       index={3}
-      title="TODO: Feature 3 Title"
-      description="TODO: Feature 3 Description."
-      snippetLabel="TODO_Filename.cs - feature description"
-      snippetFilename="TODO_Filename.cs"
+      title="Hover"
+      description="A recovery tool designed to give players a buffer when they've misjudged a jump. While the input is held, gravity is reduced to produce a gentle float, buying time to reorient and land safely. Simple by design - its purpose is to take the edge off mistakes without removing the consequence of making them."
+      snippetLabel="PlayerController.cs - apex hover"
+      snippetFilename="PlayerController.cs"
       snippetCode={`// TODO: plug in your snippet here`}
       flip={true}
     />
@@ -124,29 +124,29 @@ const todoSnippetHtml = ``;
 
   <div style="display:flex; flex-direction:column; gap:2rem;">
     <DeepDiveBlock
-      title="TODO: Deep dive - [Subject]"
+      title="Deep dive - designing whimsical movement"
       steps={[
         {
           tag: "problem",
           icon: "◎",
-          title: "TODO: Problem statement header",
-          body: "TODO: Explain the context and why the problem existed.",
+          title: "Every movement feel has already been done",
+          body: "Platformer movement has a well-worn design space - tight and snappy, floaty and forgiving, weighty and deliberate. Finding something that felt distinct without being arbitrary, and that actually matched the tone of the game, was the core design challenge.",
         },
         {
           tag: "approach",
           icon: "◈",
-          title: "TODO: Approach statement header",
-          body: "TODO: Explain your iterations and thought process for solving it.",
+          title: "Waterslides as a movement reference",
+          body: "The breakthrough came from thinking about waterslides - the way momentum carries you through curves, the loss of fine control, the slippery inevitability of it. That became the design direction for the marble roll: not tight platformer movement, but something that rewards reading the terrain ahead rather than correcting in the moment.",
         },
         {
           tag: "result",
           icon: "▸",
-          title: "TODO: Result statement header",
-          body: "TODO: Explain the final outcome and its impact.",
+          title: "A feel that's genuinely its own",
+          body: "The marble roll landed as the most characterful part of the project - slippery, terrain-driven, and tonally on point for a game about a monkey in a jungle gym. It also validated using a non-standard reference for movement design: the answer wasn't in other platformers.",
         },
       ]}
       slider={{
-        label: "TODO_visual_label",
+        label: "jungle_gym_movement_visual",
         beforeSrc: "",
         afterSrc: "",
       }}
@@ -156,16 +156,16 @@ const todoSnippetHtml = ``;
       title="Takeaways"
       content={[
         {
-          heading: "TODO: Takeaway 1",
-          body: "TODO: Body of takeaway 1.",
+          heading: "Teams change the way you work",
+          body: "Coordinating design decisions, aligning on scope, and communicating intent across people rather than just executing solo required a different way of thinking. First-team experience is its own learning curve, separate from any technical skill.",
         },
         {
-          heading: "TODO: Takeaway 2",
-          body: "TODO: Body of takeaway 2.",
+          heading: "Scope shifts - adapt or stall",
+          body: "When a team member left mid-project, the work didn't disappear with them. Absorbing their responsibilities without derailing the rest of the project meant making fast calls about what mattered and what could be cut. That kind of triage under pressure is hard to rehearse.",
         },
         {
-          heading: "TODO: Takeaway 3",
-          body: "TODO: Body of takeaway 3.",
+          heading: "Playtest feedback beats your instincts",
+          body: "The rope originally worked in 360 degrees - it made sense on paper. Playtesting showed it felt wrong; unconstrained swing didn't read as a rope to players. Constraining it to a single plane fixed the feel immediately. The lesson: your read of a mechanic in isolation rarely survives contact with a player.",
         },
       ]}
     />
