@@ -1,0 +1,221 @@
+---
+/**
+ * UnderConstruction.astro
+ * Drop-in page body for project pages that aren't ready yet.
+ *
+ * Usage:
+ *   <BaseLayout title="Project Name - Jonathan To">
+ *     <div slot="breadcrumb" class="breadcrumb-bar">...</div>
+ *     <UnderConstruction projectName="Ronin Run" backHref="/personal-projects/" backLabel="PersonalProjects()" />
+ *   </BaseLayout>
+ */
+
+interface Props {
+  projectName: string;
+  backHref: string;
+  backLabel: string;
+}
+
+const { projectName, backHref, backLabel } = Astro.props;
+---
+
+<div class="under-construction col-span-full">
+
+  <!-- Top accent bar -->
+  <div class="uc-accent-bar"></div>
+
+  <!-- Header row -->
+  <div class="uc-header">
+    <div class="uc-header-left">
+      <span class="uc-comment">// {projectName}.cs</span>
+      <span class="uc-tag">WIP</span>
+    </div>
+    <div class="uc-status-dot"></div>
+  </div>
+
+  <!-- Main body -->
+  <div class="uc-body">
+
+    <!-- Glyph -->
+    <div class="uc-glyph" aria-hidden="true">
+      <div class="uc-glyph-ring uc-ring-outer"></div>
+      <div class="uc-glyph-ring uc-ring-middle"></div>
+      <div class="uc-glyph-ring uc-ring-inner"></div>
+      <span class="uc-glyph-icon">{ }</span>
+    </div>
+
+    <!-- Text -->
+    <div class="uc-text">
+      <p class="uc-headline">Under Construction</p>
+      <p class="uc-subline">
+        This page is being written. Check back soon — or head back to see what's already live.
+      </p>
+      <a href={backHref} class="uc-back-link">
+        <span class="uc-back-arrow">←</span> {backLabel}
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Footer rule -->
+  <div class="uc-footer">
+    <span class="uc-footer-comment">/* content pending */</span>
+  </div>
+
+</div>
+
+<style>
+  .under-construction {
+    border: 1px solid var(--border);
+    background: var(--bg-panel);
+    font-family: 'Commit Mono', monospace;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── Accent bar ── */
+  .uc-accent-bar {
+    height: 2px;
+    background: var(--yellow);
+    opacity: 0.5;
+  }
+
+  /* ── Header ── */
+  .uc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-card);
+  }
+
+  .uc-header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .uc-comment {
+    font-size: 0.75rem;
+    color: var(--green-dim);
+    letter-spacing: 0.04em;
+  }
+
+  .uc-tag {
+    font-size: 0.65rem;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid #6b5a1e;
+    background: #2a2010;
+    color: var(--yellow);
+    border-radius: 2px;
+    letter-spacing: 0.08em;
+  }
+
+  .uc-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--yellow);
+    opacity: 0.4;
+  }
+
+  /* ── Body ── */
+  .uc-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+    padding: 5rem 2rem 4.5rem;
+    text-align: center;
+  }
+
+  /* ── Glyph ── */
+  .uc-glyph {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .uc-glyph-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+  }
+
+  .uc-ring-outer  { width: 100px; height: 100px; border-color: #3a3a3a; }
+  .uc-ring-middle { width:  70px; height:  70px; border-color: #444;    }
+  .uc-ring-inner  { width:  42px; height:  42px; border-color: #555;    border-style: dashed; }
+
+  .uc-glyph-icon {
+    font-size: 1rem;
+    color: var(--yellow);
+    opacity: 0.7;
+    z-index: 1;
+    letter-spacing: -0.1em;
+  }
+
+  /* ── Text ── */
+  .uc-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.9rem;
+    max-width: 480px;
+  }
+
+  .uc-headline {
+    font-size: 1.25rem;
+    color: var(--text);
+    margin: 0;
+    letter-spacing: 0.02em;
+  }
+
+  .uc-subline {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin: 0;
+  }
+
+  .uc-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+    font-size: 0.78rem;
+    color: var(--green);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    padding: 0.45rem 1rem;
+    border-radius: 2px;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+  }
+
+  .uc-back-link:hover {
+    border-color: var(--green);
+    background: #1e261e;
+  }
+
+  .uc-back-arrow {
+    opacity: 0.7;
+  }
+
+  /* ── Footer ── */
+  .uc-footer {
+    border-top: 1px solid var(--border);
+    padding: 0.6rem 1.5rem;
+    background: var(--bg-card);
+  }
+
+  .uc-footer-comment {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+</style>

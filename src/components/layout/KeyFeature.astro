@@ -1,12 +1,42 @@
 ---
 import CodeSnippet from "./CodeSnippet.astro";
 
+interface ImageItem {
+  src: string;
+  caption?: string;
+  /** optional alt text, falls back to caption */
+  alt?: string;
+  /**
+   * Layout hint for the "offset" grid mode.
+   * "tall"  → spans both rows in its column (portrait image)
+   * "wide"  → spans both columns in its row (landscape image)
+   * "half"  → normal half-width cell (default)
+   */
+  span?: "tall" | "wide" | "half";
+}
+
+/** Resolve object-fit per span hint */
+function fitForSpan(span?: ImageItem["span"]) {
+  // tall images are contained so they don't crop; others cover their cell
+  return span === "tall" ? "contain" : "cover";
+}
+
 interface Props {
   index: number;
   title: string;
   description: string;
+  /** Single video in the media panel */
   videoSrc?: string;
-  /** If provided, the toggle bar and drawer are rendered */
+  /** Single image in the media panel (alternative to videoSrc) */
+  imageSrc?: string;
+  /** Grid of images in the media panel (alternative to videoSrc / imageSrc) */
+  imageGrid?: ImageItem[];
+  /**
+   * "auto"   (default) — count-based layout (1–4 equal cells)
+   * "offset" — honour each item's `span` hint for an asymmetric layout
+   */
+  imageGridLayout?: "auto" | "offset";
+  /** If provided, the toggle bar and code drawer are rendered */
   snippetLabel?: string;
   /** Passed through to CodeSnippet — plain-text fallback */
   snippetCode?: string;
@@ -14,6 +44,10 @@ interface Props {
   snippetLang?: string;
   /** Passed through to CodeSnippet */
   snippetFilename?: string;
+  /** If provided, the toggle bar and image gallery drawer are rendered */
+  galleryLabel?: string;
+  /** Images shown in the collapsible gallery drawer */
+  galleryImages?: ImageItem[];
   /** When true, media is on the right (content left) */
   flip?: boolean;
 }
@@ -23,32 +57,144 @@ const {
   title,
   description,
   videoSrc = "",
+  imageSrc = "",
+  imageGrid,
+  imageGridLayout = "auto",
   snippetLabel,
   snippetCode,
   snippetLang = "csharp",
   snippetFilename,
+  galleryLabel,
+  galleryImages = [],
   flip = false,
 } = Astro.props;
 
 const num = String(index).padStart(2, "0");
 const snippetId = `kf-snippet-${index}`;
+const galleryId = `kf-gallery-${index}`;
 const hasSnippet = !!snippetLabel;
+const hasGallery = !!galleryLabel && galleryImages.length > 0;
+const hasGrid = Array.isArray(imageGrid) && imageGrid.length > 0;
 ---
 
 <div class={`kf-row${flip ? " kf-row-flip" : ""}`} id={`kf-row-${index}`}>
-
   <!-- MEDIA -->
   <div class="kf-media">
-    <div class="kf-media-inner">
-      {videoSrc ? (
-        <video autoplay loop muted playsinline src={videoSrc} class="kf-video" />
-      ) : (
-        <div class="kf-media-placeholder">
-          <span style="font-size:28px; opacity:0.12;">◈</span>
-          <span>// feature_{num}.mp4</span>
-        </div>
-      )}
+    <div class={`kf-media-inner${hasGrid ? " kf-media-inner--grid" : ""}`}>
+      {
+        videoSrc ? (
+          <video
+            autoplay
+            loop
+            muted
+            playsinline
+            src={videoSrc}
+            class="kf-video"
+          />
+        ) : imageSrc ? (
+          <img src={imageSrc} alt={title} class="kf-image" />
+        ) : hasGrid ? (
+          <div
+            id={`kf-grid-${index}`}
+            class={`kf-image-grid${imageGridLayout === "offset" ? " kf-image-grid--offset" : ` kf-image-grid--${Math.min(imageGrid!.length, 4)}`}`}
+          >
+            {imageGridLayout === "offset" ? (
+              <>
+                <div class="kf-offset-row">
+                  {imageGrid!.slice(0, 2).map((img) => (
+                    <div class="kf-grid-item">
+                      <button
+                        class="kf-img-btn"
+                        onclick={`openKfLightbox('${img.src}', '${img.caption ?? ""}')`}
+                        type="button"
+                        aria-label={`View ${img.caption ?? img.alt ?? title}`}
+                      >
+                        <img
+                          src={img.src}
+                          alt={img.alt ?? img.caption ?? title}
+                          class="kf-grid-img"
+                        />
+                        <span class="kf-zoom-icon">⤢</span>
+                      </button>
+                      {img.caption && (
+                        <span class="kf-grid-caption">{img.caption}</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                {imageGrid!.length > 2 && (
+                  <div class="kf-offset-row">
+                    {imageGrid!.slice(2, 4).map((img) => (
+                      <div class="kf-grid-item">
+                        <button
+                          class="kf-img-btn"
+                          onclick={`openKfLightbox('${img.src}', '${img.caption ?? ""}')`}
+                          type="button"
+                          aria-label={`View ${img.caption ?? img.alt ?? title}`}
+                        >
+                          <img
+                            src={img.src}
+                            alt={img.alt ?? img.caption ?? title}
+                            class="kf-grid-img"
+                          />
+                          <span class="kf-zoom-icon">⤢</span>
+                        </button>
+                        {img.caption && (
+                          <span class="kf-grid-caption">{img.caption}</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : (
+              imageGrid!.map((img) => (
+                <div class="kf-grid-item">
+                  <button
+                    class="kf-img-btn"
+                    onclick={`openKfLightbox('${img.src}', '${img.caption ?? ""}')`}
+                    type="button"
+                    aria-label={`View ${img.caption ?? img.alt ?? title}`}
+                  >
+                    <img
+                      src={img.src}
+                      alt={img.alt ?? img.caption ?? title}
+                      class="kf-grid-img"
+                    />
+                    <span class="kf-zoom-icon">⤢</span>
+                  </button>
+                  {img.caption && (
+                    <span class="kf-grid-caption">{img.caption}</span>
+                  )}
+                </div>
+              ))
+            )}
+          </div>
+        ) : (
+          <div class="kf-media-placeholder">
+            <span style="font-size:28px; opacity:0.12;">◈</span>
+            <span>// feature_{num}.mp4</span>
+          </div>
+        )
+      }
     </div>
+  </div>
+
+  <!-- LIGHTBOX (one per page, toggled by JS) -->
+  <div
+    id="kf-lightbox"
+    class="kf-lightbox"
+    onclick="closeKfLightbox(event)"
+    role="dialog"
+    aria-modal="true"
+  >
+    <button
+      class="kf-lightbox-close"
+      onclick="closeKfLightbox()"
+      aria-label="Close">✕</button
+    >
+    <img id="kf-lightbox-img" class="kf-lightbox-img" src="" alt="" />
+    <span id="kf-lightbox-caption" class="kf-lightbox-caption"></span>
   </div>
 
   <!-- CONTENT -->
@@ -59,37 +205,78 @@ const hasSnippet = !!snippetLabel;
       <p class="kf-description">{description}</p>
     </div>
 
-    {hasSnippet && (
-      <button
-        class="snippet-toggle-btn"
-        onclick={`toggleKfSnippet(${index}, this)`}
-        type="button"
-      >
-        <span class="snippet-toggle-label">// {snippetLabel}</span>
-        <span class="snippet-pill">▸ view snippet</span>
-      </button>
-    )}
+    {
+      hasSnippet && (
+        <button
+          class="kf-toggle-btn"
+          onclick={`toggleKfSnippet(${index}, this)`}
+          type="button"
+        >
+          <span class="kf-toggle-label">// {snippetLabel}</span>
+          <span class="kf-pill">▸ view snippet</span>
+        </button>
+      )
+    }
+
+    {
+      hasGallery && (
+        <button
+          class="kf-toggle-btn"
+          onclick={`toggleKfGallery(${index}, this)`}
+          type="button"
+        >
+          <span class="kf-toggle-label">// {galleryLabel}</span>
+          <span class="kf-pill kf-pill--gallery">▸ view progress</span>
+        </button>
+      )
+    }
   </div>
 
-  <!-- SNIPPET DRAWER — spans full grid width -->
-  {hasSnippet && (
-    <div
-      id={snippetId}
-      class="kf-drawer"
-      style="max-height:0; overflow:hidden; transition:max-height 0.25s ease; grid-column: 1 / -1; order:99;"
-    >
-      <CodeSnippet
-        label={snippetLabel!}
-        filename={snippetFilename}
-        lang={snippetLang}
-        code={snippetCode}
+  <!-- CODE SNIPPET DRAWER -->
+  {
+    hasSnippet && (
+      <div
+        id={snippetId}
+        class="kf-drawer"
+        style="max-height:0; overflow:hidden; transition:max-height 0.35s ease; grid-column: 1 / -1; order:99;"
       >
-        <!-- Forward any snippet-code slot content straight through -->
-        <slot name="snippet-code" slot="snippet-code" />
-      </CodeSnippet>
-    </div>
-  )}
+        <CodeSnippet
+          label={snippetLabel!}
+          filename={snippetFilename}
+          lang={snippetLang}
+          code={snippetCode}
+        >
+          <slot name="snippet-code" slot="snippet-code" />
+        </CodeSnippet>
+      </div>
+    )
+  }
 
+  <!-- IMAGE GALLERY DRAWER -->
+  {
+    hasGallery && (
+      <div
+        id={galleryId}
+        class="kf-drawer kf-gallery-drawer"
+        style="max-height:0; overflow:hidden; transition:max-height 0.35s ease; grid-column: 1 / -1; order:100;"
+      >
+        <div class="kf-gallery-strip">
+          {galleryImages.map((img) => (
+            <div class="kf-gallery-item">
+              <img
+                src={img.src}
+                alt={img.alt ?? img.caption ?? title}
+                class="kf-gallery-img"
+              />
+              {img.caption && (
+                <span class="kf-gallery-caption">{img.caption}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
 </div>
 
 <style>
@@ -102,21 +289,38 @@ const hasSnippet = !!snippetLabel;
   .kf-row-flip {
     grid-template-columns: 45fr 55fr;
   }
-  .kf-row-flip .kf-media  { order: 2; }
-  .kf-row-flip .kf-content { order: 1; }
+  .kf-row-flip .kf-media {
+    order: 2;
+  }
+  .kf-row-flip .kf-content {
+    order: 1;
+  }
 
+  /* ── media panel ── */
   .kf-media {
     border: 1px solid var(--border);
     background: var(--bg-media);
-    overflow: hidden;
     position: relative;
+    overflow: hidden;
   }
   .kf-media-inner {
     position: relative;
     width: 100%;
     aspect-ratio: 16/9;
   }
+  /* grid variant: grid has its own explicit height, just unset the aspect-ratio */
+  .kf-media-inner--grid {
+    aspect-ratio: unset;
+  }
+
   .kf-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .kf-image {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -131,11 +335,238 @@ const hasSnippet = !!snippetLabel;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    font-family: 'Commit Mono', monospace;
+    font-family: "Commit Mono", monospace;
     font-size: 11px;
     color: var(--text-muted);
   }
 
+  /* ── image grid ── */
+  .kf-image-grid {
+    display: grid;
+    gap: 2px;
+    padding: 2px;
+  }
+  /* auto count-based layouts */
+  .kf-image-grid--1 {
+    grid-template-columns: 1fr;
+  }
+  .kf-image-grid--2 {
+    grid-template-columns: 1fr 1fr;
+  }
+  .kf-image-grid--3 {
+    grid-template-columns: 1fr 1fr;
+  }
+  .kf-image-grid--3 .kf-grid-item:last-child {
+    grid-column: 1 / -1;
+  }
+  .kf-image-grid--4 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /**
+   * offset layout — explicit grid-template-areas:
+   *   "a b"
+   *   "a c"  (if 3 items, or 4 items where last two split the bottom)
+   *   "a d"
+   * Items are assigned area names by DOM index via :nth-child.
+   */
+  /*
+   * OFFSET LAYOUT — two flex rows stacked vertically.
+   * Each row is a flexbox. The left item in each row shares the same width,
+   * set via --kf-left-w CSS variable by JS (based on img[0]'s aspect ratio).
+   * Row height is driven by the left image's natural height in row 1,
+   * and matches that same height in row 2.
+   */
+  .kf-image-grid--offset {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 2px;
+  }
+
+  .kf-offset-row {
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+    overflow: hidden;
+  }
+
+  /* Left item in ROW 1 only: JS-driven width to fit img[0]'s aspect ratio */
+  .kf-offset-row:first-child .kf-grid-item:first-child {
+    flex: 0 0 var(--kf-left-w, 50%);
+    width: var(--kf-left-w, 50%);
+  }
+
+  /* Right item in row 1: fills remaining space */
+  .kf-offset-row:first-child .kf-grid-item:last-child {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  /* Row 2: always 50/50 split */
+  .kf-offset-row:last-child .kf-grid-item {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  /* clip image content to cell bounds; overflow:visible on grid-item lets captions escape */
+  .kf-image-grid--offset .kf-img-btn {
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Row 1: height driven by img[0] rendered at its natural aspect ratio */
+  .kf-offset-row:first-child {
+    /* height set by JS via style attribute */
+  }
+
+  /* Row 2: matches row 1 height */
+  .kf-offset-row:last-child {
+    /* height set by JS via style attribute */
+  }
+
+  /* all cells in offset */
+  .kf-image-grid--offset .kf-grid-item {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-panel);
+  }
+
+  /* all images in offset rows: cover their button which is sized to their exact AR */
+  .kf-image-grid--offset .kf-grid-item .kf-grid-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: unset;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  /* img[0] (top-left): cover like all other cells */
+
+  /* ── grid items (non-offset) ── */
+  .kf-grid-item {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-panel);
+    min-height: 0;
+    /* flex column so caption sits below the image button */
+    display: flex;
+    flex-direction: column;
+  }
+  .kf-grid-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 16/9;
+  }
+
+  /* also flex column for offset grid items */
+  .kf-image-grid--offset .kf-grid-item {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* image button: sized to its image's exact aspect ratio by JS */
+  .kf-img-btn {
+    display: block;
+    flex: 0 0 auto;
+    width: 100%;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: zoom-in;
+    position: relative;
+    overflow: hidden;
+  }
+  .kf-img-btn:hover .kf-zoom-icon {
+    opacity: 1;
+  }
+  .kf-img-btn img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+  /* all cells: cover */
+
+  .kf-zoom-icon {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.5rem;
+    font-size: 14px;
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.15s;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  /* caption: sits below the image, not overlaid */
+  .kf-grid-caption {
+    flex: 0 0 auto;
+    padding: 0.2rem 0.5rem;
+    background: var(--bg-card, #111);
+    border-top: 1px solid var(--border);
+    font-family: "Commit Mono", monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ── lightbox ── */
+  .kf-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.88);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.75rem;
+    cursor: zoom-out;
+  }
+  .kf-lightbox.is-open {
+    display: flex;
+  }
+  .kf-lightbox-img {
+    max-width: min(90vw, 1200px);
+    max-height: 85vh;
+    object-fit: contain;
+    display: block;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+  }
+  .kf-lightbox-caption {
+    font-family: "Commit Mono", monospace;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.45);
+    letter-spacing: 0.05em;
+  }
+  .kf-lightbox-close {
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.25rem 0.5rem;
+  }
+  .kf-lightbox-close:hover {
+    color: #fff;
+  }
+
+  /* ── content panel ── */
   .kf-content {
     border: 1px solid var(--border);
     background: var(--bg-panel);
@@ -150,18 +581,18 @@ const hasSnippet = !!snippetLabel;
     padding: 1.25rem 1.5rem;
   }
   .kf-index {
-    font-family: 'Commit Mono', monospace;
+    font-family: "Commit Mono", monospace;
     font-size: 14px;
     color: var(--text-muted);
     letter-spacing: 0.08em;
   }
   .kf-title {
-    font-family: 'Commit Mono', monospace;
+    font-family: "Commit Mono", monospace;
     font-size: 1.05rem;
     color: var(--yellow);
   }
   .kf-description {
-    font-family: 'Commit Mono', monospace;
+    font-family: "Commit Mono", monospace;
     font-size: 0.9rem;
     color: var(--text-dim);
     line-height: 1.8;
@@ -169,7 +600,8 @@ const hasSnippet = !!snippetLabel;
     margin: 0;
   }
 
-  .snippet-toggle-btn {
+  /* ── shared toggle button ── */
+  .kf-toggle-btn {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -182,15 +614,17 @@ const hasSnippet = !!snippetLabel;
     text-align: left;
     width: 100%;
   }
-  .snippet-toggle-btn:hover { background: var(--bg-code-hover); }
+  .kf-toggle-btn:hover {
+    background: var(--bg-code-hover);
+  }
 
-  .snippet-toggle-label {
-    font-family: 'Commit Mono', monospace;
+  .kf-toggle-label {
+    font-family: "Commit Mono", monospace;
     font-size: 0.9rem;
     color: var(--text-muted);
   }
-  .snippet-pill {
-    font-family: 'Commit Mono', monospace;
+  .kf-pill {
+    font-family: "Commit Mono", monospace;
     font-size: 0.9rem;
     color: var(--green);
     border: 1px solid var(--green-dim);
@@ -199,17 +633,172 @@ const hasSnippet = !!snippetLabel;
     letter-spacing: 0.06em;
     white-space: nowrap;
   }
+  /* gallery pill uses a different accent so the two are visually distinct */
+  .kf-pill--gallery {
+    color: var(--yellow);
+    border-color: color-mix(in srgb, var(--yellow) 35%, transparent);
+  }
+
+  /* ── gallery drawer ── */
+  .kf-gallery-strip {
+    display: flex;
+    gap: 2px;
+    overflow-x: auto;
+    padding: 0.5rem;
+    background: var(--bg-media);
+    border-top: 1px solid var(--border);
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .kf-gallery-item {
+    flex: 0 0 auto;
+    position: relative;
+    width: 260px;
+    overflow: hidden;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+  }
+  .kf-gallery-img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+  }
+  .kf-gallery-caption {
+    display: block;
+    padding: 0.25rem 0.5rem;
+    font-family: "Commit Mono", monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 </style>
 
 <script>
+  // flex-row offset grid: set left column width and row heights from img[0]'s natural AR
+  async function initOffsetGrid(grid: HTMLElement) {
+    const imgs = Array.from(
+      grid.querySelectorAll<HTMLImageElement>(".kf-grid-img"),
+    );
+    await Promise.all(imgs.map((img) => img.decode().catch(() => {})));
+
+    function applyLayout() {
+      const totalW = grid.clientWidth - 4; // subtract 2px padding each side
+      const img0 = imgs[0];
+      if (!img0 || !img0.naturalWidth) return;
+
+      // ── Row 1 ──
+      // Solve for leftW so both images share the same row height:
+      // h = leftW / ar0 = rightW / ar1, rightW = totalW - leftW - 2 (gap)
+      // leftW / ar0 = (totalW - leftW - 2) / ar1
+      // leftW * ar1 = ar0 * (totalW - 2) - ar0 * leftW
+      // leftW * (ar0 + ar1) = ar0 * (totalW - 2)
+      // leftW = ar0 * (totalW - 2) / (ar0 + ar1)
+      const ar0 = img0.naturalWidth / img0.naturalHeight;
+      const img1 = imgs[1];
+      const ar1 =
+        img1 && img1.naturalWidth
+          ? img1.naturalWidth / img1.naturalHeight
+          : ar0;
+      let leftW = Math.round((ar0 * (totalW - 2)) / (ar0 + ar1));
+      // clamp so neither column is too narrow
+      leftW = Math.max(
+        Math.round(totalW * 0.2),
+        Math.min(leftW, Math.round(totalW * 0.8)),
+      );
+      grid.style.setProperty("--kf-left-w", `${leftW}px`);
+
+      // Set each button's aspect-ratio to match its image exactly — no grey bars, no cropping
+      imgs.forEach((img) => {
+        if (!img.naturalWidth) return;
+        const btn = img.closest<HTMLElement>(".kf-img-btn");
+        if (btn)
+          btn.style.aspectRatio = `${img.naturalWidth} / ${img.naturalHeight}`;
+      });
+
+      // Row 1: height = leftW / ar0 (both images are now the same height by construction)
+      const row1H = Math.round(leftW / ar0);
+      const row1 = grid.querySelector<HTMLElement>(
+        ".kf-offset-row:first-child",
+      );
+      // Caption height — measure tallest caption so it's included in row height
+      const captionEls = Array.from(
+        grid.querySelectorAll<HTMLElement>(".kf-grid-caption"),
+      );
+      const captionH = captionEls.length
+        ? Math.max(...captionEls.map((c) => c.offsetHeight || 22))
+        : 0;
+
+      if (row1) row1.style.height = `${row1H + captionH}px`;
+
+      // Row 2: height = tallest of img[2] and img[3] at their 50/50 column widths
+      const row2W = Math.round((totalW - 2) / 2);
+      const row2Imgs = imgs.slice(2, 4).filter((img) => img.naturalWidth);
+      if (row2Imgs.length) {
+        const row2H = Math.max(
+          ...row2Imgs.map((img) =>
+            Math.round(row2W / (img.naturalWidth / img.naturalHeight)),
+          ),
+        );
+        const row2 = grid.querySelector<HTMLElement>(
+          ".kf-offset-row:last-child",
+        );
+        if (row2) row2.style.height = `${row2H + captionH}px`;
+      }
+    }
+
+    applyLayout();
+    const ro = new ResizeObserver(applyLayout);
+    ro.observe(grid);
+  }
+
+  document
+    .querySelectorAll<HTMLElement>(".kf-image-grid--offset")
+    .forEach(initOffsetGrid);
+
   if (typeof (window as any).toggleKfSnippet === "undefined") {
     (window as any).toggleKfSnippet = function (idx: number, btn: HTMLElement) {
       const body = document.getElementById("kf-snippet-" + idx);
       if (!body) return;
-      const pill = btn.querySelector<HTMLElement>(".snippet-pill");
+      const pill = btn.querySelector<HTMLElement>(".kf-pill");
       const isOpen = body.style.maxHeight && body.style.maxHeight !== "0px";
       body.style.maxHeight = isOpen ? "0" : body.scrollHeight + "px";
       if (pill) pill.textContent = isOpen ? "▸ view snippet" : "▸ hide snippet";
     };
+  }
+
+  if (typeof (window as any).openKfLightbox === "undefined") {
+    (window as any).openKfLightbox = function (src: string, caption: string) {
+      const lb = document.getElementById("kf-lightbox");
+      const img = document.getElementById(
+        "kf-lightbox-img",
+      ) as HTMLImageElement;
+      const cap = document.getElementById("kf-lightbox-caption");
+      if (!lb || !img || !cap) return;
+      img.src = src;
+      img.alt = caption;
+      cap.textContent = caption ? `// ${caption}` : "";
+      lb.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+    };
+  }
+
+  if (typeof (window as any).closeKfLightbox === "undefined") {
+    (window as any).closeKfLightbox = function (e?: MouseEvent) {
+      // close on backdrop click or explicit call; ignore clicks on the image itself
+      if (e && (e.target as HTMLElement).classList.contains("kf-lightbox-img"))
+        return;
+      const lb = document.getElementById("kf-lightbox");
+      if (!lb) return;
+      lb.classList.remove("is-open");
+      document.body.style.overflow = "";
+    };
+    // also close on Escape
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") (window as any).closeKfLightbox();
+    });
   }
 </script>

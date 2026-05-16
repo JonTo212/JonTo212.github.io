@@ -104,6 +104,7 @@ const todoSnippetHtml = ``;
       description="Scriptable object-based card architecture with runtime deck management.
         Cards define their own data, allowing decks to be authored and modified
         without code changes - designed for extensibility across card types and game modes."
+      videoSrc="/videos/card-system-demo.mp4"
       snippetLabel="CardData.cs - Scriptable object card definition"
       snippetFilename="CardData.cs"
       snippetCode={todoSnippetPlain}
@@ -120,6 +121,7 @@ const todoSnippetHtml = ``;
       description="Centralised game manager driving turn structure and phase sequencing.
         Coordinates state transitions across draw, play, and resolution phases,
         with hooks for NPC turns and win condition evaluation."
+      videoSrc="/videos/game-phases-demo.mp4"
       snippetLabel="GameManager.cs - Phase sequencing"
       snippetFilename="GameManager.cs"
       snippetCode={`// TODO: plug in your snippet here`}
@@ -127,10 +129,11 @@ const todoSnippetHtml = ``;
 
     <KeyFeature
       index={3}
-      title="Animated UI Game Board"
+      title="Animated Game Board"
       description="All player interaction delivered through a single physical-style button board,
-        emulating the tactile feel of a tabletop game. UI state and transitions driven
+        emulating the tactile feel of a tabletop game. Includes both 3D object and UI state and transitions driven
         entirely by tweens, with board layout reflecting current game phase."
+      videoSrc="/videos/animated-board-demo.mp4"
       snippetLabel="UIBoard.cs - Tween-driven state transitions"
       snippetFilename="UIBoard.cs"
       snippetCode={`// TODO: plug in your snippet here`}

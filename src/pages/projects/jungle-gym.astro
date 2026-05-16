@@ -24,15 +24,15 @@ const todoSnippetHtml = ``;
     title="Jungle Gym"
     subtitle="Programmer · Designer · 2nd Year Design Practice"
     tags={[
-      { label: "C#", type: "programming" },
-      { label: "Game Design", type: "design" },
+      { label: "Programming", type: "programming" },
+      { label: "Design", type: "design" },
       { label: "Unity", type: "unity" },
     ]}
     description="A whimsical 3D platformer where you play as a monkey inspecting jungle gym attractions for safety. My first team project - I designed and programmed the player controller, the marble roll and hover mechanics, and an in-world rope feature, while adapting mid-project when a team member departed."
   />
 
   <VideoEmbed
-    videoId="TODO_VIDEO_ID"
+    videoId="ScnZMqkIZFU"
     caption="// fig_01 - Jungle Gym trailer · Jungle Gym"
     alt="Jungle Gym Trailer"
   />
@@ -46,7 +46,7 @@ const todoSnippetHtml = ``;
     <TextBlock
       title="Contributions"
       content={[
-        "Built the player controller - parametric movement using apex time/height, time-to-max-speed, and slope handling calculations",
+        "Built the player controller - parametric movement using apex time/height, time-to-max-speed, time-to-zero, and slope handling calculations",
         "Implemented the marble roll and hover mechanics",
         "Analyzed playtest telemetry in Excel to identify pain points in player movement and input behaviour",
         "Iterated the rope feature from 360° swing to single-plane based on telemetry findings",
@@ -90,63 +90,81 @@ const todoSnippetHtml = ``;
 
     <KeyFeature
       index={1}
-      title="Player Controller"
-      description="Rigidbody-based character controller built around parametric movement tuning - jump arc defined by apex height and apex time, ground acceleration defined by time-to-max-speed, and slope handling via surface normal projection. My first time working with these derivations directly; having explicit control over the feel of the movement rather than tweaking raw forces made iteration significantly faster."
-      snippetLabel="PlayerController.cs - jump arc derivation"
-      snippetFilename="PlayerController.cs"
-      snippetCode={todoSnippetPlain}
-      flip={true}
-    >
-      <pre
-        slot="snippet-code"
-        style="margin:0; padding:1.25rem 1.5rem; overflow-x:auto; background:var(--bg); font-size:12px; line-height:1.8; white-space:pre-wrap; word-break:break-word;"><code class="font-mono text-(--text-code)" set:html={todoSnippetHtml} /></pre>
-    </KeyFeature>
-
-    <KeyFeature
-      index={2}
-      title="Marble Roll"
-      description="A distinct movement mode that shifts the controller into terrain-following acceleration - the player rolls across surfaces with momentum-driven speed buildup and reduced directional control, giving it a slippery, weighty feel that fits the whimsical tone of the game. Surface normals are used to align the roll direction to the terrain, keeping movement grounded through slopes and curved geometry."
-      snippetLabel="MarbleRoll.cs - terrain-following acceleration"
-      snippetFilename="MarbleRoll.cs"
-      snippetCode={`// TODO: plug in your snippet here`}
+      title="Player Movement"
+      description="The movement system is built around giving players a mixture of control options. Default movement prioritizes snappy, natural response. The roll is meant to emulate the feeling of a marble: players accelerate with terrain and have momentum-driven speed buildup, reduced directional control, and a slippery, weighty feel that fits the whimsical tone. A reference to waterslides - the way momentum carries you through curves and the loss of fine control - drove the design direction. On top of that, the hover acts as a recovery buffer, reducing gravity while held to give players time to reorient after a misjudged jump, taking the edge off mistakes without removing the consequence."
+      imageGridLayout="offset"
+      imageGrid={[
+        {
+          src: "/images/jungle-gym/movement-01.png",
+          caption: "design doc snippet",
+        },
+        {
+          src: "/images/jungle-gym/movement-02.png",
+          caption: "movement flow sketch",
+        },
+        {
+          src: "/images/jungle-gym/movement-03.gif",
+          caption: "wip - roll velocity projection",
+        },
+        {
+          src: "/images/jungle-gym/movement-04.gif",
+          caption: "final - terrain acceleration",
+        },
+      ]}
     />
 
     <KeyFeature
-      index={3}
-      title="Hover"
-      description="A recovery tool designed to give players a buffer when they've misjudged a jump. While the input is held, gravity is reduced to produce a gentle float, buying time to reorient and land safely. Simple by design - its purpose is to take the edge off mistakes without removing the consequence of making them."
-      snippetLabel="PlayerController.cs - apex hover"
-      snippetFilename="PlayerController.cs"
-      snippetCode={`// TODO: plug in your snippet here`}
+      index={2}
+      title="Rope and Balloon Objects"
+      description="Environmental objects that expand player interaction options. The original rope allowed full 360-degree movement, which seemed flexible in theory, but playtesting revealed a problem: players found the motion unpredictable and disconnected from how a rope should behave. Telemetry and survey feedback showed players were losing control in ways that felt unfair rather than skill-based. Constraining the swing to a single plane immediately improved readability and predictability, making the mechanic easier to learn and more satisfying to master."
+      imageGridLayout="offset"
+      imageGrid={[
+        {
+          src: "/images/jungle-gym/rope-01.gif",
+          caption: "wip - original 360° prototype",
+        },
+        {
+          src: "/images/jungle-gym/rope-02.png",
+          caption: "telemetry analysis presentation snippet",
+        },
+        {
+          src: "/images/jungle-gym/rope-03.gif",
+          caption: "final - single-plane rope",
+        },
+        {
+          src: "/images/jungle-gym/balloon-04.gif",
+          caption: "final - 360° balloon",
+        },
+      ]}
       flip={true}
     />
   </div>
 
   <div style="display:flex; flex-direction:column; gap:2rem;">
     <DeepDiveBlock
-      title="Deep dive - designing whimsical movement"
+      title="Deep dive - building the player controller"
       steps={[
         {
           tag: "problem",
           icon: "◎",
-          title: "Every movement feel has already been done",
-          body: "Platformer movement has a well-worn design space - tight and snappy, floaty and forgiving, weighty and deliberate. Finding something that felt distinct without being arbitrary, and that actually matched the tone of the game, was the core design challenge.",
+          title: "Tweaking raw forces isn't the same as controlling feel",
+          body: "Early iterations of the controller used direct force and velocity values - tweak a number, play, repeat. The problem is those values don't map cleanly to what you actually care about: how high does the player jump, how long does it take to reach full speed, how does the arc feel. Small changes had unpredictable effects, and there was no stable language to discuss movement feel with the team.",
         },
         {
           tag: "approach",
           icon: "◈",
-          title: "Waterslides as a movement reference",
-          body: "The breakthrough came from thinking about waterslides - the way momentum carries you through curves, the loss of fine control, the slippery inevitability of it. That became the design direction for the marble roll: not tight platformer movement, but something that rewards reading the terrain ahead rather than correcting in the moment.",
+          title: "Parametric derivation from designer-legible values",
+          body: "The fix was rederiving the physics from parameters that have direct design meaning - apex height, apex time, time-to-max-speed and time-to-zero. Given apex height and apex time, you can solve for the initial jump velocity and the gravity required to produce that arc. Ground acceleration follows from time-to-max-speed and target velocity, while friction derives from time-to-zero. Slope handling uses surface normal projection to keep movement grounded through geometry. Every tuning knob now corresponds to something you can describe in plain terms.",
         },
         {
           tag: "result",
           icon: "▸",
-          title: "A feel that's genuinely its own",
-          body: "The marble roll landed as the most characterful part of the project - slippery, terrain-driven, and tonally on point for a game about a monkey in a jungle gym. It also validated using a non-standard reference for movement design: the answer wasn't in other platformers.",
+          title: "Faster iteration, clearer communication",
+          body: "Having these derivations in place made a concrete difference in how quickly the feel could be dialled in. When a playtester said a jump felt too floaty, that translated directly to a reduction in apex time - not a guess at which raw value to adjust. It also made the controller easier to extend: the marble roll and hover were built on top of the same parametric base without breaking the existing tuning.",
         },
       ]}
       slider={{
-        label: "jungle_gym_movement_visual",
+        label: "jungle_gym_controller_visual",
         beforeSrc: "",
         afterSrc: "",
       }}
