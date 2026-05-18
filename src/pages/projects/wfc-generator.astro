@@ -30,22 +30,11 @@ const todoSnippetHtml = ``;
     description="A procedural 2D map generator using Wave Function Collapse, with optional pathfinding support."
   />
 
-  <!-- No video for this project; hero image used instead -->
-  <div
-    style="border:1px solid var(--border); background:var(--bg-card); overflow:hidden;"
-  >
-    <img
-      src="/images/wfc-hero.png"
-      alt="2D map generator using WFC, BFS and DFS with randomization to create multiple paths"
-      style="width:100%; display:block;"
-    />
-    <div
-      style="font-family:'Commit Mono',monospace; font-size:11px; color:var(--text-muted); padding:8px 12px; border-top:1px solid var(--border); background:var(--bg-panel);"
-    >
-      // fig_01 - 2D map generator using WFC, BFS and DFS with randomization to
-      create multiple paths
-    </div>
-  </div>
+  <VideoEmbed
+    videoId="7own_IyHZts"
+    caption="// fig_01 - Main gameplay screenshot · JellyFish"
+    alt="JellyFish Trailer"
+  />
 
   <div class="grid gap-6" style="grid-template-columns: 1fr 260px;">
     <TextBlock
@@ -104,6 +93,7 @@ const todoSnippetHtml = ``;
         Tile data and adjacency rules are defined via ScriptableObjects with directional face enums, keeping
         the system scalable and easy to extend. Tile selection supports weighted randomness, allowing
         certain tiles to appear more frequently while preserving procedural variety."
+      imageSrc="/images/wfc-generator/wfc-wfc.png"
       snippetLabel="WFCGenerator.cs - Collapse & propagation"
       snippetFilename="WFCGenerator.cs"
       snippetCode={todoSnippetPlain}
@@ -116,29 +106,37 @@ const todoSnippetHtml = ``;
 
     <KeyFeature
       index={2}
-      title="Breadth-First Search"
-      description="Grid-based BFS pathfinding that guarantees the shortest path in an unweighted space.
-        Uses a FIFO queue to explore tiles level-by-level, ensuring all possible routes are checked
-        in increasing distance from the start. Neighbours are sorted by squared magnitude distance
-        to the target before queuing, so the closest direction is always explored first - producing
-        the absolute shortest valid path."
-      snippetLabel="BFSPathfinder.cs - Queue & neighbour sort"
+      title="Pathfinding"
+      description="BFS and DFS are both supported, each producing paths with a distinct character.
+        BFS explores level-by-level via a FIFO queue - neighbours sorted by distance to target -
+        guaranteeing the shortest route. DFS commits depth-first via a LIFO stack, producing longer,
+        more winding paths. Neighbour order is shuffled before every DFS push, so routes vary
+        each run and feel hand-placed rather than deterministic. Multiple overlapping paths resolve
+        through a shared connection dictionary: each tile selects its type based on connection count,
+        turning one into a dead end, two into a segment, and three or more into a junction -
+        no hardcoded rules required."
+      imageGridLayout="offset"
+      imageGrid={[
+        {
+          src: "/images/wfc-generator/wfc-bfs.png",
+          caption: "BFS - shortest path",
+        },
+        {
+          src: "/images/wfc-generator/wfc-dfs.png",
+          caption: "DFS - winding path",
+        },
+        {
+          src: "/images/wfc-generator/wfc-multi-path-bfs.png",
+          caption: "DFS w/ randomization + BFS",
+        },
+        {
+          src: "/images/wfc-generator/wfc-multi-path-reg.png",
+          caption: "multi-path junctions",
+        },
+      ]}
+      snippetLabel="BFSPathfinder.cs / DFSPathfinder.cs"
       snippetFilename="BFSPathfinder.cs"
       snippetCode={`// TODO: plug in your snippet here`}
-    />
-
-    <KeyFeature
-      index={3}
-      title="Depth-First Search"
-      description="DFS pathfinding with randomization, using a LIFO stack so the most recently discovered
-        direction is always explored next - producing long, continuous paths before the algorithm branches.
-        Neighbour order is randomized before each push, which varies the search direction each run
-        and produces more organic-looking routes instead of predictable snaking patterns caused by
-        fixed directional bias."
-      snippetLabel="DFSPathfinder.cs - Randomized neighbour push"
-      snippetFilename="DFSPathfinder.cs"
-      snippetCode={`// TODO: plug in your snippet here`}
-      flip={true}
     />
   </div>
 

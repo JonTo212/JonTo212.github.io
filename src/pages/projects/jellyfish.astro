@@ -225,7 +225,7 @@ const deviceSnippetHtml = `[<span class="tok-type">ServerRpc</span>(<span class=
   />
 
   <VideoEmbed
-    videoId="TODO_VIDEO_ID"
+    videoId="rCs9Q9dPeNc"
     caption="// fig_01 - Main gameplay screenshot · JellyFish"
     alt="JellyFish Trailer"
   />
@@ -285,6 +285,7 @@ const deviceSnippetHtml = `[<span class="tok-type">ServerRpc</span>(<span class=
       index={1}
       title="Steam Lobby System"
       description="Custom lobby built on the Steamworks API - players create or join sessions via a generated lobby code, with Steam display names pulled and shown automatically. Lobby UI stays synchronized across all clients, with map selection for the host. On confirm, the host initiates a Steam-based connection and triggers networked scene loading via FishNet to transition all clients into the game simultaneously."
+      videoSrc="/videos/jellyfish-lobby-loading-demo.mp4"
       snippetLabel="LobbyManager.cs - player registration"
       snippetFilename="LobbyManager.cs"
       snippetCode={lobbySnippetPlain}
@@ -299,6 +300,7 @@ const deviceSnippetHtml = `[<span class="tok-type">ServerRpc</span>(<span class=
       index={2}
       title="Player Controller"
       description="Server-authoritative CharacterController-based movement using accumulated simulated forces to mimic rigidbody behaviour for consistency and predictability across clients. State is replicated to all clients each tick. Includes moving platform synchronization to prevent drift, and a punch mechanic that applies directional knockback force to other networked players."
+      videoSrc="/videos/jellyfish-player-controller-demo.mp4"
       snippetLabel="PlayerMovementCC.cs - knockback ServerRpc"
       snippetFilename="PlayerMovementCC.cs"
       snippetCode={playerSnippetPlain}
@@ -312,6 +314,7 @@ const deviceSnippetHtml = `[<span class="tok-type">ServerRpc</span>(<span class=
       index={3}
       title="Networked World Devices"
       description="Moving level elements - elevators, bridges, fans, and other interactables - run authoritatively on the server and replicate position and state to all clients. Designed as a reusable backend so level designers could place and configure devices without writing networking code."
+      videoSrc="/videos/jellyfish-networked-devices-demo.mp4"
       snippetLabel="NetworkedButton.cs - ServerRpc toggle"
       snippetFilename="NetworkedButton.cs"
       snippetCode={deviceSnippetPlain}
