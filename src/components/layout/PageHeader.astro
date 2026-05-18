@@ -4,11 +4,23 @@ interface Props {
   title: string;
   subtitle?: string;
   accentColor?: "green" | "yellow";
+  subtitleColor?: "green" | "yellow";
 }
 
-const { comment, title, subtitle, accentColor = "green" } = Astro.props;
+const {
+  comment,
+  title,
+  subtitle,
+  accentColor = "green",
+  subtitleColor,
+} = Astro.props;
 const accentHex = accentColor === "green" ? "bg-[#7ec87e]" : "bg-[#c8b97e]";
-const textHex = accentColor === "green" ? "text-[#7ec87e]" : "text-[#c8b97e]";
+const titleHex = accentColor === "green" ? "text-[#7ec87e]" : "text-[#c8b97e]";
+const subHex = subtitleColor
+  ? subtitleColor === "green"
+    ? "text-[#7ec87e]"
+    : "text-[#c8b97e]"
+  : titleHex;
 ---
 
 <header
@@ -16,19 +28,22 @@ const textHex = accentColor === "green" ? "text-[#7ec87e]" : "text-[#c8b97e]";
 >
   <div class={`absolute inset-x-0 top-0 h-[2px] opacity-60 ${accentHex}`}></div>
   <span
-    class="mb-6 block text-xs tracking-wider text-[#4a7a4a] leading-[1.9]"
+    class="mb-6 block text-[0.9rem] tracking-wider text-[#4a7a4a] leading-[1.9]"
     set:html={comment}
   />
   <h1
-    class={`mb-2 text-5xl font-bold tracking-tight leading-[1.05] ${textHex}`}
+    class={`mb-2 text-5xl font-bold tracking-tight leading-[1.05] ${titleHex}`}
   >
     {title}
   </h1>
   {
     subtitle && (
-      <p class="mt-1.5 text-[13px] text-[#888888] leading-[1.85] before:content-['//_'] before:text-[#4a7a4a]">
+      <p
+        class={`mt-3 text-[0.9rem] leading-[1.8] before:content-['//_'] before:text-[#4a7a4a] ${subHex}`}
+      >
         {subtitle}
       </p>
     )
   }
+  <slot />
 </header>

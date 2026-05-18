@@ -7,11 +7,11 @@ const { filters, accentColor = "green" } = Astro.props;
 ---
 
 <div class="flex flex-wrap items-center gap-2.5">
-  <span class="mr-1 text-[12px] text-[#555555]">// filter:</span>
+  <span class="mr-1 text-[0.9rem] text-[#555555]">// filter:</span>
   {
     filters.map((filter, index) => (
       <button
-        class={`filter-btn font-mono text-[12px] px-3 py-1 border border-[#3a3a3a] bg-[#222222] text-[#888888] rounded-[3px] transition-all duration-150 hover:border-[${accentColor === "green" ? "#7ec87e" : "#c8b97e"}] hover:text-[${accentColor === "green" ? "#7ec87e" : "#c8b97e"}] hover:bg-[#2a2515] ${index === 0 ? "active border-[#c8b97e] text-[#c8b97e] bg-[#2a2515]" : ""}`}
+        class={`filter-btn font-mono text-[0.9rem] px-4 py-1.5 border border-[#3a3a3a] bg-[#222222] text-[#888888] rounded-[3px] transition-all duration-150 hover:border-[${accentColor === "green" ? "#7ec87e" : "#c8b97e"}] hover:text-[${accentColor === "green" ? "#7ec87e" : "#c8b97e"}] hover:bg-[#2a2515] ${index === 0 ? "active border-[#c8b97e] text-[#c8b97e] bg-[#2a2515]" : ""}`}
         data-accent={accentColor}
       >
         {filter}

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ProjectCard from "../components/layout/ProjectCard.astro";
+import PageHeader from "../components/layout/PageHeader.astro";
 
 const featuredProjects = [
   {
@@ -54,32 +55,15 @@ const featuredProjects = [
 
 <BaseLayout title="Jonathan To - Gameplay Programmer & Game Designer">
   <div class="flex flex-col gap-8">
-    <header
-      class="relative overflow-hidden border border-[#3a3a3a] bg-[#222222] px-10 pb-10 pt-12"
+    <PageHeader
+      comment="// ============================================================<br />//  portfolio.exe - Jonathan To<br />// ============================================================"
+      title="Jonathan To"
+      subtitle="Gameplay Programmer & Game Designer"
+      accentColor="green"
+      subtitleColor="yellow"
     >
-      <div class="absolute inset-x-0 top-0 h-[2px] bg-[#7ec87e] opacity-60">
-      </div>
-
-      <span
-        class="mb-6 block text-xs tracking-wider text-[#4a7a4a] leading-[1.9]"
-      >
-        // ============================================================<br />
-        // &nbsp;&nbsp;portfolio.exe - Jonathan To<br />
-        // ============================================================
-      </span>
-
-      <h1
-        class="mb-1.5 text-5xl font-bold tracking-tight leading-[1.05] text-[#7ec87e]"
-      >
-        Jonathan To
-      </h1>
-
-      <div class="mb-8 text-[15px] text-[#c8b97e]">
-        // Gameplay Programmer &amp; Game Designer
-      </div>
-
       <p
-        class="mb-8 max-w-full text-[13px] leading-[1.85] text-[#888888] before:content-['//_'] before:text-[#4a7a4a]"
+        class="mt-6 mb-8 max-w-full text-[0.9rem] leading-[1.8] text-[#c0c0c0] before:content-['//_'] before:text-[#4a7a4a]"
       >
         Hey, I'm Jonathan! I'm a designer-programmer who loves to tinker, using
         code as my creative outlet to bring ideas to life.
@@ -89,33 +73,33 @@ const featuredProjects = [
         <a
           href="https://github.com/JonTo212"
           target="_blank"
-          class="inline-flex items-center gap-2 border border-[#3a3a3a] bg-[#2a2a2a] px-4 py-2 text-xs text-[#888888] no-underline transition-colors duration-150 hover:border-[#7ec87e] hover:text-[#7ec87e]"
+          class="inline-flex items-center gap-2 border border-[#3a3a3a] bg-[#2a2a2a] px-4 py-2 text-[0.9rem] text-[#c0c0c0] no-underline transition-colors duration-150 hover:border-[#7ec87e] hover:text-[#7ec87e]"
         >
           <span class="opacity-60">◇</span> GitHub
         </a>
         <a
           href="https://jonathanto.itch.io/"
           target="_blank"
-          class="inline-flex items-center gap-2 border border-[#3a3a3a] bg-[#2a2a2a] px-4 py-2 text-xs text-[#888888] no-underline transition-colors duration-150 hover:border-[#7ec87e] hover:text-[#7ec87e]"
+          class="inline-flex items-center gap-2 border border-[#3a3a3a] bg-[#2a2a2a] px-4 py-2 text-[0.9rem] text-[#c0c0c0] no-underline transition-colors duration-150 hover:border-[#7ec87e] hover:text-[#7ec87e]"
         >
           <span class="opacity-60">▷</span> itch.io
         </a>
         <a
           href="https://drive.google.com/file/d/1Cta6i9EEs6AEyEd8_VQpO21_3bMZjivW/view?usp=sharing"
           target="_blank"
-          class="inline-flex items-center gap-2 border border-[#3a3a3a] bg-[#2a2a2a] px-4 py-2 text-xs text-[#888888] no-underline transition-colors duration-150 hover:border-[#7ec87e] hover:text-[#7ec87e]"
+          class="inline-flex items-center gap-2 border border-[#3a3a3a] bg-[#2a2a2a] px-4 py-2 text-[0.9rem] text-[#c0c0c0] no-underline transition-colors duration-150 hover:border-[#7ec87e] hover:text-[#7ec87e]"
         >
           <span class="opacity-60">□</span> Resume (PDF)
         </a>
         <a
           href="https://www.linkedin.com/in/jonathan-to398/"
           target="_blank"
-          class="inline-flex items-center gap-2 border border-[#3a3a3a] bg-[#2a2a2a] px-4 py-2 text-xs text-[#888888] no-underline transition-colors duration-150 hover:border-[#7ec87e] hover:text-[#7ec87e]"
+          class="inline-flex items-center gap-2 border border-[#3a3a3a] bg-[#2a2a2a] px-4 py-2 text-[0.9rem] text-[#c0c0c0] no-underline transition-colors duration-150 hover:border-[#7ec87e] hover:text-[#7ec87e]"
         >
           <span class="opacity-60">◈</span> LinkedIn
         </a>
       </div>
-    </header>
+    </PageHeader>
 
     <section>
       <div
@@ -124,7 +108,6 @@ const featuredProjects = [
         <div class="h-1.5 w-1.5 rounded-full bg-[#7ec87e] opacity-50"></div>
         // featured_projects[]
       </div>
-
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {
           featuredProjects.map((project) => (
@@ -149,11 +132,11 @@ const featuredProjects = [
         <div
           class="flex items-center justify-between border-b border-[#3a3a3a] bg-[#2a2a2a] px-4 py-2.5 text-xs text-[#4a7a4a]"
         >
-          <span class="flex items-center"
-            ><span
+          <span class="flex items-center">
+            <span
               class="mr-2 inline-block h-1.5 w-1.5 rounded-full bg-[#7ec87e] opacity-50"
-            ></span>Portfolio()</span
-          >
+            ></span>Portfolio()
+          </span>
           <span
             class="text-[11px] text-[#555555] opacity-0 transition-opacity duration-150 group-hover:text-[#7ec87e] group-hover:opacity-100"
             >→</span
@@ -161,7 +144,7 @@ const featuredProjects = [
         </div>
         <div class="px-6 py-5">
           <p
-            class="text-xs leading-[1.75] text-[#888888] before:content-['//_'] before:text-[#4a7a4a]"
+            class="text-[0.9rem] leading-[1.8] text-[#c0c0c0] before:content-['//_'] before:text-[#4a7a4a]"
           >
             A collection of completed academic + professional projects.
           </p>
@@ -175,11 +158,11 @@ const featuredProjects = [
         <div
           class="flex items-center justify-between border-b border-[#3a3a3a] bg-[#2a2a2a] px-4 py-2.5 text-xs text-[#4a7a4a]"
         >
-          <span class="flex items-center"
-            ><span
+          <span class="flex items-center">
+            <span
               class="mr-2 inline-block h-1.5 w-1.5 rounded-full bg-[#7ec87e] opacity-50"
-            ></span>PersonalProjects()</span
-          >
+            ></span>PersonalProjects()
+          </span>
           <span
             class="text-[11px] text-[#555555] opacity-0 transition-opacity duration-150 group-hover:text-[#7ec87e] group-hover:opacity-100"
             >→</span
@@ -187,7 +170,7 @@ const featuredProjects = [
         </div>
         <div class="px-6 py-5">
           <p
-            class="text-xs leading-[1.75] text-[#888888] before:content-['//_'] before:text-[#4a7a4a]"
+            class="text-[0.9rem] leading-[1.8] text-[#c0c0c0] before:content-['//_'] before:text-[#4a7a4a]"
           >
             A collection of personal projects, including WIP and
             non-game-specific pieces.

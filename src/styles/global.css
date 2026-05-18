@@ -86,7 +86,7 @@ nav.site-nav {
 }
 .nav-logo {
   font-family: 'Commit Mono', monospace;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--green);
   text-decoration: none;
   letter-spacing: 0.02em;
@@ -100,7 +100,7 @@ nav.site-nav {
 }
 .nav-links a {
   font-family: 'Commit Mono', monospace;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-dim);
   text-decoration: none;
   display: flex;
@@ -109,7 +109,7 @@ nav.site-nav {
   transition: color 0.15s;
 }
 .nav-links a:hover { color: var(--green); }
-.nav-icon { font-size: 11px; opacity: 0.7; }
+.nav-icon { font-size: 12px; opacity: 0.7; }
 
 /* ── BREADCRUMB ── */
 .breadcrumb-bar {
