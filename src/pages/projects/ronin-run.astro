@@ -32,9 +32,9 @@ const todoSnippetHtml = ``;
   />
 
   <VideoEmbed
-    videoId="TODO_VIDEO_ID"
+    videoId="UVIb1568SVI"
     caption="// fig_01 - Source-style movement + shuriken traversal · Ronin Run"
-    alt="Ronin Run Trailer"
+    alt="Ronin Run Gameplay Demo"
   />
 
   <div class="grid gap-6" style="grid-template-columns: 1fr 260px;">
@@ -64,12 +64,7 @@ const todoSnippetHtml = ``;
         ]}
         links={[
           {
-            label: "TODO: Play on itch.io",
-            href: "#",
-            icon: "▷",
-          },
-          {
-            label: "TODO: View on GitHub",
+            label: "View on GitHub",
             href: "#",
             icon: "◇",
           },
@@ -90,7 +85,7 @@ const todoSnippetHtml = ``;
     <KeyFeature
       index={1}
       title="Source-Style Movement"
-      description="3D movement system modelled after Source-engine physics - air strafing, bunny hopping, and momentum preservation. Wish-direction input is projected against the current velocity to allow mid-air direction control without breaking speed, replicating the feel of classic movement shooters in Unity's physics environment."
+      description="3D movement system modelled after Source-engine physics - air strafing, bunny hopping, and momentum preservation. Wish-direction input is projected against the current velocity to allow mid-air direction control without breaking speed, replicating the feel of classic movement shooters. I then layered abilities from popular FPS games to round out the base movement toolkit, including wall-running, sliding, a dash and a double jump."
       snippetLabel="PlayerController.cs - air strafe"
       videoSrc="/videos/source-movement-demo.mp4"
       snippetFilename="PlayerController.cs"
@@ -107,7 +102,7 @@ const todoSnippetHtml = ``;
       title="Shuriken Toolkit"
       description="A set of throwable abilities, each one a distinct traversal mechanic: a platform shuriken that spawns a jumpable surface mid-air, a teleport shuriken that snaps the player to impact point, slingshot and grapple shurikens for momentum-based traversal, and an explosion shuriken that functions as a blast jump. Each variant shares a common projectile base with a pluggable on-land behaviour."
       snippetLabel="Shuriken.cs - on-land dispatch"
-      videoSrc="/videos/shuriken-toolkit-demo.mp4"
+      videoSrc="/videos/shurikens-demo.mp4"
       snippetFilename="Shuriken.cs"
       snippetCode={`// TODO: plug in your snippet here`}
     />
