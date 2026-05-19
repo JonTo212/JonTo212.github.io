@@ -79,17 +79,18 @@ nav.site-nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 48px;
+  height: 50px;
   position: sticky;
   top: 0;
   z-index: 10;
 }
 .nav-logo {
   font-family: 'Commit Mono', monospace;
-  font-size: 15px;
-  color: var(--green);
-  text-decoration: none;
-  letter-spacing: 0.02em;
+  font-size: 0.9rem;
+}
+.nav-active,
+.nav-active.nav-logo {
+  color: var(--green) !important;
 }
 .nav-links {
   display: flex;
@@ -100,9 +101,7 @@ nav.site-nav {
 }
 .nav-links a {
   font-family: 'Commit Mono', monospace;
-  font-size: 13px;
-  color: var(--text-dim);
-  text-decoration: none;
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -116,12 +115,12 @@ nav.site-nav {
   background: var(--bg-panel);
   border-bottom: 1px solid var(--border);
   padding: 0 2rem;
-  height: 32px;
+  height: 52px;
   display: flex;
   align-items: center;
   gap: 6px;
   font-family: 'Commit Mono', monospace;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text-muted);
 }
 .breadcrumb-bar a {

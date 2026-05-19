@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectFooter from "../../components/layout/ProjectFooter.astro";
 import UnderConstruction from "../../components/layout/UnderConstruction.astro";
 ---
 
@@ -7,11 +8,18 @@ import UnderConstruction from "../../components/layout/UnderConstruction.astro";
   <div slot="breadcrumb" class="breadcrumb-bar">
     <a href="/personal-projects/">PersonalProjects()</a>
     <span class="breadcrumb-sep">/</span>
-    <span class="breadcrumb-current">LightMoth.cs</span>
+    <span class="breadcrumb-current">Light_Moth</span>
   </div>
   <UnderConstruction
     projectName="Light Moth"
     backHref="/personal-projects/"
     backLabel="PersonalProjects()"
+  />
+
+  <ProjectFooter
+    prev={{ label: "Deterministic Dice", href: "../deterministic-dice/" }}
+    next={{ label: "Sky High Scrubbing", href: "../sky-high-scrubbing/" }}
+    author="Jonathan To · Gameplay Programmer & Game Designer"
+    year={2026}
   />
 </BaseLayout>

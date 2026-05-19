@@ -4,7 +4,8 @@ interface Props {
   title: string;
   subtitle?: string;
   accentColor?: "green" | "yellow";
-  subtitleColor?: "green" | "yellow";
+  subtitleColor?: "green" | "yellow" | "white";
+  subtitleSize?: string;
 }
 
 const {
@@ -13,14 +14,18 @@ const {
   subtitle,
   accentColor = "green",
   subtitleColor,
+  subtitleSize = "0.9rem",
 } = Astro.props;
 const accentHex = accentColor === "green" ? "bg-[#7ec87e]" : "bg-[#c8b97e]";
 const titleHex = accentColor === "green" ? "text-[#7ec87e]" : "text-[#c8b97e]";
-const subHex = subtitleColor
-  ? subtitleColor === "green"
+const subHex =
+  subtitleColor === "green"
     ? "text-[#7ec87e]"
-    : "text-[#c8b97e]"
-  : titleHex;
+    : subtitleColor === "yellow"
+      ? "text-[#c8b97e]"
+      : subtitleColor === "white"
+        ? "text-[#c0c0c0]"
+        : titleHex;
 ---
 
 <header
@@ -39,7 +44,8 @@ const subHex = subtitleColor
   {
     subtitle && (
       <p
-        class={`mt-3 text-[0.9rem] leading-[1.8] before:content-['//_'] before:text-[#4a7a4a] ${subHex}`}
+        class={`mt-3 leading-[1.8] before:content-['//_'] before:text-[#4a7a4a] ${subHex}`}
+        style={`font-size: ${subtitleSize}`}
       >
         {subtitle}
       </p>

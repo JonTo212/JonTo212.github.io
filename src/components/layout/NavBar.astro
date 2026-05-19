@@ -1,22 +1,30 @@
 ---
+const { pathname } = Astro.url;
 
+function isActive(href: string) {
+  if (href === "/") return pathname === "/";
+  return pathname.startsWith(href);
+}
 ---
 
 <nav class="site-nav">
-  <a class="nav-logo" href="/">Home()</a>
+  <a class={`nav-logo${isActive("/") ? " nav-active" : ""}`} href="/">Home()</a>
   <ul class="nav-links">
     <li>
-      <a href="/about/">
+      <a href="/about/" class={isActive("/about/") ? "nav-active" : ""}>
         <span class="nav-icon">◇</span> About()
       </a>
     </li>
     <li>
-      <a href="/portfolio/">
+      <a href="/portfolio/" class={isActive("/portfolio/") ? "nav-active" : ""}>
         <span class="nav-icon">□</span> Portfolio()
       </a>
     </li>
     <li>
-      <a href="/personal-projects/">
+      <a
+        href="/personal-projects/"
+        class={isActive("/personal-projects/") ? "nav-active" : ""}
+      >
         <span class="nav-icon">▷</span> PersonalProjects()
       </a>
     </li>

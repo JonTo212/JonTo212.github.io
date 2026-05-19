@@ -9,15 +9,166 @@ import KeyFeature from "../../components/layout/KeyFeature.astro";
 import DeepDiveBlock from "../../components/layout/DeepDiveBlock.astro";
 import ProjectFooter from "../../components/layout/ProjectFooter.astro";
 
-const todoSnippetPlain = `// TODO: Add raw code snippet here`;
-const todoSnippetHtml = ``;
+const cardSnippetPlain = `// ResourceCard.cs
+[CreateAssetMenu(fileName = "New Resource Card", menuName = "Resource Card")]
+public class ResourceCard : ScriptableObject
+{
+    public string cardName;
+    public string description;
+    public Sprite art;
+    public Sprite cardBack;
+    public int value;
+    public int typeIndex;
+    public int weight;
+    public int count;
+}
+
+// ResourceCardDatabase.cs
+public class ResourceCardDatabase : MonoBehaviour
+{
+    public List<ResourceCard> resourceCardList = new List<ResourceCard>();
+    public ResourceCard[] cards = new ResourceCard[17];
+
+    private void Awake()
+    {
+        for (int x = 0; x < cards.Length; x++)
+        {
+            for (int y = 0; y < cards[x].count; y++)
+            {
+                resourceCardList.Add(cards[x]);
+            }
+        }
+
+        // Shuffle deck
+        resourceCardList = resourceCardList.OrderBy(x => Random.value).ToList();
+    }
+}`;
+
+const animSnippetPlain = `// Card flips face-up, pauses, then flips face-down before applying the resource change
+Tween stretch1 = newCard.transform.DOScaleX(0, animSpeed / 4);
+Tween stretch2 = newCard.transform.DOScaleX(1, animSpeed / 4);
+Tween delayedStretch = newCard.transform.DOScaleX(0, animSpeed / 4).SetDelay(2);
+
+stretch1.onComplete += () => cardDisplay.artworkImage.sprite = cardDisplay.card.art;
+delayedStretch.onComplete += () => cardDisplay.artworkImage.sprite = cardDisplay.card.cardBack;
+
+sequence.Append(stretch1);
+sequence.Append(stretch2);
+sequence.Append(delayedStretch);
+
+// Resource change fires after the card is already gone
+var card = newCard.GetComponent(typeof(CardDisplay)) as CardDisplay;
+sequence.onComplete += () => selectedPlayer.ChangeResource(card.typeIndex, true, card.value);
+sequence.onComplete += () => Destroy(newCard);`;
+
+const cardSnippetHtml = `<span class="tok-comment">// ResourceCard.cs</span>
+[<span class="tok-method">CreateAssetMenu</span>(fileName = "New Resource Card", menuName = "Resource Card")]
+<span class="tok-keyword">public</span> <span class="tok-keyword">class</span> <span class="tok-type">ResourceCard</span> : <span class="tok-type">ScriptableObject</span>
+{
+    <span class="tok-keyword">public</span> <span class="tok-keyword">string</span> <span class="tok-param">cardName</span>;
+    <span class="tok-keyword">public</span> <span class="tok-keyword">string</span> <span class="tok-param">description</span>;
+    <span class="tok-keyword">public</span> <span class="tok-type">Sprite</span> <span class="tok-param">art</span>;
+    <span class="tok-keyword">public</span> <span class="tok-type">Sprite</span> <span class="tok-param">cardBack</span>;
+    <span class="tok-keyword">public</span> <span class="tok-keyword">int</span> <span class="tok-param">value</span>;
+    <span class="tok-keyword">public</span> <span class="tok-keyword">int</span> <span class="tok-param">typeIndex</span>;
+    <span class="tok-keyword">public</span> <span class="tok-keyword">int</span> <span class="tok-param">weight</span>;
+    <span class="tok-keyword">public</span> <span class="tok-keyword">int</span> <span class="tok-param">count</span>;
+}
+
+<span class="tok-comment">// ResourceCardDatabase.cs</span>
+<span class="tok-keyword">public</span> <span class="tok-keyword">class</span> <span class="tok-type">ResourceCardDatabase</span> : <span class="tok-type">MonoBehaviour</span>
+{
+    <span class="tok-keyword">public</span> <span class="tok-type">List</span>&lt;<span class="tok-type">ResourceCard</span>&gt; <span class="tok-param">resourceCardList</span> = <span class="tok-keyword">new</span> <span class="tok-type">List</span>&lt;<span class="tok-type">ResourceCard</span>&gt;();
+    <span class="tok-keyword">public</span> <span class="tok-type">ResourceCard</span>[] <span class="tok-param">cards</span> = <span class="tok-keyword">new</span> <span class="tok-type">ResourceCard</span>[<span class="tok-num">17</span>];
+
+    <span class="tok-keyword">private</span> <span class="tok-keyword">void</span> <span class="tok-method">Awake</span>()
+    {
+        <span class="tok-keyword">for</span> (<span class="tok-keyword">int</span> <span class="tok-param">x</span> = <span class="tok-num">0</span>; <span class="tok-param">x</span> &lt; <span class="tok-param">cards</span>.Length; <span class="tok-param">x</span>++)
+        {
+            <span class="tok-keyword">for</span> (<span class="tok-keyword">int</span> <span class="tok-param">y</span> = <span class="tok-num">0</span>; <span class="tok-param">y</span> &lt; <span class="tok-param">cards</span>[<span class="tok-param">x</span>].<span class="tok-param">count</span>; <span class="tok-param">y</span>++)
+            {
+                <span class="tok-param">resourceCardList</span>.<span class="tok-method">Add</span>(<span class="tok-param">cards</span>[<span class="tok-param">x</span>]);
+            }
+        }
+
+        <span class="tok-comment">// Shuffle deck</span>
+        <span class="tok-param">resourceCardList</span> = <span class="tok-param">resourceCardList</span>.<span class="tok-method">OrderBy</span>(<span class="tok-param">x</span> =&gt; Random.<span class="tok-param">value</span>).<span class="tok-method">ToList</span>();
+    }
+}`;
+
+const phaseSnippetHtml = `<span class="tok-comment">// Draw count scales with table state:</span>
+<span class="tok-comment">// +1 per bunkered or dead player, -1 per unpaid hunger/upkeep</span>
+<span class="tok-param">players</span>[<span class="tok-param">x</span>].<span class="tok-param">cardCount</span> = <span class="tok-param">cardCount</span>
+    + <span class="tok-method">CheckBunkered</span>()
+    + <span class="tok-method">CheckDead</span>()
+    - (<span class="tok-keyword">int</span>)Mathf.<span class="tok-method">Pow</span>(<span class="tok-num">0f</span>, <span class="tok-param">players</span>[<span class="tok-num">0</span>].<span class="tok-param">hunger</span>)
+    - (<span class="tok-keyword">int</span>)Mathf.<span class="tok-method">Pow</span>(<span class="tok-num">0f</span>, <span class="tok-param">players</span>[<span class="tok-num">0</span>].<span class="tok-param">upkeep</span>)
+    + <span class="tok-param">cardEvent</span>;
+
+<span class="tok-comment">// Neutral bot selects highest-weight card, skips gold while other options exist</span>
+<span class="tok-type">ResourceCard</span> <span class="tok-param">best</span> = <span class="tok-param">neutralBotHand</span>[<span class="tok-num">0</span>];
+<span class="tok-keyword">for</span> (<span class="tok-keyword">int</span> <span class="tok-param">i</span> = <span class="tok-num">0</span>; <span class="tok-param">i</span> &lt; <span class="tok-param">neutralBotHand</span>.Count; <span class="tok-param">i</span>++)
+{
+    <span class="tok-keyword">for</span> (<span class="tok-keyword">int</span> <span class="tok-param">x</span> = <span class="tok-num">1</span>; <span class="tok-param">x</span> &lt; <span class="tok-param">neutralBotHand</span>.Count; <span class="tok-param">x</span>++)
+    {
+        <span class="tok-keyword">if</span> (<span class="tok-param">neutralBotHand</span>[<span class="tok-param">x</span>].<span class="tok-param">weight</span> &gt; <span class="tok-param">best</span>.<span class="tok-param">weight</span> &amp;&amp; <span class="tok-param">best</span>.<span class="tok-param">typeIndex</span> != <span class="tok-num">4</span>)
+        {
+            <span class="tok-param">best</span> = <span class="tok-param">neutralBotHand</span>[<span class="tok-param">x</span>];
+        }
+    }
+}
+
+<span class="tok-param">neutralBotHand</span>.<span class="tok-method">Remove</span>(<span class="tok-param">best</span>);
+<span class="tok-param">players</span>[<span class="tok-num">2</span>].<span class="tok-method">ChangeResource</span>(<span class="tok-param">best</span>.<span class="tok-param">typeIndex</span>, <span class="tok-keyword">true</span>, <span class="tok-param">best</span>.<span class="tok-param">value</span>);`;
+
+const animSnippetHtml = `<span class="tok-comment">// Card flips face-up, pauses, then flips face-down before applying the resource change</span>
+<span class="tok-type">Tween</span> <span class="tok-param">stretch1</span> = <span class="tok-param">newCard</span>.transform.<span class="tok-method">DOScaleX</span>(<span class="tok-num">0</span>, <span class="tok-param">animSpeed</span> / <span class="tok-num">4</span>);
+<span class="tok-type">Tween</span> <span class="tok-param">stretch2</span> = <span class="tok-param">newCard</span>.transform.<span class="tok-method">DOScaleX</span>(<span class="tok-num">1</span>, <span class="tok-param">animSpeed</span> / <span class="tok-num">4</span>);
+<span class="tok-type">Tween</span> <span class="tok-param">delayedStretch</span> = <span class="tok-param">newCard</span>.transform.<span class="tok-method">DOScaleX</span>(<span class="tok-num">0</span>, <span class="tok-param">animSpeed</span> / <span class="tok-num">4</span>).<span class="tok-method">SetDelay</span>(<span class="tok-num">2</span>);
+
+<span class="tok-param">stretch1</span>.onComplete += () =&gt; <span class="tok-param">cardDisplay</span>.<span class="tok-param">artworkImage</span>.<span class="tok-param">sprite</span> = <span class="tok-param">cardDisplay</span>.<span class="tok-param">card</span>.<span class="tok-param">art</span>;
+<span class="tok-param">delayedStretch</span>.onComplete += () =&gt; <span class="tok-param">cardDisplay</span>.<span class="tok-param">artworkImage</span>.<span class="tok-param">sprite</span> = <span class="tok-param">cardDisplay</span>.<span class="tok-param">card</span>.<span class="tok-param">cardBack</span>;
+
+<span class="tok-param">sequence</span>.<span class="tok-method">Append</span>(<span class="tok-param">stretch1</span>);
+<span class="tok-param">sequence</span>.<span class="tok-method">Append</span>(<span class="tok-param">stretch2</span>);
+<span class="tok-param">sequence</span>.<span class="tok-method">Append</span>(<span class="tok-param">delayedStretch</span>);
+
+<span class="tok-comment">// Resource change fires after the card is already gone</span>
+<span class="tok-keyword">var</span> <span class="tok-param">card</span> = <span class="tok-param">newCard</span>.<span class="tok-method">GetComponent</span>(<span class="tok-keyword">typeof</span>(<span class="tok-type">CardDisplay</span>)) <span class="tok-keyword">as</span> <span class="tok-type">CardDisplay</span>;
+<span class="tok-param">sequence</span>.onComplete += () =&gt; <span class="tok-param">selectedPlayer</span>.<span class="tok-method">ChangeResource</span>(<span class="tok-param">card</span>.<span class="tok-param">typeIndex</span>, <span class="tok-keyword">true</span>, <span class="tok-param">card</span>.<span class="tok-param">value</span>);
+<span class="tok-param">sequence</span>.onComplete += () =&gt; <span class="tok-method">Destroy</span>(<span class="tok-param">newCard</span>);`;
+
+const phaseSnippetPlain = `// Draw count scales with table state:
+// +1 per bunkered or dead player, -1 per unpaid hunger/upkeep
+players[x].cardCount = cardCount
+    + CheckBunkered()
+    + CheckDead()
+    - (int)Mathf.Pow(0f, players[0].hunger)
+    - (int)Mathf.Pow(0f, players[0].upkeep)
+    + cardEvent;
+
+// Neutral bot selects highest-weight card, skips gold while other options exist
+ResourceCard best = neutralBotHand[0];
+for (int i = 0; i < neutralBotHand.Count; i++)
+{
+    for (int x = 1; x < neutralBotHand.Count; x++)
+    {
+        if (neutralBotHand[x].weight > best.weight && best.typeIndex != 4)
+        {
+            best = neutralBotHand[x];
+        }
+    }
+}
+
+neutralBotHand.Remove(best);
+players[2].ChangeResource(best.typeIndex, true, best.value);`;
 ---
 
 <BaseLayout title="Bunker Down! Demo - Jonathan To">
   <div slot="breadcrumb" class="breadcrumb-bar">
     <a href="/portfolio/">Portfolio()</a>
     <span class="breadcrumb-sep">/</span>
-    <span class="breadcrumb-current">BunkerDownDemo.cs</span>
+    <span class="breadcrumb-current">Bunker_Down!_Demo</span>
   </div>
 
   <ProjectHeader
@@ -71,17 +222,17 @@ const todoSnippetHtml = ``;
         links={[
           {
             label: "Play on itch.io",
-            href: "#",
+            href: "https://angrypeasantgames.itch.io/bunker-down-demo",
             icon: "▷",
           },
           {
             label: "View on GitHub",
-            href: "#",
+            href: "https://github.com/JonTo212/BunkerDown",
             icon: "◇",
           },
           {
             label: "Kickstarter Campaign",
-            href: "#",
+            href: "https://www.kickstarter.com/projects/angrypeasantgames/bunker-down-a-fantasy-survival-boardgame",
             icon: "□",
           },
         ]}
@@ -105,14 +256,14 @@ const todoSnippetHtml = ``;
         Cards define their own data, allowing decks to be authored and modified
         without code changes - designed for extensibility across card types and game modes."
       videoSrc="/videos/card-system-demo.mp4"
-      snippetLabel="CardData.cs - Scriptable object card definition"
-      snippetFilename="CardData.cs"
-      snippetCode={todoSnippetPlain}
+      snippetLabel="ResourceCard.cs - Scriptable object card definition"
+      snippetFilename="ResourceCard.cs"
+      snippetCode={cardSnippetPlain}
       flip={true}
     >
       <pre
         slot="snippet-code"
-        style="margin:0; padding:1.25rem 1.5rem; overflow-x:auto; background:var(--bg); font-size:12px; line-height:1.8; white-space:pre-wrap; word-break:break-word;"><code class="font-mono text-(--text-code)" set:html={todoSnippetHtml} /></pre>
+        style="margin:0; padding:1.25rem 1.5rem; overflow-x:auto; background:var(--bg); font-size:12px; line-height:1.8; white-space:pre-wrap; word-break:break-word;"><code class="font-mono" set:html={cardSnippetHtml} /></pre>
     </KeyFeature>
 
     <KeyFeature
@@ -122,10 +273,14 @@ const todoSnippetHtml = ``;
         Coordinates state transitions across draw, play, and resolution phases,
         with hooks for NPC turns and win condition evaluation."
       videoSrc="/videos/game-phases-demo.mp4"
-      snippetLabel="GameManager.cs - Phase sequencing"
+      snippetLabel="GameManager.cs - NPC card selection & draw scaling"
       snippetFilename="GameManager.cs"
-      snippetCode={`// TODO: plug in your snippet here`}
-    />
+      snippetCode={phaseSnippetPlain}
+    >
+      <pre
+        slot="snippet-code"
+        style="margin:0; padding:1.25rem 1.5rem; overflow-x:auto; background:var(--bg); font-size:12px; line-height:1.8; white-space:pre-wrap; word-break:break-word;"><code class="font-mono" set:html={phaseSnippetHtml} /></pre>
+    </KeyFeature>
 
     <KeyFeature
       index={3}
@@ -134,11 +289,15 @@ const todoSnippetHtml = ``;
         emulating the tactile feel of a tabletop game. Includes both 3D object and UI state and transitions driven
         entirely by tweens, with board layout reflecting current game phase."
       videoSrc="/videos/animated-board-demo.mp4"
-      snippetLabel="UIBoard.cs - Tween-driven state transitions"
-      snippetFilename="UIBoard.cs"
-      snippetCode={`// TODO: plug in your snippet here`}
+      snippetLabel="AnimationHandler.cs - Deferred tween feedback"
+      snippetFilename="AnimationHandler.cs"
+      snippetCode={animSnippetPlain}
       flip={true}
-    />
+    >
+      <pre
+        slot="snippet-code"
+        style="margin:0; padding:1.25rem 1.5rem; overflow-x:auto; background:var(--bg); font-size:12px; line-height:1.8; white-space:pre-wrap; word-break:break-word;"><code class="font-mono" set:html={animSnippetHtml} /></pre>
+    </KeyFeature>
   </div>
 
   <div style="display:flex; flex-direction:column; gap:2rem;">
@@ -192,8 +351,8 @@ const todoSnippetHtml = ``;
   </div>
 
   <ProjectFooter
-    prev={{ label: "Cosmic Ranger V", href: "../cosmic-ranger-v/" }}
-    next={{ label: "TODO: Next Project", href: "#" }}
+    prev={{ label: "Paint Rush Racer", href: "../paint-rush-racer/" }}
+    next={{ label: "Jungle Gym", href: "../jungle-gym/" }}
     author="Jonathan To · Gameplay Programmer & Game Designer"
     year={2026}
   />

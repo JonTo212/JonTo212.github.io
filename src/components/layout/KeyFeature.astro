@@ -765,7 +765,7 @@ const hasGrid = Array.isArray(imageGrid) && imageGrid.length > 0;
       if (!body) return;
       const pill = btn.querySelector<HTMLElement>(".kf-pill");
       const isOpen = body.style.maxHeight && body.style.maxHeight !== "0px";
-      body.style.maxHeight = isOpen ? "0" : body.scrollHeight + "px";
+      body.style.maxHeight = isOpen ? "0" : "9999px";
       if (pill) pill.textContent = isOpen ? "▸ view snippet" : "▸ hide snippet";
     };
   }
