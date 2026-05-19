@@ -9,8 +9,173 @@ import KeyFeature from "../../components/layout/KeyFeature.astro";
 import DeepDiveBlock from "../../components/layout/DeepDiveBlock.astro";
 import ProjectFooter from "../../components/layout/ProjectFooter.astro";
 
-const todoSnippetPlain = `// TODO: Add raw code snippet here`;
-const todoSnippetHtml = ``;
+// ─── Feature 1: Propagate ────────────────────────────────────────────────────
+const propagateSnippetPlain = `private void Propagate(Vector3Int coords)
+{
+    toCollapse.Enqueue(coords);
+
+    while (toCollapse.Count > 0)
+    {
+        toCollapse.Dequeue();
+
+        foreach (Vector3Int neighbour in neighbourCoordinates3D)
+        {
+            Vector3Int neighbourCoords = coords + neighbour;
+
+            if (IsInsideGrid(neighbourCoords))
+            {
+                TileState neighbourState = grid[neighbourCoords.x, neighbourCoords.y, neighbourCoords.z];
+                TileState currentState   = grid[coords.x,          coords.y,          coords.z];
+
+                List<WFCTile> valid = new List<WFCTile>(neighbourState.potentialTiles);
+
+                foreach (WFCTile candidate in valid)
+                {
+                    if (!currentState.currentTile.CanConnect(candidate, neighbour))
+                    {
+                        neighbourState.potentialTiles.Remove(candidate);
+
+                        if (!toCollapse.Contains(neighbourCoords))
+                            toCollapse.Enqueue(neighbourCoords);
+                    }
+                }
+            }
+        }
+    }
+}`;
+
+const propagateSnippetHtml = `<span class="tok-keyword">private</span> <span class="tok-keyword">void</span> <span class="tok-method">Propagate</span>(<span class="tok-type">Vector3Int</span> <span class="tok-param">coords</span>)
+{
+    <span class="tok-param">toCollapse</span>.<span class="tok-method">Enqueue</span>(<span class="tok-param">coords</span>);
+
+    <span class="tok-keyword">while</span> (<span class="tok-param">toCollapse</span>.Count &gt; <span class="tok-num">0</span>)
+    {
+        <span class="tok-param">toCollapse</span>.<span class="tok-method">Dequeue</span>();
+
+        <span class="tok-keyword">foreach</span> (<span class="tok-type">Vector3Int</span> <span class="tok-param">neighbour</span> <span class="tok-keyword">in</span> <span class="tok-param">neighbourCoordinates3D</span>)
+        {
+            <span class="tok-type">Vector3Int</span> <span class="tok-param">neighbourCoords</span> = <span class="tok-param">coords</span> + <span class="tok-param">neighbour</span>;
+
+            <span class="tok-keyword">if</span> (<span class="tok-method">IsInsideGrid</span>(<span class="tok-param">neighbourCoords</span>))
+            {
+                <span class="tok-type">TileState</span> <span class="tok-param">neighbourState</span> = <span class="tok-param">grid</span>[<span class="tok-param">neighbourCoords</span>.x, <span class="tok-param">neighbourCoords</span>.y, <span class="tok-param">neighbourCoords</span>.z];
+                <span class="tok-type">TileState</span> <span class="tok-param">currentState</span>   = <span class="tok-param">grid</span>[<span class="tok-param">coords</span>.x,          <span class="tok-param">coords</span>.y,          <span class="tok-param">coords</span>.z];
+
+                <span class="tok-type">List</span>&lt;<span class="tok-type">WFCTile</span>&gt; <span class="tok-param">valid</span> = <span class="tok-keyword">new</span> <span class="tok-type">List</span>&lt;<span class="tok-type">WFCTile</span>&gt;(<span class="tok-param">neighbourState</span>.<span class="tok-param">potentialTiles</span>);
+
+                <span class="tok-keyword">foreach</span> (<span class="tok-type">WFCTile</span> <span class="tok-param">candidate</span> <span class="tok-keyword">in</span> <span class="tok-param">valid</span>)
+                {
+                    <span class="tok-keyword">if</span> (!<span class="tok-param">currentState</span>.<span class="tok-param">currentTile</span>.<span class="tok-method">CanConnect</span>(<span class="tok-param">candidate</span>, <span class="tok-param">neighbour</span>))
+                    {
+                        <span class="tok-param">neighbourState</span>.<span class="tok-param">potentialTiles</span>.<span class="tok-method">Remove</span>(<span class="tok-param">candidate</span>);
+
+                        <span class="tok-keyword">if</span> (!<span class="tok-param">toCollapse</span>.<span class="tok-method">Contains</span>(<span class="tok-param">neighbourCoords</span>))
+                            <span class="tok-param">toCollapse</span>.<span class="tok-method">Enqueue</span>(<span class="tok-param">neighbourCoords</span>);
+                    }
+                }
+            }
+        }
+    }
+}`;
+
+// ─── Feature 2: DFSWithRandomization ─────────────────────────────────────────
+const dfsSnippetPlain = `private List<Vector3Int> DFSWithRandomization(Vector3Int start, Vector3Int end)
+{
+    // DFS uses a stack for LIFO checking — commits down one branch
+    // before backtracking, producing long, winding paths
+    Stack<Vector3Int>                open      = new Stack<Vector3Int>();
+    Dictionary<Vector3Int, Vector3Int> cameFrom = new Dictionary<Vector3Int, Vector3Int>();
+
+    open.Push(start);
+    cameFrom[start] = start;
+
+    while (open.Count > 0)
+    {
+        Vector3Int current = open.Pop();
+        if (current == end) break;
+
+        // Shuffle before pushing so each run takes a different route
+        List<Vector3Int> neighbours = GetNeighboursTowards(current, end);
+        neighbours = Shuffle(neighbours);
+
+        foreach (var direction in neighbours)
+        {
+            Vector3Int newDir = current + direction;
+
+            if (!IsInsideGrid(newDir) || newDir.y != 0 || cameFrom.ContainsKey(newDir))
+                continue;
+
+            open.Push(newDir);
+            cameFrom[newDir] = current;
+        }
+    }
+
+    if (!cameFrom.ContainsKey(end))
+        return null;
+
+    // Rebuild path backwards from end → start, then reverse
+    List<Vector3Int> path    = new List<Vector3Int>();
+    Vector3Int currentReverse = end;
+
+    while (currentReverse != start)
+    {
+        path.Add(currentReverse);
+        currentReverse = cameFrom[currentReverse];
+    }
+
+    path.Add(start);
+    path.Reverse();
+    return path;
+}`;
+
+const dfsSnippetHtml = `<span class="tok-keyword">private</span> <span class="tok-type">List</span>&lt;<span class="tok-type">Vector3Int</span>&gt; <span class="tok-method">DFSWithRandomization</span>(<span class="tok-type">Vector3Int</span> <span class="tok-param">start</span>, <span class="tok-type">Vector3Int</span> <span class="tok-param">end</span>)
+{
+    <span class="tok-comment">// DFS uses a stack for LIFO checking — commits down one branch</span>
+    <span class="tok-comment">// before backtracking, producing long, winding paths</span>
+    <span class="tok-type">Stack</span>&lt;<span class="tok-type">Vector3Int</span>&gt;                  <span class="tok-param">open</span>     = <span class="tok-keyword">new</span> <span class="tok-type">Stack</span>&lt;<span class="tok-type">Vector3Int</span>&gt;();
+    <span class="tok-type">Dictionary</span>&lt;<span class="tok-type">Vector3Int</span>, <span class="tok-type">Vector3Int</span>&gt; <span class="tok-param">cameFrom</span> = <span class="tok-keyword">new</span> <span class="tok-type">Dictionary</span>&lt;<span class="tok-type">Vector3Int</span>, <span class="tok-type">Vector3Int</span>&gt;();
+
+    <span class="tok-param">open</span>.<span class="tok-method">Push</span>(<span class="tok-param">start</span>);
+    <span class="tok-param">cameFrom</span>[<span class="tok-param">start</span>] = <span class="tok-param">start</span>;
+
+    <span class="tok-keyword">while</span> (<span class="tok-param">open</span>.Count &gt; <span class="tok-num">0</span>)
+    {
+        <span class="tok-type">Vector3Int</span> <span class="tok-param">current</span> = <span class="tok-param">open</span>.<span class="tok-method">Pop</span>();
+        <span class="tok-keyword">if</span> (<span class="tok-param">current</span> == <span class="tok-param">end</span>) <span class="tok-keyword">break</span>;
+
+        <span class="tok-comment">// Shuffle before pushing so each run takes a different route</span>
+        <span class="tok-type">List</span>&lt;<span class="tok-type">Vector3Int</span>&gt; <span class="tok-param">neighbours</span> = <span class="tok-method">GetNeighboursTowards</span>(<span class="tok-param">current</span>, <span class="tok-param">end</span>);
+        <span class="tok-param">neighbours</span> = <span class="tok-method">Shuffle</span>(<span class="tok-param">neighbours</span>);
+
+        <span class="tok-keyword">foreach</span> (<span class="tok-keyword">var</span> <span class="tok-param">direction</span> <span class="tok-keyword">in</span> <span class="tok-param">neighbours</span>)
+        {
+            <span class="tok-type">Vector3Int</span> <span class="tok-param">newDir</span> = <span class="tok-param">current</span> + <span class="tok-param">direction</span>;
+
+            <span class="tok-keyword">if</span> (!<span class="tok-method">IsInsideGrid</span>(<span class="tok-param">newDir</span>) || <span class="tok-param">newDir</span>.y != <span class="tok-num">0</span> || <span class="tok-param">cameFrom</span>.<span class="tok-method">ContainsKey</span>(<span class="tok-param">newDir</span>))
+                <span class="tok-keyword">continue</span>;
+
+            <span class="tok-param">open</span>.<span class="tok-method">Push</span>(<span class="tok-param">newDir</span>);
+            <span class="tok-param">cameFrom</span>[<span class="tok-param">newDir</span>] = <span class="tok-param">current</span>;
+        }
+    }
+
+    <span class="tok-keyword">if</span> (!<span class="tok-param">cameFrom</span>.<span class="tok-method">ContainsKey</span>(<span class="tok-param">end</span>))
+        <span class="tok-keyword">return</span> <span class="tok-keyword">null</span>;
+
+    <span class="tok-comment">// Rebuild path backwards from end → start, then reverse</span>
+    <span class="tok-type">List</span>&lt;<span class="tok-type">Vector3Int</span>&gt; <span class="tok-param">path</span>          = <span class="tok-keyword">new</span> <span class="tok-type">List</span>&lt;<span class="tok-type">Vector3Int</span>&gt;();
+    <span class="tok-type">Vector3Int</span>        <span class="tok-param">currentReverse</span> = <span class="tok-param">end</span>;
+
+    <span class="tok-keyword">while</span> (<span class="tok-param">currentReverse</span> != <span class="tok-param">start</span>)
+    {
+        <span class="tok-param">path</span>.<span class="tok-method">Add</span>(<span class="tok-param">currentReverse</span>);
+        <span class="tok-param">currentReverse</span> = <span class="tok-param">cameFrom</span>[<span class="tok-param">currentReverse</span>];
+    }
+
+    <span class="tok-param">path</span>.<span class="tok-method">Add</span>(<span class="tok-param">start</span>);
+    <span class="tok-param">path</span>.<span class="tok-method">Reverse</span>();
+    <span class="tok-keyword">return</span> <span class="tok-param">path</span>;
+}`;
 ---
 
 <BaseLayout title="WFC Generator - Jonathan To">
@@ -94,14 +259,14 @@ const todoSnippetHtml = ``;
         the system scalable and easy to extend. Tile selection supports weighted randomness, allowing
         certain tiles to appear more frequently while preserving procedural variety."
       imageSrc="/images/wfc-generator/wfc-wfc.png"
-      snippetLabel="WFCGenerator.cs - Collapse & propagation"
-      snippetFilename="WFCGenerator.cs"
-      snippetCode={todoSnippetPlain}
+      snippetLabel="WFCTileGenerator.cs - Propagate"
+      snippetFilename="WFCTileGenerator.cs"
+      snippetCode={propagateSnippetPlain}
       flip={true}
     >
       <pre
         slot="snippet-code"
-        style="margin:0; padding:1.25rem 1.5rem; overflow-x:auto; background:var(--bg); font-size:12px; line-height:1.8; white-space:pre-wrap; word-break:break-word;"><code class="font-mono text-(--text-code)" set:html={todoSnippetHtml} /></pre>
+        style="margin:0; padding:1.25rem 1.5rem; overflow-x:auto; background:var(--bg); font-size:12px; line-height:1.8; white-space:pre-wrap; word-break:break-word;"><code class="font-mono text-(--text-code)" set:html={propagateSnippetHtml} /></pre>
     </KeyFeature>
 
     <KeyFeature
@@ -134,65 +299,69 @@ const todoSnippetHtml = ``;
           caption: "multi-path junctions",
         },
       ]}
-      snippetLabel="BFSPathfinder.cs / DFSPathfinder.cs"
-      snippetFilename="BFSPathfinder.cs"
-      snippetCode={`// TODO: plug in your snippet here`}
-    />
-  </div>
+      snippetLabel="WFCTileGenerator.cs - DFSWithRandomization"
+      snippetFilename="WFCTileGenerator.cs"
+      snippetCode={dfsSnippetPlain}
+    >
+      <pre
+        slot="snippet-code"
+        style="margin:0; padding:1.25rem 1.5rem; overflow-x:auto; background:var(--bg); font-size:12px; line-height:1.8; white-space:pre-wrap; word-break:break-word;"><code class="font-mono text-(--text-code)" set:html={dfsSnippetHtml} /></pre>
+    </KeyFeature>
 
-  <div style="display:flex; flex-direction:column; gap:2rem;">
-    <DeepDiveBlock
-      title="Deep dive - adding pathfinding with multiple path support"
-      steps={[
-        {
-          tag: "problem",
-          icon: "◎",
-          title: "Path lists don't cleanly connect",
-          body: "The end of one path and the start of the next were often more than 1 unit apart. The collapse function expects every neighbour to be exactly 1 unit away, so any larger gap left a tile with no valid solution - resulting in a broken, uncollapsable tile at the junction.",
-        },
-        {
-          tag: "approach",
-          icon: "◈",
-          title: "Adding an additional validation layer",
-          body: "Instead of collapsing path lists directly, I first build a dictionary of every grid point and its valid connections. IsFaceNeighbour validates that each tile is exactly 1 unit from its neighbours before it gets added. AddConnections then loops through all paths to populate the dictionary, using a HashSet per entry to avoid duplicate connections. Only then does the collapse run, using each tile's connection count to select the correct tile type.",
-        },
-        {
-          tag: "result",
-          icon: "▸",
-          title: "Validated junction resolution",
-          body: "Paths of any count can now be combined and collapsed without broken junctions. Each tile resolves based on its connection count - tiles with one connection become ends, two form straight segments, and three or more create junctions. Overlapping paths emerge naturally without any hardcoded rules.",
-        },
-      ]}
-      slider={{
-        label: "path_junction_fix",
-        beforeSrc: "",
-        afterSrc: "",
-      }}
-    />
+    <div style="display:flex; flex-direction:column; gap:2rem;">
+      <DeepDiveBlock
+        title="Deep dive - adding pathfinding with multiple path support"
+        steps={[
+          {
+            tag: "problem",
+            icon: "◎",
+            title: "Path lists don't cleanly connect",
+            body: "The end of one path and the start of the next were often more than 1 unit apart. The collapse function expects every neighbour to be exactly 1 unit away, so any larger gap left a tile with no valid solution - resulting in a broken, uncollapsable tile at the junction.",
+          },
+          {
+            tag: "approach",
+            icon: "◈",
+            title: "Adding an additional validation layer",
+            body: "Instead of collapsing path lists directly, I first build a dictionary of every grid point and its valid connections. IsFaceNeighbour validates that each tile is exactly 1 unit from its neighbours before it gets added. AddConnections then loops through all paths to populate the dictionary, using a HashSet per entry to avoid duplicate connections. Only then does the collapse run, using each tile's connection count to select the correct tile type.",
+          },
+          {
+            tag: "result",
+            icon: "▸",
+            title: "Validated junction resolution",
+            body: "Paths of any count can now be combined and collapsed without broken junctions. Each tile resolves based on its connection count - tiles with one connection become ends, two form straight segments, and three or more create junctions. Overlapping paths emerge naturally without any hardcoded rules.",
+          },
+        ]}
+        slider={{
+          label: "path_junction_fix",
+          beforeSrc: "",
+          afterSrc: "",
+        }}
+      />
 
-    <TextBlock
-      title="Takeaways"
-      content={[
-        {
-          heading: "Deeper learning through integration",
-          body: "Working with multiple algorithms together, rather than studying each in isolation, forced a deeper understanding of how each works - the modifications required for them to operate in tandem surfaced edge cases that studying them separately never would have.",
-        },
-        {
-          heading: "The power of constraints",
-          body: "Just like in game design, a small set of well-defined rules can produce a huge range of outcomes. Procedural generation takes that idea and runs with it - simple adjacency constraints scaling into a genuinely varied map generator.",
-        },
-        {
-          heading: "A worthwhile investment",
-          body: "There's a steep learning curve getting into algorithmic thinking, but the payoff is real. This project made clear that algorithms aren't single-purpose solutions - they have the potential to produce a wide variety of results depending on how they're applied.",
-        },
-      ]}
-    />
-  </div>
+      <TextBlock
+        title="Takeaways"
+        content={[
+          {
+            heading: "Deeper learning through integration",
+            body: "Working with multiple algorithms together, rather than studying each in isolation, forced a deeper understanding of how each works - the modifications required for them to operate in tandem surfaced edge cases that studying them separately never would have.",
+          },
+          {
+            heading: "The power of constraints",
+            body: "Just like in game design, a small set of well-defined rules can produce a huge range of outcomes. Procedural generation takes that idea and runs with it - simple adjacency constraints scaling into a genuinely varied map generator.",
+          },
+          {
+            heading: "A worthwhile investment",
+            body: "There's a steep learning curve getting into algorithmic thinking, but the payoff is real. This project made clear that algorithms aren't single-purpose solutions - they have the potential to produce a wide variety of results depending on how they're applied.",
+          },
+        ]}
+      />
+    </div>
 
-  <ProjectFooter
-    prev={{ label: "Ronin Run", href: "../ronin-run/" }}
-    next={{ label: "Deterministic Dice", href: "../deterministic-dice/" }}
-    author="Jonathan To · Gameplay Programmer & Game Designer"
-    year={2026}
-  />
-</BaseLayout>
+    <ProjectFooter
+      prev={{ label: "Ronin Run", href: "../ronin-run/" }}
+      next={{ label: "Deterministic Dice", href: "../deterministic-dice/" }}
+      author="Jonathan To · Gameplay Programmer & Game Designer"
+      year={2026}
+    />
+  </div></BaseLayout
+>

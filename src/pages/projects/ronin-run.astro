@@ -9,8 +9,270 @@ import KeyFeature from "../../components/layout/KeyFeature.astro";
 import DeepDiveBlock from "../../components/layout/DeepDiveBlock.astro";
 import ProjectFooter from "../../components/layout/ProjectFooter.astro";
 
-const todoSnippetPlain = `// TODO: Add raw code snippet here`;
-const todoSnippetHtml = ``;
+const airStrafeSnippetPlain = `// ── AirMove ──────────────────────────────────────────────────────────────────
+// Builds wish-direction from raw input, then dispatches to AirControl + Accelerate.
+// Side-strafe input gets a tighter speed cap + higher acceleration for sharp cornering.
+void AirMove()
+{
+    // Cancel forward input when strafing diagonally
+    if (inputVector.z >= 0 && inputVector.x != 0)
+        wishdir = new Vector3(inputVector.x, 0, 0);
+
+    wishdir  = transform.TransformDirection(wishdir).normalized;
+    float wishspeed         = wishdir.magnitude * moveSpeed;
+    float wishspeedOriginal = wishspeed;
+    float accel             = airAcceleration;
+
+    if (inputVector.x != 0)
+    {
+        if (wishspeed > sideStrafeSpeed) wishspeed = sideStrafeSpeed;
+        accel = sideStrafeAcceleration;
+    }
+
+    float modifiedWishspeed = crouched ? wishspeed / 3f : wishspeed;
+    float modifiedAccel     = crouched ? accel     / 3f : accel;
+
+    if (airControl > 0)
+        AirControl(wishdir, wishspeedOriginal);
+
+    Accelerate(wishdir, modifiedWishspeed, modifiedAccel);
+}
+
+// ── AirControl ────────────────────────────────────────────────────────────────
+// Steers velocity direction toward wishdir without adding speed.
+// Dot product measures forward alignment: perfect forward = 1, 90° = 0.
+// Squared so off-axis input yields proportionally less control (45° → 50%).
+void AirControl(Vector3 wishdir, float wishspeed)
+{
+    if (wishspeed == 0 || Mathf.Abs(inputVector.z) == 0) return;
+
+    float yVel = playerVelocity.y;
+    playerVelocity.y = 0;
+
+    float speed = playerVelocity.magnitude;
+    playerVelocity.Normalize();
+
+    float dot                   = Vector3.Dot(playerVelocity, wishdir);
+    float airControlCoefficient = 32f * airControl * dot * dot * Time.deltaTime;
+
+    if (dot > 0)
+    {
+        playerVelocity.x = playerVelocity.x * speed + wishdir.x * airControlCoefficient;
+        playerVelocity.z = playerVelocity.z * speed + wishdir.z * airControlCoefficient;
+        playerVelocity.Normalize();
+    }
+
+    playerVelocity.x *= speed;
+    playerVelocity.z *= speed;
+    playerVelocity.y  = yVel;
+}
+
+// ── Accelerate ────────────────────────────────────────────────────────────────
+// Projects current velocity onto wishdir to find how much speed we still need.
+// Only applies force if there's a deficit - prevents accelerating past wishspeed.
+public void Accelerate(Vector3 wishdir, float wishspeed, float accel)
+{
+    float accelspeed   = accel * Time.deltaTime * moveSpeed;
+    float desiredspeed = Vector3.Dot(playerVelocity, wishdir);
+    float addspeed     = wishspeed - desiredspeed;
+
+    if (addspeed <= 0) return;
+    if (accelspeed > addspeed) accelspeed = addspeed;
+
+    playerVelocity += accelspeed * wishdir;
+}`;
+
+// ─── Shuriken base + WallRunShuriken override ────────────────────────────────
+const shurikenSnippetPlain = `// ── ShurikenBaseClass ────────────────────────────────────────────────────────
+// Shared landing behaviour for every shuriken variant.
+// Freezes physics, snaps to the predicted impact point, and orients to the surface.
+protected virtual void AttachToSurface(Collision collision)
+{
+    hit = true;
+    rb.velocity        = Vector3.zero;
+    rb.angularVelocity = Vector3.zero;
+    rb.isKinematic     = true;
+    boxCol.enabled     = false;
+    hitNormal          = collision.contacts[0].normal;
+
+    // finalPos is passed from the aim indicator so landing lines up with the preview
+    if (finalPos != Vector3.zero)
+        transform.position = finalPos;
+
+    // Attach perpendicular to the collision point (+45 offset to match the model)
+    Quaternion contactRotation = Quaternion.LookRotation(-hitNormal);
+    transform.rotation = contactRotation * Quaternion.Euler(90, 0, 45);
+}
+
+// ── WallRunShuriken ───────────────────────────────────────────────────────────
+// On landing: calls base to embed the shuriken, then re-layers the hit surface
+// and swaps its material - turning any wall into a wall-runnable surface.
+// ResetWallRunObject() reverses both changes when the shuriken is picked up.
+protected override void AttachToSurface(Collision collision)
+{
+    base.AttachToSurface(collision);
+
+    if (currentShuriken != null && oneWallAtATime)
+        currentShuriken.ResetWallRunObject();
+
+    collidedObject = collision.gameObject;
+    originalLayer  = collidedObject.layer;
+
+    collidedObject.layer = LayerMask.NameToLayer("WallRun");
+
+    var renderer     = collidedObject.GetComponent<Renderer>();
+    originalMaterial = renderer.material;
+    renderer.material = wallRunMaterial;
+
+    if (oneWallAtATime)
+    {
+        currentShuriken = this;
+        gameObject.SetActive(false);
+    }
+}
+
+public void ResetWallRunObject()
+{
+    if (collidedObject == null) return;
+
+    collidedObject.layer = originalLayer;
+    collidedObject.GetComponent<Renderer>().material = originalMaterial;
+
+    if (currentShuriken == this && oneWallAtATime)
+        currentShuriken = null;
+}`;
+
+const shurikenSnippetHtml = `<span class="tok-comment">// ── ShurikenBaseClass ────────────────────────────────────────────────────────</span>
+<span class="tok-comment">// Shared landing behaviour for every shuriken variant.</span>
+<span class="tok-comment">// Freezes physics, snaps to the predicted impact point, and orients to the surface.</span>
+<span class="tok-keyword">protected</span> <span class="tok-keyword">virtual</span> <span class="tok-keyword">void</span> <span class="tok-method">AttachToSurface</span>(<span class="tok-type">Collision</span> <span class="tok-param">collision</span>)
+{
+    <span class="tok-param">hit</span>                = <span class="tok-bool">true</span>;
+    <span class="tok-param">rb</span>.velocity        = <span class="tok-type">Vector3</span>.zero;
+    <span class="tok-param">rb</span>.angularVelocity = <span class="tok-type">Vector3</span>.zero;
+    <span class="tok-param">rb</span>.isKinematic     = <span class="tok-bool">true</span>;
+    <span class="tok-param">boxCol</span>.enabled     = <span class="tok-bool">false</span>;
+    <span class="tok-param">hitNormal</span>          = <span class="tok-param">collision</span>.contacts[<span class="tok-num">0</span>].normal;
+
+    <span class="tok-comment">// finalPos is passed from the aim indicator so landing lines up with the preview</span>
+    <span class="tok-keyword">if</span> (<span class="tok-param">finalPos</span> != <span class="tok-type">Vector3</span>.zero)
+        <span class="tok-param">transform</span>.position = <span class="tok-param">finalPos</span>;
+
+    <span class="tok-comment">// Attach perpendicular to the collision point (+45 offset to match the model)</span>
+    <span class="tok-type">Quaternion</span> <span class="tok-param">contactRotation</span> = <span class="tok-type">Quaternion</span>.<span class="tok-method">LookRotation</span>(-<span class="tok-param">hitNormal</span>);
+    <span class="tok-param">transform</span>.rotation = <span class="tok-param">contactRotation</span> * <span class="tok-type">Quaternion</span>.<span class="tok-method">Euler</span>(<span class="tok-num">90</span>, <span class="tok-num">0</span>, <span class="tok-num">45</span>);
+}
+
+<span class="tok-comment">// ── WallRunShuriken ───────────────────────────────────────────────────────────</span>
+<span class="tok-comment">// On landing: calls base to embed the shuriken, then re-layers the hit surface</span>
+<span class="tok-comment">// and swaps its material - turning any wall into a wall-runnable surface.</span>
+<span class="tok-comment">// ResetWallRunObject() reverses both changes when the shuriken is picked up.</span>
+<span class="tok-keyword">protected</span> <span class="tok-keyword">override</span> <span class="tok-keyword">void</span> <span class="tok-method">AttachToSurface</span>(<span class="tok-type">Collision</span> <span class="tok-param">collision</span>)
+{
+    <span class="tok-keyword">base</span>.<span class="tok-method">AttachToSurface</span>(<span class="tok-param">collision</span>);
+
+    <span class="tok-keyword">if</span> (<span class="tok-param">currentShuriken</span> != <span class="tok-keyword">null</span> &amp;&amp; <span class="tok-param">oneWallAtATime</span>)
+        <span class="tok-param">currentShuriken</span>.<span class="tok-method">ResetWallRunObject</span>();
+
+    <span class="tok-param">collidedObject</span> = <span class="tok-param">collision</span>.gameObject;
+    <span class="tok-param">originalLayer</span>  = <span class="tok-param">collidedObject</span>.layer;
+
+    <span class="tok-param">collidedObject</span>.layer = <span class="tok-type">LayerMask</span>.<span class="tok-method">NameToLayer</span>(<span class="tok-string">"WallRun"</span>);
+
+    <span class="tok-keyword">var</span> <span class="tok-param">renderer</span>      = <span class="tok-param">collidedObject</span>.<span class="tok-method">GetComponent</span>&lt;<span class="tok-type">Renderer</span>&gt;();
+    <span class="tok-param">originalMaterial</span>  = <span class="tok-param">renderer</span>.material;
+    <span class="tok-param">renderer</span>.material = <span class="tok-param">wallRunMaterial</span>;
+
+    <span class="tok-keyword">if</span> (<span class="tok-param">oneWallAtATime</span>)
+    {
+        <span class="tok-param">currentShuriken</span> = <span class="tok-keyword">this</span>;
+        <span class="tok-param">gameObject</span>.<span class="tok-method">SetActive</span>(<span class="tok-bool">false</span>);
+    }
+}
+
+<span class="tok-keyword">public</span> <span class="tok-keyword">void</span> <span class="tok-method">ResetWallRunObject</span>()
+{
+    <span class="tok-keyword">if</span> (<span class="tok-param">collidedObject</span> == <span class="tok-keyword">null</span>) <span class="tok-keyword">return</span>;
+
+    <span class="tok-param">collidedObject</span>.layer = <span class="tok-param">originalLayer</span>;
+    <span class="tok-param">collidedObject</span>.<span class="tok-method">GetComponent</span>&lt;<span class="tok-type">Renderer</span>&gt;().material = <span class="tok-param">originalMaterial</span>;
+
+    <span class="tok-keyword">if</span> (<span class="tok-param">currentShuriken</span> == <span class="tok-keyword">this</span> &amp;&amp; <span class="tok-param">oneWallAtATime</span>)
+        <span class="tok-param">currentShuriken</span> = <span class="tok-keyword">null</span>;
+}`;
+
+const airStrafeSnippetHtml = `<span class="tok-comment">// ── AirMove ──────────────────────────────────────────────────────────────────</span>
+<span class="tok-comment">// Builds wish-direction from raw input, then dispatches to AirControl + Accelerate.</span>
+<span class="tok-comment">// Side-strafe input gets a tighter speed cap + higher acceleration for sharp cornering.</span>
+<span class="tok-keyword">void</span> <span class="tok-method">AirMove</span>()
+{
+    <span class="tok-comment">// Cancel forward input when strafing diagonally</span>
+    <span class="tok-keyword">if</span> (<span class="tok-param">inputVector</span>.z &gt;= <span class="tok-num">0</span> &amp;&amp; <span class="tok-param">inputVector</span>.x != <span class="tok-num">0</span>)
+        <span class="tok-param">wishdir</span> = <span class="tok-keyword">new</span> <span class="tok-type">Vector3</span>(<span class="tok-param">inputVector</span>.x, <span class="tok-num">0</span>, <span class="tok-num">0</span>);
+
+    <span class="tok-param">wishdir</span>  = <span class="tok-param">transform</span>.<span class="tok-method">TransformDirection</span>(<span class="tok-param">wishdir</span>).<span class="tok-method">normalized</span>;
+    <span class="tok-keyword">float</span> <span class="tok-param">wishspeed</span>         = <span class="tok-param">wishdir</span>.magnitude * <span class="tok-param">moveSpeed</span>;
+    <span class="tok-keyword">float</span> <span class="tok-param">wishspeedOriginal</span> = <span class="tok-param">wishspeed</span>;
+    <span class="tok-keyword">float</span> <span class="tok-param">accel</span>             = <span class="tok-param">airAcceleration</span>;
+
+    <span class="tok-keyword">if</span> (<span class="tok-param">inputVector</span>.x != <span class="tok-num">0</span>)
+    {
+        <span class="tok-keyword">if</span> (<span class="tok-param">wishspeed</span> &gt; <span class="tok-param">sideStrafeSpeed</span>) <span class="tok-param">wishspeed</span> = <span class="tok-param">sideStrafeSpeed</span>;
+        <span class="tok-param">accel</span> = <span class="tok-param">sideStrafeAcceleration</span>;
+    }
+
+    <span class="tok-keyword">float</span> <span class="tok-param">modifiedWishspeed</span> = <span class="tok-param">crouched</span> ? <span class="tok-param">wishspeed</span> / <span class="tok-num">3f</span> : <span class="tok-param">wishspeed</span>;
+    <span class="tok-keyword">float</span> <span class="tok-param">modifiedAccel</span>     = <span class="tok-param">crouched</span> ? <span class="tok-param">accel</span>     / <span class="tok-num">3f</span> : <span class="tok-param">accel</span>;
+
+    <span class="tok-keyword">if</span> (<span class="tok-param">airControl</span> &gt; <span class="tok-num">0</span>)
+        <span class="tok-method">AirControl</span>(<span class="tok-param">wishdir</span>, <span class="tok-param">wishspeedOriginal</span>);
+
+    <span class="tok-method">Accelerate</span>(<span class="tok-param">wishdir</span>, <span class="tok-param">modifiedWishspeed</span>, <span class="tok-param">modifiedAccel</span>);
+}
+
+<span class="tok-comment">// ── AirControl ────────────────────────────────────────────────────────────────</span>
+<span class="tok-comment">// Steers velocity direction toward wishdir without adding speed.</span>
+<span class="tok-comment">// Dot product measures forward alignment: perfect forward = 1, 90° = 0.</span>
+<span class="tok-comment">// Squared so off-axis input yields proportionally less control (45° → 50%).</span>
+<span class="tok-keyword">void</span> <span class="tok-method">AirControl</span>(<span class="tok-type">Vector3</span> <span class="tok-param">wishdir</span>, <span class="tok-keyword">float</span> <span class="tok-param">wishspeed</span>)
+{
+    <span class="tok-keyword">if</span> (<span class="tok-param">wishspeed</span> == <span class="tok-num">0</span> || <span class="tok-type">Mathf</span>.<span class="tok-method">Abs</span>(<span class="tok-param">inputVector</span>.z) == <span class="tok-num">0</span>) <span class="tok-keyword">return</span>;
+
+    <span class="tok-keyword">float</span> <span class="tok-param">yVel</span> = <span class="tok-param">playerVelocity</span>.y;
+    <span class="tok-param">playerVelocity</span>.y = <span class="tok-num">0</span>;
+
+    <span class="tok-keyword">float</span> <span class="tok-param">speed</span> = <span class="tok-param">playerVelocity</span>.magnitude;
+    <span class="tok-param">playerVelocity</span>.<span class="tok-method">Normalize</span>();
+
+    <span class="tok-keyword">float</span> <span class="tok-param">dot</span>                   = <span class="tok-type">Vector3</span>.<span class="tok-method">Dot</span>(<span class="tok-param">playerVelocity</span>, <span class="tok-param">wishdir</span>);
+    <span class="tok-keyword">float</span> <span class="tok-param">airControlCoefficient</span>  = <span class="tok-num">32f</span> * <span class="tok-param">airControl</span> * <span class="tok-param">dot</span> * <span class="tok-param">dot</span> * Time.deltaTime;
+
+    <span class="tok-keyword">if</span> (<span class="tok-param">dot</span> &gt; <span class="tok-num">0</span>)
+    {
+        <span class="tok-param">playerVelocity</span>.x = <span class="tok-param">playerVelocity</span>.x * <span class="tok-param">speed</span> + <span class="tok-param">wishdir</span>.x * <span class="tok-param">airControlCoefficient</span>;
+        <span class="tok-param">playerVelocity</span>.z = <span class="tok-param">playerVelocity</span>.z * <span class="tok-param">speed</span> + <span class="tok-param">wishdir</span>.z * <span class="tok-param">airControlCoefficient</span>;
+        <span class="tok-param">playerVelocity</span>.<span class="tok-method">Normalize</span>();
+    }
+
+    <span class="tok-param">playerVelocity</span>.x *= <span class="tok-param">speed</span>;
+    <span class="tok-param">playerVelocity</span>.z *= <span class="tok-param">speed</span>;
+    <span class="tok-param">playerVelocity</span>.y  = <span class="tok-param">yVel</span>;
+}
+
+<span class="tok-comment">// ── Accelerate ────────────────────────────────────────────────────────────────</span>
+<span class="tok-comment">// Projects current velocity onto wishdir to find how much speed we still need.</span>
+<span class="tok-comment">// Only applies force if there's a deficit - prevents accelerating past wishspeed.</span>
+<span class="tok-keyword">public</span> <span class="tok-keyword">void</span> <span class="tok-method">Accelerate</span>(<span class="tok-type">Vector3</span> <span class="tok-param">wishdir</span>, <span class="tok-keyword">float</span> <span class="tok-param">wishspeed</span>, <span class="tok-keyword">float</span> <span class="tok-param">accel</span>)
+{
+    <span class="tok-keyword">float</span> <span class="tok-param">accelspeed</span>   = <span class="tok-param">accel</span> * Time.deltaTime * <span class="tok-param">moveSpeed</span>;
+    <span class="tok-keyword">float</span> <span class="tok-param">desiredspeed</span> = <span class="tok-type">Vector3</span>.<span class="tok-method">Dot</span>(<span class="tok-param">playerVelocity</span>, <span class="tok-param">wishdir</span>);
+    <span class="tok-keyword">float</span> <span class="tok-param">addspeed</span>     = <span class="tok-param">wishspeed</span> - <span class="tok-param">desiredspeed</span>;
+
+    <span class="tok-keyword">if</span> (<span class="tok-param">addspeed</span> &lt;= <span class="tok-num">0</span>) <span class="tok-keyword">return</span>;
+    <span class="tok-keyword">if</span> (<span class="tok-param">accelspeed</span> &gt; <span class="tok-param">addspeed</span>) <span class="tok-param">accelspeed</span> = <span class="tok-param">addspeed</span>;
+
+    <span class="tok-param">playerVelocity</span> += <span class="tok-param">accelspeed</span> * <span class="tok-param">wishdir</span>;
+}`;
 ---
 
 <BaseLayout title="Ronin Run - Jonathan To">
@@ -85,27 +347,31 @@ const todoSnippetHtml = ``;
     <KeyFeature
       index={1}
       title="Source-Style Movement"
-      description="3D movement system modelled after Source-engine physics - air strafing, bunny hopping, and momentum preservation. Wish-direction input is projected against the current velocity to allow mid-air direction control without breaking speed, replicating the feel of classic movement shooters. I then layered abilities from popular FPS games to round out the base movement toolkit, including wall-running, sliding, a dash and a double jump."
-      snippetLabel="PlayerController.cs - air strafe"
+      description="3D movement system modelled after Source-engine physics - air strafing, bunny hopping, and momentum preservation. Wish-direction input is projected against the current velocity to allow mid-air direction control without breaking speed, replicating the feel of classic movement shooters. I then layered abilities from popular FPS games to round out the base movement toolkit, including wall-running, sliding, ledge grab with mantling, a dash and a double jump."
+      snippetLabel="PlayerControllerV2.cs - AirMove / AirControl / Accelerate"
       videoSrc="/videos/source-movement-demo.mp4"
-      snippetFilename="PlayerController.cs"
-      snippetCode={todoSnippetPlain}
+      snippetFilename="PlayerControllerV2.cs"
+      snippetCode={airStrafeSnippetPlain}
       flip={true}
     >
       <pre
         slot="snippet-code"
-        style="margin:0; padding:1.25rem 1.5rem; overflow-x:auto; background:var(--bg); font-size:12px; line-height:1.8; white-space:pre-wrap; word-break:break-word;"><code class="font-mono text-(--text-code)" set:html={todoSnippetHtml} /></pre>
+        style="margin:0; padding:1.25rem 1.5rem; overflow-x:auto; background:var(--bg); font-size:12px; line-height:1.8; white-space:pre-wrap; word-break:break-word;"><code class="font-mono text-(--text-code)" set:html={airStrafeSnippetHtml} /></pre>
     </KeyFeature>
 
     <KeyFeature
       index={2}
       title="Shuriken Toolkit"
       description="A set of throwable abilities, each one a distinct traversal mechanic: a platform shuriken that spawns a jumpable surface mid-air, a teleport shuriken that snaps the player to impact point, slingshot and grapple shurikens for momentum-based traversal, and an explosion shuriken that functions as a blast jump. Each variant shares a common projectile base with a pluggable on-land behaviour."
-      snippetLabel="Shuriken.cs - on-land dispatch"
+      snippetLabel="ShurikenBaseClass.cs / WallRunShuriken.cs - AttachToSurface"
       videoSrc="/videos/shurikens-demo.mp4"
-      snippetFilename="Shuriken.cs"
-      snippetCode={`// TODO: plug in your snippet here`}
-    />
+      snippetFilename="ShurikenBaseClass.cs"
+      snippetCode={shurikenSnippetPlain}
+    >
+      <pre
+        slot="snippet-code"
+        style="margin:0; padding:1.25rem 1.5rem; overflow-x:auto; background:var(--bg); font-size:12px; line-height:1.8; white-space:pre-wrap; word-break:break-word;"><code class="font-mono text-(--text-code)" set:html={shurikenSnippetHtml} /></pre>
+    </KeyFeature>
   </div>
 
   <div style="display:flex; flex-direction:column; gap:2rem;">
