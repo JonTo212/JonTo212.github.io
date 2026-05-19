@@ -35,12 +35,12 @@ const stepsAfterSlider  = steps.filter((s) => s.tag === "result");
       // {title}
     </span>
     <span class="deep-dive-pill font-mono text-[0.9rem] text-(--green) border border-(--green-dim) px-3 py-1 rounded-full tracking-[0.06em]">
-      ▸ expand
+      ▸ collapse
     </span>
   </button>
 
   <!-- Collapsible body -->
-  <div class="deep-dive-body" style="max-height:0; overflow:hidden; transition:max-height 0.35s ease;">
+  <div class="deep-dive-body" style="overflow:hidden; transition:max-height 0.35s ease;">
     <div class="border-t border-(--border)">
 
       <!-- Steps before slider -->
@@ -142,11 +142,21 @@ const stepsAfterSlider  = steps.filter((s) => s.tag === "result");
       const body = accordion?.querySelector<HTMLElement>(".deep-dive-body");
       const pill = btn.querySelector<HTMLElement>(".deep-dive-pill");
       if (!body) return;
-      const isOpen = body.style.maxHeight && body.style.maxHeight !== "0px";
-      body.style.maxHeight = isOpen ? "0" : body.scrollHeight + "px";
-      if (pill) pill.textContent = isOpen ? "▸ expand" : "▸ collapse";
+      const isOpen = body.style.maxHeight !== "0px";
+      if (isOpen) {
+        body.style.maxHeight = "0";
+        if (pill) pill.textContent = "▸ expand";
+      } else {
+        body.style.maxHeight = body.scrollHeight + "px";
+        if (pill) pill.textContent = "▸ collapse";
+      }
     };
   }
+
+  // initialise all deep-dive bodies to their scrollHeight so toggle works on first click
+  document.querySelectorAll<HTMLElement>(".deep-dive-body").forEach((body) => {
+    body.style.maxHeight = body.scrollHeight + "px";
+  });
 
   // BA Slider — scoped by closest container
   document.querySelectorAll<HTMLElement>("#baSlider").forEach((container) => {
