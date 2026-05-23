@@ -1,7 +1,87 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import VideoEmbed from "../../components/layout/VideoEmbed.astro";
+import TextBlock from "../../components/layout/TextBlock.astro";
+import ProjectDetails from "../../components/layout/ProjectDetails.astro";
+import ProjectHeader from "../../components/layout/ProjectHeader.astro";
+import KeyFeature from "../../components/layout/KeyFeature.astro";
+import DeepDiveBlock from "../../components/layout/DeepDiveBlock.astro";
 import ProjectFooter from "../../components/layout/ProjectFooter.astro";
-import UnderConstruction from "../../components/layout/UnderConstruction.astro";
+
+const snippetPlain = `// ── SimulationRecorder ────────────────────────────────────────────────────────
+// Runs physics in script mode to record a force-based dice throw frame by frame.
+public void StartRecording(Vector3 force, Vector3 torque)
+{
+    Physics.simulationMode = SimulationMode.Script;
+
+    recordingData.rb.AddForce(force, ForceMode.Impulse);
+    recordingData.rb.AddTorque(torque, ForceMode.Impulse);
+
+    do // simulate one frame first so forces are applied before checking velocity
+    {
+        recordingData.recordedAnimation.Add(
+            new RecordedFrame(transform.position, transform.rotation));
+        Physics.Simulate(Time.fixedDeltaTime);
+    }
+    while (recordingData.rb.velocity.magnitude > 0.01f
+        && recordingData.rb.angularVelocity.magnitude > 0.01f);
+
+    finalUp = GetComponent<Dice>().CalculateNewUp(); // store the face that landed up
+    Physics.simulationMode = SimulationMode.FixedUpdate;
+}
+
+// ── Dice.cs ───────────────────────────────────────────────────────────────────
+// Dot-product face detection: highest dot against Vector3.up = face currently up.
+public int CalculateNewUp()
+{
+    PopulateDictionary();
+    float maxDot = -1; int upFace = 0;
+    foreach (var pair in faceDirections)
+    {
+        float dot = Vector3.Dot(Vector3.up, pair.Key);
+        if (dot > maxDot) { maxDot = dot; upFace = pair.Value; }
+    }
+    return upFace;
+}
+`;
+
+const snippetHtml = `<span class="tok-comment">// ── SimulationRecorder ────────────────────────────────────────────────────────</span>
+<span class="tok-comment">// Runs physics in script mode to record a force-based dice throw frame by frame.</span>
+<span class="tok-keyword">public</span> <span class="tok-keyword">void</span> <span class="tok-param">StartRecording</span>(<span class="tok-type">Vector3</span> <span class="tok-param">force</span>, <span class="tok-type">Vector3</span> <span class="tok-param">torque</span>)
+{
+    <span class="tok-type">Physics</span>.<span class="tok-param">simulationMode</span> = <span class="tok-type">SimulationMode</span>.<span class="tok-param">Script</span>;
+
+    <span class="tok-param">recordingData</span>.<span class="tok-param">rb</span>.<span class="tok-param">AddForce</span>(<span class="tok-param">force</span>, <span class="tok-type">ForceMode</span>.<span class="tok-param">Impulse</span>);
+    <span class="tok-param">recordingData</span>.<span class="tok-param">rb</span>.<span class="tok-param">AddTorque</span>(<span class="tok-param">torque</span>, <span class="tok-type">ForceMode</span>.<span class="tok-param">Impulse</span>);
+
+    <span class="tok-keyword">do</span> <span class="tok-comment">// simulate one frame first so forces are applied before checking velocity</span>
+    {
+        <span class="tok-param">recordingData</span>.<span class="tok-param">recordedAnimation</span>.<span class="tok-param">Add</span>(
+            <span class="tok-keyword">new</span> <span class="tok-type">RecordedFrame</span>(<span class="tok-param">transform</span>.<span class="tok-param">position</span>, <span class="tok-param">transform</span>.<span class="tok-param">rotation</span>));
+        <span class="tok-type">Physics</span>.<span class="tok-param">Simulate</span>(<span class="tok-type">Time</span>.<span class="tok-param">fixedDeltaTime</span>);
+    }
+    <span class="tok-keyword">while</span> (<span class="tok-param">recordingData</span>.<span class="tok-param">rb</span>.<span class="tok-param">velocity</span>.<span class="tok-param">magnitude</span> &gt; <span class="tok-num">0.01f</span>
+        &amp;&amp; <span class="tok-param">recordingData</span>.<span class="tok-param">rb</span>.<span class="tok-param">angularVelocity</span>.<span class="tok-param">magnitude</span> &gt; <span class="tok-num">0.01f</span>);
+
+    <span class="tok-param">finalUp</span> = <span class="tok-param">GetComponent</span>&lt;<span class="tok-param">Dice</span>&gt;().<span class="tok-param">CalculateNewUp</span>(); <span class="tok-comment">// store the face that landed up</span>
+    <span class="tok-type">Physics</span>.<span class="tok-param">simulationMode</span> = <span class="tok-type">SimulationMode</span>.<span class="tok-param">FixedUpdate</span>;
+}
+
+<span class="tok-comment">// ── Dice.cs ───────────────────────────────────────────────────────────────────</span>
+<span class="tok-comment">// Dot-product face detection: highest dot against Vector3.up = face currently up.</span>
+<span class="tok-keyword">public</span> <span class="tok-keyword">int</span> <span class="tok-param">CalculateNewUp</span>()
+{
+    <span class="tok-param">PopulateDictionary</span>();
+    <span class="tok-keyword">float</span> <span class="tok-param">maxDot</span> = -<span class="tok-num">1</span>; <span class="tok-keyword">int</span> <span class="tok-param">upFace</span> = <span class="tok-num">0</span>;
+    <span class="tok-keyword">foreach</span> (<span class="tok-keyword">var</span> <span class="tok-param">pair</span> <span class="tok-keyword">in</span> <span class="tok-param">faceDirections</span>)
+    {
+        <span class="tok-keyword">float</span> <span class="tok-param">dot</span> = <span class="tok-type">Vector3</span>.<span class="tok-param">Dot</span>(<span class="tok-type">Vector3</span>.<span class="tok-param">up</span>, <span class="tok-param">pair</span>.<span class="tok-param">Key</span>);
+        <span class="tok-keyword">if</span> (<span class="tok-param">dot</span> &gt; <span class="tok-param">maxDot</span>) { <span class="tok-param">maxDot</span> = <span class="tok-param">dot</span>; <span class="tok-param">upFace</span> = <span class="tok-param">pair</span>.<span class="tok-param">Value</span>; }
+    }
+    <span class="tok-keyword">return</span> <span class="tok-param">upFace</span>;
+}
+
+`;
 ---
 
 <BaseLayout title="Deterministic Dice - Jonathan To">
@@ -10,15 +90,123 @@ import UnderConstruction from "../../components/layout/UnderConstruction.astro";
     <span class="breadcrumb-sep">/</span>
     <span class="breadcrumb-current">Deterministic_Dice</span>
   </div>
-  <UnderConstruction
-    projectName="Deterministic Dice"
-    backHref="/personal-projects/"
-    backLabel="PersonalProjects()"
+
+  <ProjectHeader
+    title="Deterministic Dice"
+    subtitle="Programmer · Solo"
+    tags={[
+      { label: "Programming", type: "programming" },
+      { label: "Unity", type: "unity" },
+    ]}
+    description="A rigged dice system that guarantees a target face on every throw. Simulates a physics-based roll in script mode, records it frame by frame, then replays the exact animation with a baked rotation offset that rotates the result into the desired face."
   />
+
+  <VideoEmbed
+    videoId="aRy-MsR64hA"
+    caption="// fig_01 - Deterministic dice throw · guaranteed face result"
+    alt="Deterministic Dice Demo"
+  />
+
+  <div class="grid gap-6" style="grid-template-columns: 1fr 260px;">
+    <TextBlock
+      title="Overview"
+      content="Deterministic Dice started as a feature cut from a larger project and ended up as a focused tech demo. The goal was to rig a dice roll without faking it - the throw had to look physically plausible while reliably landing on a chosen face. The solution uses Unity's scripted physics simulation to run the throw ahead of time, record the full trajectory, detect which face lands up, then replay the animation with a rotation offset that swaps the result for the target."
+    />
+
+    <TextBlock
+      title="Contributions"
+      content={[
+        "Built a scripted physics simulation loop that records a full dice throw frame by frame before it plays on screen",
+        "Implemented dot-product face detection to identify which face is up at rest after the simulated throw",
+        "Authored a per-face relative rotation table and lookup system to derive the offset needed to land any desired face",
+        "Wired the full pipeline: simulate, detect, offset, replay kinematically with the baked correction",
+      ]}
+    />
+
+    <div style="grid-column:2; grid-row:1/3;">
+      <ProjectDetails
+        meta={[
+          { key: "status", value: "Complete" },
+          { key: "year", value: "2024" },
+          { key: "duration", value: "1 week" },
+          { key: "team_size", value: "1 (solo)" },
+          { key: "platform", value: "PC" },
+          { key: "context", value: "Tech demo · Prototype" },
+        ]}
+      />
+    </div>
+  </div>
+
+  <div style="display:flex; flex-direction:column; gap:1rem;">
+    <div style="border:1px solid var(--border); background:var(--bg-panel);">
+      <div
+        style="padding:10px 16px; background:var(--bg-card); border-bottom:1px solid var(--border); font-family:'Commit Mono',monospace; font-size:1.1rem; color:var(--green-dim);"
+      >
+        // Key Features
+      </div>
+    </div>
+
+    <KeyFeature
+      index={1}
+      title="Scripted Physics Simulation & Recording"
+      description="Rather than faking the result with a canned animation, the system runs a real physics throw inside Unity's Script simulation mode - meaning the engine steps physics manually, frame by frame, without rendering anything. Each frame's position and rotation is stored, then simulation mode hands back to FixedUpdate. The result is a full recorded trajectory that looks physically legitimate because it is."
+      videoSrc="/videos/dice-roll-prototype.mp4"
+      snippetLabel="SimulationRecorder.cs - StartRecording / CalculateNewUp"
+      snippetFilename="SimulationRecorder.cs"
+      snippetCode={snippetPlain}
+      flip={false}
+    >
+      <pre
+        slot="snippet-code"
+        style="margin:0; padding:1.25rem 1.5rem; overflow-x:auto; background:var(--bg); font-size:12px; line-height:1.8; white-space:pre-wrap; word-break:break-word;"><code class="font-mono text-(--text-code)" set:html={snippetHtml} /></pre>
+    </KeyFeature>
+  </div>
+
+  <div style="display:flex; flex-direction:column; gap:2rem;">
+    <DeepDiveBlock
+      title="Deep dive - rigging physics without breaking it"
+      steps={[
+        {
+          tag: "problem",
+          icon: "◎",
+          title:
+            "Forces aren't controllable - until you separate them from rendering",
+          body: "The obvious approach to a rigged dice roll is to just set the rotation at the end - snap the die to the target face once it stops moving. The problem is the throw itself: if the physics are live, the trajectory is unpredictable and the snap is visible. The constraint was that the throw had to look real all the way through, not just at the end.",
+        },
+        {
+          tag: "approach",
+          icon: "◈",
+          title:
+            "Simulate in script mode, then replay with a correction baked in",
+          body: "Unity's Physics.simulationMode = Script lets you step the physics engine manually without the scene rendering in between. That meant the full throw could run to completion before any frame was shown - record every position and rotation, detect the result, calculate the offset needed, then play back the recorded frames kinematically with the correction multiplied into each rotation. The viewer sees a natural-looking throw that just happens to always land correctly.",
+        },
+        {
+          tag: "result",
+          icon: "▸",
+          title: "A physically plausible throw with a guaranteed outcome",
+          body: "The final system runs the simulation, stores the trajectory, identifies the landed face via dot product, looks up the relative rotation offset from the pre-authored table, and replays the animation with that offset baked per-frame. The throw is different every time - force and torque are randomised - but the result is always the requested face. The physics aren't faked; they're just run early.",
+        },
+      ]}
+    />
+
+    <TextBlock
+      title="Takeaways"
+      content={[
+        {
+          heading: "Cut features make good tech demos",
+          body: "This system was scoped out of a larger project for time reasons. Pulling it into its own demo forced a tighter implementation and made it easier to document clearly. Not everything that gets cut is wasted work.",
+        },
+        {
+          heading: "Physics doesn't have to mean chaos",
+          body: "The assumption with physics simulation is that you give up control for realism. Script simulation mode breaks that assumption - you can run physics to completion ahead of time, inspect the result, and adjust before anything is shown. The randomness is real; the outcome is not.",
+        },
+      ]}
+    />
+  </div>
 
   <ProjectFooter
     prev={{ label: "WFC Generator", href: "../wfc-generator/" }}
-    next={{ label: "Light Moth", href: "../light-moth/" }}
+    next={{ label: "Connect4Dead", href: "../connect4dead/" }}
     author="Jonathan To · Gameplay Programmer & Game Designer"
     year={2026}
   />

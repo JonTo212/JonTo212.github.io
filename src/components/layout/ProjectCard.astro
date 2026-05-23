@@ -1,7 +1,14 @@
 ---
 interface Tag {
   label: string;
-  type: "programming" | "design" | "unity" | "unreal" | "wip" | "team";
+  type:
+    | "programming"
+    | "design"
+    | "unity"
+    | "unreal"
+    | "wip"
+    | "team"
+    | "game-jam";
 }
 
 interface Meta {
@@ -28,6 +35,7 @@ const tagStyles = {
   unreal: "bg-[#7a3a3a] text-[#e8b8b8]",
   wip: "bg-[#5a4a20] text-[#e0c878]",
   team: "bg-[#2a3a4a] text-[#88b8d8]",
+  "game-jam": "bg-[#3a2a4a] text-[#c8a8e8]",
 };
 ---
 

@@ -1,23 +1,25 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import ProjectFooter from "../../components/layout/ProjectFooter.astro";
 import UnderConstruction from "../../components/layout/UnderConstruction.astro";
+import ProjectFooter from "../../components/layout/ProjectFooter.astro";
 ---
 
-<BaseLayout title="Sky High Scrubbing - Jonathan To">
+<BaseLayout title="Connect4Dead - Jonathan To">
   <div slot="breadcrumb" class="breadcrumb-bar">
     <a href="/personal-projects/">PersonalProjects()</a>
     <span class="breadcrumb-sep">/</span>
-    <span class="breadcrumb-current">Sky_High_Scrubbing</span>
+    <span class="breadcrumb-current">Connect4Dead</span>
   </div>
+
   <UnderConstruction
-    projectName="Sky High Scrubbing"
+    projectName="Connect4Dead"
     backHref="/personal-projects/"
     backLabel="PersonalProjects()"
   />
 
   <ProjectFooter
-    prev={{ label: "Knight and the Mad King", href: "../knight-and-the-mad-king/" }}
+    prev={{ label: "Deterministic Dice", href: "../deterministic-dice/" }}
+    next={{ label: "Whatever Floats Your Goat", href: "../whatever-floats-your-goat/" }}
     author="Jonathan To · Gameplay Programmer & Game Designer"
     year={2026}
   />
