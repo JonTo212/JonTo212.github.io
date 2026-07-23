@@ -23,31 +23,17 @@ const { filters, accentColor = "green" } = Astro.props;
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const btns = document.querySelectorAll<HTMLButtonElement>(".filter-btn");
-    const cards = document.querySelectorAll<HTMLElement>(".project-card");
-    const countDisplay = document.querySelector(".count");
-    const jamCountDisplay = document.querySelector(".jam-count");
+    if (!btns.length) return;
 
-    if (!btns.length || !cards.length) return;
+    const cards = Array.from(
+      document.querySelectorAll<HTMLElement>(".project-card"),
+    );
+    const countDisplay = document.querySelector<HTMLElement>(".count");
 
-    const updateCounts = () => {
-      if (countDisplay) {
-        const section = countDisplay.closest("section");
-        const visible = section
-          ? Array.from(
-              section.querySelectorAll<HTMLElement>(".project-card"),
-            ).filter((c) => c.style.display !== "none").length
-          : 0;
-        countDisplay.textContent = `// ${visible} entries`;
-      }
-      if (jamCountDisplay) {
-        const section = jamCountDisplay.closest("section");
-        const visible = section
-          ? Array.from(
-              section.querySelectorAll<HTMLElement>(".project-card"),
-            ).filter((c) => c.style.display !== "none").length
-          : 0;
-        jamCountDisplay.textContent = `// ${visible} entries`;
-      }
+    const updateCount = () => {
+      if (!countDisplay) return;
+      const visible = cards.filter((c) => c.style.display !== "none").length;
+      countDisplay.textContent = `// ${visible} entries`;
     };
 
     btns.forEach((btn) => {
@@ -58,31 +44,30 @@ const { filters, accentColor = "green" } = Astro.props;
           b.style.color = "#888888";
           b.style.backgroundColor = "#222222";
         });
-
         btn.classList.add("active");
         const accent = btn.dataset.accent === "green" ? "#7ec87e" : "#c8b97e";
         const bgAccent = btn.dataset.accent === "green" ? "#1e2b1e" : "#2a2515";
-
         btn.style.borderColor = accent;
         btn.style.color = accent;
         btn.style.backgroundColor = bgAccent;
 
-        const filter = btn.textContent?.trim().toLowerCase() || "";
+        const filter = (btn.textContent?.trim().toLowerCase() || "").replace(
+          /\s+/g,
+          "-",
+        );
 
         cards.forEach((card) => {
           if (filter === "all") {
             card.style.display = "flex";
           } else {
-            const tags = Array.from(card.querySelectorAll(".tag")).map(
-              (t) => t.textContent?.toLowerCase() || "",
-            );
-            card.style.display = tags.some((t) => t.includes(filter))
+            const cardTags = (card.getAttribute("data-tags") || "").split(",");
+            card.style.display = cardTags.some((t) => t.includes(filter))
               ? "flex"
               : "none";
           }
         });
 
-        updateCounts();
+        updateCount();
       });
     });
   });

@@ -1,6 +1,11 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import UnderConstruction from "../../components/layout/UnderConstruction.astro";
+import VideoEmbed from "../../components/layout/VideoEmbed.astro";
+import TextBlock from "../../components/layout/TextBlock.astro";
+import ProjectDetails from "../../components/layout/ProjectDetails.astro";
+import ProjectHeader from "../../components/layout/ProjectHeader.astro";
+import KeyFeature from "../../components/layout/KeyFeature.astro";
+import DeepDiveBlock from "../../components/layout/DeepDiveBlock.astro";
 import ProjectFooter from "../../components/layout/ProjectFooter.astro";
 ---
 
@@ -11,15 +16,126 @@ import ProjectFooter from "../../components/layout/ProjectFooter.astro";
     <span class="breadcrumb-current">Connect4Dead</span>
   </div>
 
-  <UnderConstruction
-    projectName="Connect4Dead"
-    backHref="/personal-projects/"
-    backLabel="PersonalProjects()"
+  <ProjectHeader
+    title="Connect4Dead"
+    subtitle="Technical Animator · Designer · Team of 6"
+    tags={[
+      { label: "Programming", type: "programming" },
+      { label: "Design", type: "design" },
+      { label: "Unity", type: "unity" },
+    ]}
+    description="Connect 4, but with guns. Players take turns shooting their chips into the grid - each chip type carries unique mechanics, and any chip can be sacrificed by shooting it out of the board entirely. Built in 3 days for TOJam 2026."
   />
 
+  <VideoEmbed
+    videoId="FILL_ME_IN"
+    caption="// fig_01 - Gameplay overview · Connect4Dead · TOJam 2026"
+    alt="Connect4Dead Gameplay Demo"
+  />
+
+  <div class="grid gap-6" style="grid-template-columns: 1fr 260px;">
+    <TextBlock
+      title="Overview"
+      content="Connect4Dead takes the familiar structure of Connect 4 and replaces dropping chips with shooting them. Each chip type has its own behaviour on landing - some bounce, some explode, some affect adjacent tiles - and any chip already on the board can be destroyed by shooting it directly, opening up a sacrifice layer that adds a second dimension of tactics to an otherwise solved format. The project was built over three days at TOJam 2026 with a team of six."
+    />
+
+    <TextBlock
+      title="Contributions"
+      content={[
+        "Animated the gun using tween-based keyframing - shoot, reload, and idle cycles",
+        "Implemented IK hand placement so hands track the gun correctly across all animation states",
+        "Added camera shake, hit-stop, and visual effects for game feel",
+        "Built the laser sight system and 'gangsta mode' aiming animation when targeting chips for destruction",
+        "Animated the watch arm with an idle loop played during the opponent's turn",
+      ]}
+    />
+
+    <div style="grid-column:2; grid-row:1/3;">
+      <ProjectDetails
+        meta={[
+          { key: "status", value: "Complete" },
+          { key: "year", value: "2026" },
+          { key: "duration", value: "3 days" },
+          { key: "team_size", value: "6" },
+          { key: "platform", value: "PC / WebGL" },
+          { key: "context", value: "Game Jam · TOJam 2026" },
+        ]}
+        links={[
+          {
+            label: "Play on itch.io",
+            href: "https://polarvoid.itch.io/clover",
+            icon: "◇",
+          },
+        ]}
+      />
+    </div>
+  </div>
+
+  <div style="display:flex; flex-direction:column; gap:1rem;">
+    <div style="border:1px solid var(--border); background:var(--bg-panel);">
+      <div
+        style="padding:10px 16px; background:var(--bg-card); border-bottom:1px solid var(--border); font-family:'Commit Mono',monospace; font-size:1.1rem; color:var(--green-dim);"
+      >
+        // Key Features
+      </div>
+    </div>
+
+    <KeyFeature
+      index={1}
+      title="Gun Animations via Tweens"
+      description="All gun animations - shoot, reload, idle - are driven by tween sequences rather than Unity's Animator. Each action is a chain of DOTween calls on the gun transform, giving precise control over timing, easing, and interruptibility without maintaining a state machine. Shoot recoil, muzzle kick, and return-to-rest are authored as separate tween segments so they can be tuned independently and cancelled cleanly when the next action fires."
+      videoSrc="/videos/connect4dead-gun-anim.mp4"
+      flip={false}
+    />
+  </div>
+
+  <div style="display:flex; flex-direction:column; gap:2rem;">
+    <DeepDiveBlock
+      title="Deep dive - polish in three days"
+      steps={[
+        {
+          tag: "problem",
+          icon: "◎",
+          title: "A functional game with no personality",
+          body: "With the core mechanics locked in early, the game worked - chips fired, connected, and the win condition triggered. But it felt clinical. Shooting something should feel like something, and waiting for your opponent's turn shouldn't feel like dead air. With less than a day left, the gap between 'it works' and 'it's fun to hold' needed closing fast.",
+        },
+        {
+          tag: "approach",
+          icon: "◈",
+          title: "Small details, high return",
+          body: "The focus was on moments the player would experience every single turn: the shot, the wait, and the targeting decision. Camera shake and hit-stop were added to the shoot action to make firing feel impactful. The laser sight was wired to snap to 'gangsta mode' - gun tilted sideways - when aiming at an opponent's chip, giving the destruction move a distinct visual identity. The watch arm idle was added for the wait state: something small to look at that kept the scene alive without demanding attention.",
+        },
+        {
+          tag: "result",
+          icon: "▸",
+          title: "Feel as a first-class feature",
+          body: "None of the individual additions are complex, but together they give the game a clear voice. Players noticed the gangsta aim mode immediately in playtesting - it telegraphs intent clearly and got a reaction every time. The watch idle became a detail people pointed out unprompted. In a three-day jam, polish at the right moments lands harder than additional mechanics.",
+        },
+      ]}
+      slider={{
+        label: "connect4dead_feel_comparison",
+        beforeSrc: "",
+        afterSrc: "",
+      }}
+    />
+
+    <TextBlock
+      title="Takeaways"
+      content={[
+        {
+          heading: "Unfamiliar workflows move fast when you commit",
+          body: "Tween-based animation was new territory - the instinct was to reach for the Animator. Committing to DOTween early meant the entire gun animation pipeline was iterable without touching a single state machine transition. The unfamiliar approach turned out to be the faster one.",
+        },
+        {
+          heading: "A new role is a chance to see the project differently",
+          body: "Coming in as technical animator and feel designer rather than systems programmer meant I was looking at the game from the player's perspective earlier than usual. That shift in vantage point - asking 'what does this feel like to hold' instead of 'does this work' - is something worth carrying into every project regardless of role.",
+        },
+      ]}
+    />
+  </div>
+
   <ProjectFooter
-    prev={{ label: "Deterministic Dice", href: "../deterministic-dice/" }}
-    next={{ label: "Whatever Floats Your Goat", href: "../whatever-floats-your-goat/" }}
+    next={{ label: "Ronin Run", href: "../ronin-run/" }}
     author="Jonathan To · Gameplay Programmer & Game Designer"
     year={2026}
   />

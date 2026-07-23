@@ -4,9 +4,25 @@ import PageHeader from "../components/layout/PageHeader.astro";
 import FilterBar from "../components/layout/FilterBar.astro";
 import ProjectCard from "../components/layout/ProjectCard.astro";
 
-const filters = ["All", "Programming", "Design", "Game Jam", "WIP", "Team"];
+const filters = ["All", "Programming", "Design", "Game Jam", "WIP"];
 
 const projects = [
+  {
+    title: "Connect4Dead",
+    href: "../projects/connect4dead/",
+    imgSrc: "/cover-images/connect4dead_hero.png",
+    desc: "Combining the two themes of 'that shouldn't be there' and 'what just happened?' for ToJam 2026 - Connect 4, but with guns. Players take turns shooting their chips into place, each with their own unique behaviours.",
+    isWip: false,
+    tags: [
+      { label: "Programming", type: "programming" },
+      { label: "Design", type: "design" },
+      { label: "Game Jam", type: "game-jam" },
+    ],
+    meta: [
+      { label: "status", value: "complete" },
+      { label: "team", value: "6" },
+    ],
+  },
   {
     title: "Ronin Run",
     href: "../projects/ronin-run/",
@@ -36,41 +52,10 @@ const projects = [
     ],
   },
   {
-    title: "Deterministic Dice",
-    href: "../projects/deterministic-dice/",
-    imgSrc: "/cover-images/deterministic-dice_hero.png",
-    desc: "Rigged physics-based dice roll that guarantees a target face - uses a recording and resimulation system to lock in the result.",
-    isWip: false,
-    tags: [{ label: "Programming", type: "programming" }],
-    meta: [
-      { label: "status", value: "complete" },
-      { label: "team", value: "solo" },
-    ],
-  },
-];
-
-const jamProjects = [
-  {
-    title: "Connect4Dead",
-    href: "../projects/connect4dead/",
-    imgSrc: "/cover-images/connect4dead_hero.png",
-    desc: "Combining the two themes of 'that shouldn't be there' and 'what just happened?' for ToJam 2026 - Connect 4, but with guns. Players take turns shooting their chips into place, each with their own unique behaviours.",
-    isWip: false,
-    tags: [
-      { label: "Programming", type: "programming" },
-      { label: "Design", type: "design" },
-      { label: "Game Jam", type: "game-jam" },
-    ],
-    meta: [
-      { label: "status", value: "complete" },
-      { label: "team", value: "6" },
-    ],
-  },
-  {
     title: "Whatever Floats Your Goat",
     href: "../projects/whatever-floats-your-goat/",
     imgSrc: "/cover-images/whatever-floats-your-goat_hero.png",
-    desc: "A silly little fishing endless runner made over the course of 3 days for TOJam 2025, under the theme 'the more you have, the worse it is.' Players must gather as much loot as possible while balancing the weight of each side of their boat.",
+    desc: "A silly little fishing endless runner made over the course of 3 days for TOJam 2025, under the theme 'the more you have, the worse it is.' Players must gather as much fish as possible while also balancing the weight of the treasure on their boat.",
     isWip: false,
     tags: [
       { label: "Programming", type: "programming" },
@@ -99,6 +84,18 @@ const jamProjects = [
     ],
   },
   {
+    title: "Deterministic Dice",
+    href: "../projects/deterministic-dice/",
+    imgSrc: "/cover-images/deterministic-dice_hero.png",
+    desc: "Rigged physics-based dice roll that guarantees a target face - uses a recording and resimulation system to lock in the result.",
+    isWip: false,
+    tags: [{ label: "Programming", type: "programming" }],
+    meta: [
+      { label: "status", value: "complete" },
+      { label: "team", value: "solo" },
+    ],
+  },
+  {
     title: "Sky High Scrubbing",
     href: "../projects/sky-high-scrubbing/",
     imgSrc: "/cover-images/skyhighscrubbing_hero.png",
@@ -123,53 +120,26 @@ const jamProjects = [
       title="PersonalProjects()"
       subtitle="Personal experiments, works-in-progress, game jams, and non-game pieces - things driven by interest and passion, not requirements."
       subtitleColor="white"
-      accentColor="yellow"
+      accentColor="green"
     />
 
-    <FilterBar filters={filters} accentColor="yellow" />
+    <FilterBar filters={filters} accentColor="green" />
 
     <section>
       <div
         class="mb-4 flex items-center gap-2 font-mono text-[0.9rem] text-[#4a7a4a]"
       >
-        <div class="h-1.5 w-1.5 rounded-full bg-[#c8b97e] opacity-50"></div>
         // projects[]
         <span class="count ml-auto text-[11px] text-[#555555]"
           >// {projects.length} entries</span
         >
       </div>
-
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {
-          projects.map((project) => (
-            <ProjectCard
-              href={project.href}
-              imgSrc={project.imgSrc}
-              title={project.title}
-              desc={project.desc}
-              tags={project.tags as any}
-              meta={project.meta}
-              isWip={project.isWip}
-            />
-          ))
-        }
-      </div>
-    </section>
-
-    <section>
       <div
-        class="mb-4 flex items-center gap-2 font-mono text-[0.9rem] text-[#4a7a4a]"
+        id="all-cards-grid"
+        class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
       >
-        <div class="h-1.5 w-1.5 rounded-full bg-[#c8b97e] opacity-50"></div>
-        // game_jams[]
-        <span class="jam-count ml-auto text-[11px] text-[#555555]"
-          >// {jamProjects.length} entries</span
-        >
-      </div>
-
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {
-          jamProjects.map((project) => (
+          [...projects].map((project) => (
             <ProjectCard
               href={project.href}
               imgSrc={project.imgSrc}
